@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33516.290
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KantorServer.Model", "KantorServer.Model\KantorServer.Model.csproj", "{E4CD0D9C-1DD1-47D5-89B7-2A833C74645E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KantorServer.DAL", "KantorServer.DAL\KantorServer.DAL.csproj", "{0B289699-E6CE-47A7-BB00-B930D4A11F29}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KantorServer.Application", "KantorServer.Application\KantorServer.Application.csproj", "{1BAC424E-EEBA-445A-BD9F-F44C325C79B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KantorServer.API", "KantorServer.API\KantorServer.API.csproj", "{CD0FA9D4-0E24-4679-9C54-C6F311F8021E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E4CD0D9C-1DD1-47D5-89B7-2A833C74645E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4CD0D9C-1DD1-47D5-89B7-2A833C74645E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4CD0D9C-1DD1-47D5-89B7-2A833C74645E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4CD0D9C-1DD1-47D5-89B7-2A833C74645E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B289699-E6CE-47A7-BB00-B930D4A11F29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B289699-E6CE-47A7-BB00-B930D4A11F29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B289699-E6CE-47A7-BB00-B930D4A11F29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B289699-E6CE-47A7-BB00-B930D4A11F29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BAC424E-EEBA-445A-BD9F-F44C325C79B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BAC424E-EEBA-445A-BD9F-F44C325C79B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BAC424E-EEBA-445A-BD9F-F44C325C79B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BAC424E-EEBA-445A-BD9F-F44C325C79B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD0FA9D4-0E24-4679-9C54-C6F311F8021E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD0FA9D4-0E24-4679-9C54-C6F311F8021E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD0FA9D4-0E24-4679-9C54-C6F311F8021E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD0FA9D4-0E24-4679-9C54-C6F311F8021E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8AC60656-1A9B-441F-B8BD-973D8EC77D3B}
+	EndGlobalSection
+EndGlobal

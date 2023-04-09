@@ -1,0 +1,56 @@
+﻿using KantorServer.Model.Consts;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace KantorServer.Model.Dtos
+{
+    [Serializable]
+    public class TransactionDto
+    {
+        public long Id { get; set; }
+        public TransactionType TransactionType { get; set; }
+        public virtual CurrencyDto Currency { get; set; }
+        public decimal Quantity { get; set; }
+        public decimal FinalValue { get; set; }
+        public decimal Rate { get; set; }
+        public virtual KantorDto Kantor { get; set; }
+        public virtual UserDto User { get; set; }
+
+        public TransactionDto()
+        {
+            
+        }
+
+        public TransactionDto(Transaction transaction)
+        {
+            Id = transaction.Id;
+            TransactionType = transaction.TransactionType;
+            Currency = new CurrencyDto(transaction.Currency);
+            Quantity = transaction.Quantity;
+            FinalValue = transaction.FinalValue;
+            Rate = transaction.Rate;
+            Kantor = new KantorDto(transaction.Kantor);
+            User = new UserDto(transaction.User);
+        }
+
+        public static List<TransactionDto> Map(IEnumerable<Transaction> transactions) => transactions.Select(x => new TransactionDto(x)).ToList();
+    
+        public Transaction ConvertToEntity()
+        {
+            var transaction = new Transaction();
+            if (Id > 0)
+                transaction.Id = Id;
+            transaction.TransactionType = TransactionType;
+            transaction.Currency = Currency.ConvertToEntity();
+            transaction.Quantity = Quantity;
+            transaction.FinalValue = FinalValue;
+            transaction.Rate = Rate;
+            transaction.Kantor = Kantor.ConvertToEntity();
+            transaction.User = User.ConvertToEntity();
+            return transaction;
+        }
+    }
+}

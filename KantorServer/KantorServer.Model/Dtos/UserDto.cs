@@ -1,0 +1,47 @@
+﻿using KantorServer.Model.Consts;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace KantorServer.Model.Dtos
+{
+    [Serializable]
+    public class UserDto
+    {
+        public long Id { get; set; }
+        public string Login { get; set; }
+        public string Password { get; set; }
+        public string Name { get; set; }
+        public UserPermission Permission { get; set; }
+
+        public UserDto()
+        {
+            
+        }
+
+        public UserDto(User user) 
+        {
+            Id = user.Id;
+            Login = user.Login;
+            Password = user.Password;
+            Name = user.Name;
+            Permission = user.Permission;
+        }
+
+        public static List<UserDto> Map(List<User> users) => users.Select(x => new UserDto(x)).ToList();
+
+        public User ConvertToEntity()
+        {
+            var user = new User();
+            if (Id > 0)
+                user.Id = Id;
+            user.Login = Login;
+            user.Password = Password;
+            user.Name = Name;
+            user.Permission = Permission;
+            return user;
+        }
+    }
+}
