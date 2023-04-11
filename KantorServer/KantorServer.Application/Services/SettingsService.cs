@@ -1,6 +1,7 @@
 ﻿using KantorServer.Application.Services.Interfaces;
 using KantorServer.DAL;
 using KantorServer.Model.Dtos;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +40,19 @@ namespace KantorServer.Application.Services
             catch (Exception ex) 
             {
                 return false;
+            }
+        }
+
+        public async Task<List<CurrencyDto>> GetCurrencies()
+        {
+            try
+            {
+                var currencies = await DataContext.Currencies.ToListAsync();
+                return CurrencyDto.Map(currencies);
+            }
+            catch 
+            {
+                return null;
             }
         }
     }

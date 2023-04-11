@@ -11,5 +11,6 @@ namespace KantorServer.Application.Services.Interfaces
     public interface ISettingsService : IService
     {
         Task<bool> AddKantor(KantorDto kantor, CancellationToken token);
+        Task<List<CurrencyDto>> GetCurrencies();
     }
 }

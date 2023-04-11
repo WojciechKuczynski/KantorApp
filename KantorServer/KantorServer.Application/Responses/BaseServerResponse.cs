@@ -10,10 +10,10 @@ namespace KantorServer.Application.Responses
     [Serializable]
     public class BaseServerResponse
     {
-        public BaseServerResponse(bool isCorrect, string successMsg, string failMsg)
+        public BaseServerResponse(bool isCorrect, string? successMsg = null, string? failMsg = null)
         {
             ResponseType = isCorrect == true ? ServerResponseType.Success : ServerResponseType.Error;
-            ResponseText = isCorrect == true ? successMsg : failMsg;
+            ResponseText = (isCorrect == true ? successMsg : failMsg) ?? string.Empty;
         }
 
         public ServerResponseType ResponseType { get; set; }
