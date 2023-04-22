@@ -1,7 +1,8 @@
-﻿using KantorServer.Application.Requests.Rates;
+﻿using KantorServer.Application.Requests;
+using KantorServer.Application.Requests.Rates;
 using KantorServer.Application.Responses;
-using KantorServer.Application.Services;
 using KantorServer.Application.Services.Interfaces;
+using KantorServer.Model.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KantorServer.API.Controllers
@@ -18,9 +19,9 @@ namespace KantorServer.API.Controllers
         }
 
         [HttpPost("addRate")]
-        public async Task<BaseServerResponse> AddEditRate(AddEditRateRequest request) 
+        public async Task<BaseServerResponse> AddEditRate(AddEditRateRequest request)
         {
-            var checkRes = await CheckRequestArgs(request);
+            var checkRes = await CheckRequestArgs<BaseServerResponse>(request);
             if (checkRes != null) { return checkRes; }
 
             var res = await _rateService.AddEditRate(request.Rate);
@@ -30,7 +31,7 @@ namespace KantorServer.API.Controllers
         [HttpPost("editRate")]
         public async Task<BaseServerResponse> EditRate(AddEditRateRequest request)
         {
-            var checkRes = await CheckRequestArgs(request);
+            var checkRes = await CheckRequestArgs<BaseServerResponse>(request);
             if (checkRes != null) { return checkRes; }
 
             var res = await _rateService.AddEditRate(request.Rate);
@@ -40,23 +41,39 @@ namespace KantorServer.API.Controllers
         [HttpPost("removeRate")]
         public async Task<BaseServerResponse> RemoveRate(AddEditRateRequest request)
         {
-            var checkRes = await CheckRequestArgs(request);
+            var checkRes = await CheckRequestArgs<BaseServerResponse>(request);
             if (checkRes != null) { return checkRes; }
 
             var res = await _rateService.RemoveRate(request.Rate);
             return new BaseServerResponse(res, "Pomyślnie usunięto Kurs", "Nie udało się usunąć Kursu");
         }
 
-        private async Task<BaseServerResponse> CheckRequestArgs(AddEditRateRequest request)
+        [HttpPost("all")]
+        public async Task<GetAllRatesResponse> GetAllRates(GetAllRatesRequest request)
+        {
+            var checkRes = await CheckRequestArgs<GetAllRatesResponse>(request);
+            if (checkRes != null) { return checkRes; }
+
+            var res = await _rateService.GetAllRates();
+            return new GetAllRatesResponse(true, "Pomyślnie zwrócono kursy", "Nie udało się pobrać kursów") { Rates = RateDto.Map(res) };
+        }
+
+        private async Task<T> CheckRequestArgs<T>(BaseServerRequest request) where T : BaseServerResponse
         {
             if (!await CheckSession(request.SynchronizationKey))
             {
-                return await Task.FromResult(new BaseServerResponse(false, "", "Podano niepoprawny hash. Proszę przelogować aplikację!"));
+                var res = Activator.CreateInstance<T>();
+                res.ResponseText = "Podano niepoprawny hash. Proszę przelogować aplikację!";
+                res.ResponseType = Model.Consts.ServerResponseType.Error;
+                return await Task.FromResult(res);
             }
 
             if (request == null)
             {
-                return await Task.FromResult(new BaseServerResponse(false, "", "Podano niepoprawny Kurs!"));
+                var res = Activator.CreateInstance<T>();
+                res.ResponseText = "Podano niepoprawny Kurs!";
+                res.ResponseType = Model.Consts.ServerResponseType.Error;
+                return await Task.FromResult(res);
             }
 
             return null;

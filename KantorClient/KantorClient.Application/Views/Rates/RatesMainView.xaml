@@ -1,0 +1,100 @@
+﻿<UserControl x:Class="KantorClient.Application.Views.Rates.RatesMainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:KantorClient.Application.Views.Rates"
+             mc:Ignorable="d" Background="Blue"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.8*" />
+            <ColumnDefinition Width="0.2*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid x:Name="GrayOut" Background="Gray" Opacity="0.6" Grid.ColumnSpan="2" Grid.Column="0" Panel.ZIndex="1">
+        </Grid>
+        <Grid x:Name="AddEditView" Background="Orange" Margin="30" Panel.ZIndex="2" />
+
+        <!--<DataGrid>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Start" />
+                <DataGridTextColumn Header="End" />
+                <DataGridTextColumn Header="Start" />
+            </DataGrid.Columns>
+        </DataGrid>-->
+        <ListView Grid.Row="0" Grid.Column="0" Background="Transparent" ItemsSource="{Binding Rates}" BorderThickness="0" VerticalAlignment="Stretch"
+                          SelectedItem="{Binding SelectedSection,UpdateSourceTrigger=PropertyChanged}">
+            <ListView.Resources>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Background" Value="{StaticResource Color1}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource Color2}" />
+                    <!--<Setter Property="Foreground" Value="{StaticResource TextColor}" />-->
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListViewItem">
+                                <Grid Margin="3" Background="Transparent">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border x:Name="SectionBorder" Grid.Column="0" BorderThickness="2" BorderBrush="{TemplateBinding Background}" CornerRadius="10">
+                                        <Grid Grid.Column="0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Label Content="{Binding SectionName}" Foreground="{TemplateBinding Foreground}" Grid.Row="0" FontSize="16" />
+                                            <StackPanel Orientation="Horizontal" Grid.Row="1">
+                                                <Label Content="Id:"/>
+                                                <Label Content="{Binding SectionId}"/>
+                                                <Label Content="Status:"/>
+                                                <Label Content="{Binding Status}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Style.Setters>
+                                                    <Setter Property="Background" Value="#8888" />
+                                                </Style.Setters>
+                                                <!--<Style.Triggers>
+                                                    <DataTrigger Value="{x:Static status:SectionStatus.Started}">
+                                                        <DataTrigger.Binding>
+                                                            <Binding Path="Status" />
+                                                        </DataTrigger.Binding>
+                                                        <DataTrigger.Setters>
+                                                            <Setter Property="Background" Value="LightGreen" />
+                                                        </DataTrigger.Setters>
+                                                    </DataTrigger>
+                                                    <DataTrigger Value="{x:Static status:SectionStatus.Finished}">
+                                                        <DataTrigger.Binding>
+                                                            <Binding Path="Status" />
+                                                        </DataTrigger.Binding>
+                                                        <DataTrigger.Setters>
+                                                            <Setter Property="Background" Value="IndianRed" />
+                                                        </DataTrigger.Setters>
+                                                    </DataTrigger>
+                                                </Style.Triggers>-->
+                                            </Style>
+                                        </Border.Style>
+                                    </Border>
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="SectionBorder" Property="Background" Value="LightBlue"  />
+                                        <Setter TargetName="SectionBorder" Property="BorderBrush" Value="DarkMagenta"  />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListView.Resources>
+        </ListView>
+
+        <Grid Grid.Column="1" Background="Green">
+            <StackPanel Orientation="Vertical" >
+                <Button Content="Add Rate" Margin="5" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -16,7 +16,9 @@ namespace KantorServer.Model.Dtos
 
         public KantorDto()
         {
-            
+            Name = string.Empty;
+            IdentificationKey = string.Empty;
+            Id = 0;
         }
 
         public KantorDto(Kantor kantor)

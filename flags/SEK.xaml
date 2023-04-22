@@ -1,0 +1,42 @@
+﻿<DrawingGroup xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <DrawingGroup x:Name="DrawingLayer">
+    <DrawingGroup.ClipGeometry>
+      <RectangleGeometry Rect="0,0,640,480" />
+    </DrawingGroup.ClipGeometry>
+    <DrawingGroup.Transform>
+      <TranslateTransform X="121.10299682617188" Y="0" />
+    </DrawingGroup.Transform>
+    <DrawingGroup Transform="0.9375,0,0,0.9375,50.082,0">
+      <DrawingGroup.ClipGeometry>
+        <PathGeometry FillRule="Nonzero" Figures="M-53.421,0L629.249,0 629.249,512 -53.421,512z" />
+      </DrawingGroup.ClipGeometry>
+      <DrawingGroup>
+        <GeometryDrawing Brush="#FF006AA7">
+          <GeometryDrawing.Geometry>
+            <PathGeometry FillRule="EvenOdd" Figures="M-121.103,0.302L134.897,0.302 134.897,205.1 -121.103,205.1z M-121.103,307.178L134.897,307.178 134.897,511.978 -121.103,511.978z" />
+          </GeometryDrawing.Geometry>
+        </GeometryDrawing>
+        <GeometryDrawing Brush="#FFFECC00">
+          <GeometryDrawing.Geometry>
+            <PathGeometry FillRule="EvenOdd" Figures="M-121.103,204.984L134.897,204.984 134.897,307.384 -121.103,307.384z" />
+          </GeometryDrawing.Geometry>
+        </GeometryDrawing>
+        <GeometryDrawing Brush="#FFFECC00">
+          <GeometryDrawing.Geometry>
+            <PathGeometry FillRule="EvenOdd" Figures="M133.843,0.01L236.243,0.01 236.243,512.007 133.843,512.007z" />
+          </GeometryDrawing.Geometry>
+        </GeometryDrawing>
+        <GeometryDrawing Brush="#FFFECC00">
+          <GeometryDrawing.Geometry>
+            <PathGeometry FillRule="EvenOdd" Figures="M232.995,205.013L693.793,205.013 693.793,307.413 232.995,307.413z" />
+          </GeometryDrawing.Geometry>
+        </GeometryDrawing>
+        <GeometryDrawing Brush="#FF006AA7">
+          <GeometryDrawing.Geometry>
+            <PathGeometry FillRule="EvenOdd" Figures="M236.155,307.208L696.952,307.208 696.952,512.007 236.155,512.007z M236.155,0.302L696.952,0.302 696.952,205.1 236.155,205.1z" />
+          </GeometryDrawing.Geometry>
+        </GeometryDrawing>
+      </DrawingGroup>
+    </DrawingGroup>
+  </DrawingGroup>
+</DrawingGroup>

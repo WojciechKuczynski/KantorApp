@@ -1,5 +1,6 @@
 ﻿using KantorServer.Application.Services.Interfaces;
 using KantorServer.DAL;
+using KantorServer.Model;
 using KantorServer.Model.Dtos;
 using Microsoft.EntityFrameworkCore;
 
@@ -63,6 +64,17 @@ namespace KantorServer.Application.Services
             {
                 return false;
             }
+        }
+
+        public async Task<List<Rate>> GetAllRates()
+        {
+            try
+            {
+                var rates = await DataContext.Rates.Where(x => x.Valid).ToListAsync();
+
+                return rates;
+            }
+            catch (Exception ex) { return null; }
         }
     }
 }

@@ -1,0 +1,80 @@
+﻿<Window x:Class="KantorClient.Application.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KantorClient.Application"
+        xmlns:rates="clr-namespace:KantorClient.Application.Views.Rates"
+        mc:Ignorable="d" Background="{StaticResource BackgroundColor}"
+        Title="MainWindow" MinHeight="450" MinWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.1*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" BorderThickness="0,0,2,0" BorderBrush="{StaticResource Color2}">
+
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Border Background="{StaticResource Color1}" Grid.Row="0" Height="40">
+                    <Label Content="KANTOR" />
+                </Border>
+                <StackPanel Orientation="Vertical" Grid.Row="1">
+                    <Button Content="Rates" Template="{StaticResource RoundButtonTemplate}" Margin="10"
+                            Command="{Binding RatesMainViewCommand}" />
+                    <!--<Button Content="Add Car" Template="{StaticResource RoundButtonTemplate}"
+                            Margin="10" Command="{Binding AddCarCommand}"
+                            Visibility="{Binding IsAdmin,Converter={StaticResource BoolVisibilityConverter}}" />
+                    <Button Content="Users" Template="{StaticResource RoundButtonTemplate}" Margin="10"
+                            Command="{Binding UserListCommand}"
+                            Visibility="{Binding IsAdmin,Converter={StaticResource BoolVisibilityConverter}}" />
+                    <Button Content="Add User" Template="{StaticResource RoundButtonTemplate}"
+                            Margin="10" Command="{Binding AddUserCommand}"
+                            Visibility="{Binding IsAdmin,Converter={StaticResource BoolVisibilityConverter}}" />
+                    <Button Content="Cities" Template="{StaticResource RoundButtonTemplate}" Margin="10"
+                            Command="{Binding CityMainViewCommand}"
+                            Visibility="{Binding IsAdmin,Converter={StaticResource BoolVisibilityConverter}}" />
+                    <Button Content="Rentals" Template="{StaticResource RoundButtonTemplate}" Margin="10"
+                            Command="{Binding RentalsMainViewCommand}" />
+                    <Button Content="Rent Car" Template="{StaticResource RoundButtonTemplate}" Margin="10"
+                            Command="{Binding RentalDetailsViewCommand}" />-->
+                </StackPanel>
+            </Grid>
+        </Border>
+        <StackPanel Grid.Column="1">
+            <Grid
+                >
+                <rates:RatesMainView DataContext="{Binding RatesMainVM}" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" />
+            </Grid>
+            <!--<Grid
+                Visibility="{Binding FormType,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource WindowViewToVisibilityConverter},ConverterParameter=2}">
+                <cars:CarMainView DataContext="{Binding CarMainVM}" />
+            </Grid>
+            <Grid
+                Visibility="{Binding FormType,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource WindowViewToVisibilityConverter},ConverterParameter=3}">
+                <cities:CityMainView DataContext="{Binding CityMainVM}" />
+            </Grid>
+            <Grid
+                Visibility="{Binding FormType,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource WindowViewToVisibilityConverter},ConverterParameter=4}">
+                <rentals:RentalsMainView DataContext="{Binding RentalsMainVM}" />
+            </Grid>
+            <Grid
+                Visibility="{Binding FormType,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource WindowViewToVisibilityConverter},ConverterParameter=5}">
+                <rentals:RentalDetailsView DataContext="{Binding RentalDetailsVM}" />
+            </Grid>
+            <Grid
+                Visibility="{Binding FormType,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource WindowViewToVisibilityConverter},ConverterParameter=6}">
+                <rentals:UserDetailsView DataContext="{Binding UserDetailsVM}" />
+            </Grid>
+            <Grid
+                Visibility="{Binding FormType,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource WindowViewToVisibilityConverter},ConverterParameter=7}">
+                <users:UserMainView DataContext="{Binding UserMainVM}" />
+            </Grid>-->
+        </StackPanel>
+    </Grid>
+</Window>

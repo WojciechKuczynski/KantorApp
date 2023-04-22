@@ -1,7 +1,10 @@
 using KantorServer.Application.Services;
 using KantorServer.Application.Services.Interfaces;
 using KantorServer.DAL;
+using Microsoft.AspNetCore.Authentication.Certificate;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
+using System.Security.Cryptography.X509Certificates;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +26,23 @@ builder.Services.AddScoped<ISessionService, SessionService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 
+//builder.Services.AddCertificateForwarding(options =>
+//{
+//    options.CertificateHeader = "ssl-client-cert";
+
+//    options.HeaderConverter = (headerValue) =>
+//    {
+//        X509Certificate2? clientCertificate = null;
+
+//        if (!string.IsNullOrWhiteSpace(headerValue))
+//        {
+//            clientCertificate = X509Certificate2.CreateFromPem(
+//                WebUtility.UrlDecode(headerValue));
+//        }
+
+//        return clientCertificate!;
+//    };
+//});
 var app = builder.Build();
 await using var scope = app.Services.CreateAsyncScope();
 var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();

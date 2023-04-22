@@ -10,6 +10,5 @@ namespace KantorServer.Application.Requests.Currencies
     [Serializable]
     public class GetAllCurrenciesRequest : BaseServerRequest
     {
-        public List<CurrencyDto> Currencies { get; set; }
     }
 }

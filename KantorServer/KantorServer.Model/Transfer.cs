@@ -13,7 +13,7 @@ namespace KantorServer.Model
         public TransferType TransferType { get; set; }
         public virtual Kantor Kantor { get; set; }
         public decimal TransferValue { get; set; }
-        public Currency TransferCurrency { get; set; }
+        public virtual Currency TransferCurrency { get; set; }
 
         public Transfer()
         {

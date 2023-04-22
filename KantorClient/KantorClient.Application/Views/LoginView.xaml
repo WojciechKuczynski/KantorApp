@@ -1,0 +1,31 @@
+﻿<Window x:Class="KantorClient.Application.Views.LoginView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Logowanie" Height="250" Width="300"
+        KeyDown="Window_KeyDown" Activated="Window_Activated">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Column="0" Grid.Row="1" Content="Login:" />
+        <Label Grid.Column="0" Grid.Row="2" Content="Password:" />
+
+        <TextBox Grid.Column="1" Grid.Row="1" Margin="3" Name="LoginTxt" />
+        <PasswordBox Grid.Column="1" Grid.Row="2" Margin="3" Name="PasswordTxt" />
+
+        <Button Grid.Column="0" Grid.Row="4" Margin="5" Content="Cancel" Click="Cancel" />
+        <Button Grid.Column="1" Grid.Row="4" Margin="5" Content="Login" Click="Login" />
+    </Grid>
+</Window>

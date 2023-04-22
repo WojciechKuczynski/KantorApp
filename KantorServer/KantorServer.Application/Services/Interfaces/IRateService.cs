@@ -1,4 +1,5 @@
-﻿using KantorServer.Model.Dtos;
+﻿using KantorServer.Model;
+using KantorServer.Model.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace KantorServer.Application.Services.Interfaces
     {
         Task<bool> AddEditRate(RateDto rate);
         Task<bool> RemoveRate(RateDto rate);
+        Task<List<Rate>> GetAllRates();
     }
 }

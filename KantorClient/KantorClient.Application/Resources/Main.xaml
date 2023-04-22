@@ -1,0 +1,14 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+
+    <SolidColorBrush x:Key="Color1" Color="#A8512C" />
+    <SolidColorBrush x:Key="Color2" Color="#F56D33" />
+    <SolidColorBrush x:Key="BackgroundColor" Color="#FFFFFF" />
+
+    <sys:Double x:Key="StandardButtonHeight">40</sys:Double>
+    <sys:Double x:Key="StandardButtonWidth">80</sys:Double>
+    <sys:Double x:Key="SmallIconHeight">20</sys:Double>
+    <sys:Double x:Key="SmallIconWidth">20</sys:Double>
+</ResourceDictionary>

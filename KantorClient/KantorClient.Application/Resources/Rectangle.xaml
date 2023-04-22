@@ -1,0 +1,36 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+
+    <Style x:Key="CarListRectangleStyle" TargetType="Rectangle">
+        <Setter Property="Height" Value="{StaticResource SmallIconHeight}" />
+        <Setter Property="Width" Value="{StaticResource StandardButtonWidth}" />
+        <Setter Property="Fill" Value="{StaticResource NormalCarIconBrush}" />
+        <Setter Property="ToolTip" Value="Normal Car" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding CarType}" Value="Truck" >
+                <Setter Property="Fill" Value="{StaticResource TruckCarIconBrush}" />
+                <Setter Property="ToolTip" Value="Truck" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CarType}" Value="Suv" >
+                <Setter Property="Fill" Value="{StaticResource SuvCarIconBrush}" />
+                <Setter Property="ToolTip" Value="SUV" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="CityListRectangleStyle" TargetType="Rectangle">
+        <Setter Property="Height" Value="{StaticResource SmallIconHeight}" />
+        <Setter Property="Width" Value="{StaticResource StandardButtonWidth}" />
+        <Setter Property="Fill" Value="{StaticResource CityIconBrush}" />
+        <Setter Property="ToolTip" Value="City" />
+    </Style>
+
+    <Style x:Key="CityListSelectedRectangleStyle" TargetType="Rectangle">
+        <Setter Property="Height" Value="{StaticResource SmallIconHeight}" />
+        <Setter Property="Width" Value="{StaticResource StandardButtonWidth}" />
+        <Setter Property="Fill" Value="{StaticResource SelectedCityIconBrush}" />
+        <Setter Property="ToolTip" Value="City" />
+    </Style>
+
+</ResourceDictionary>

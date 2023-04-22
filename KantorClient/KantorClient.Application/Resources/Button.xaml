@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+
+    <ControlTemplate x:Key="RoundButtonTemplate" TargetType="Button">
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="{StaticResource StandardButtonHeight}" Width="{StaticResource StandardButtonWidth}">
+            <Ellipse Fill="{TemplateBinding Background}" Stroke="{TemplateBinding BorderBrush}"
+                     StrokeThickness="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness.Left}"/>
+            <ContentPresenter Margin="{TemplateBinding Padding}" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
+    </ControlTemplate>
+</ResourceDictionary>

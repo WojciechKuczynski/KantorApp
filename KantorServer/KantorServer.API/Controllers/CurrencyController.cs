@@ -17,7 +17,7 @@ namespace KantorServer.API.Controllers
             _settingsService = settingsService;
         }
 
-        [HttpPost("/all")]
+        [HttpPost("all")]
         public async Task<GetAllCurrenciesResponse> GetAllCurrencies(GetAllCurrenciesRequest request)
         {
             if (!await CheckSession(request.SynchronizationKey))

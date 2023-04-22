@@ -18,7 +18,10 @@ namespace KantorServer.Model.Dtos
 
         public UserDto()
         {
-            
+            Id = 0;
+            Login = string.Empty;
+            Password = string.Empty;
+            Name = string.Empty;
         }
 
         public UserDto(User user) 

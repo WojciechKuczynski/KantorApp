@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace KantorServer.Application.Responses
 {
+    [Serializable]
     public class LoginResponse : BaseServerResponse
     {
         public string SynchronizationKey { get; set; }
+        public LoginResponse() : base(false) { }
         public LoginResponse(bool isCorrect, string successMsg, string failMsg) : base(isCorrect, successMsg, failMsg)
         {
         }
