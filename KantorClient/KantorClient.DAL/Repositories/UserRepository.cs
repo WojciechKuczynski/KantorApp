@@ -25,6 +25,11 @@ namespace KantorClient.DAL.Repositories
             var response = await ServerConnectionHandler.ExecuteFunction<LoginRequest, LoginResponse>(requestContext, request);
 
             var session = new UserSession() { LastAction = DateTime.Now, StartDate = DateTime.Now, SynchronizationKey = response.SynchronizationKey, UserId = 1 };
+            using (var context = new DataContext())
+            {
+                await context.UserSessions.AddAsync(session);
+                await context.SaveChangesAsync();
+            }
             return session;
         }
     }

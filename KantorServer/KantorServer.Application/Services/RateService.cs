@@ -14,7 +14,7 @@ namespace KantorServer.Application.Services
         {
             DataContext = dataContext;
         }
-        public async Task<bool> AddEditRate(RateDto rate)
+        public async Task<RateDto> AddEditRate(RateDto rate)
         {
             try
             {
@@ -23,26 +23,30 @@ namespace KantorServer.Application.Services
                 {
                     var rateEntity = rate.ConvertToEntity();
                     await DataContext.Rates.AddAsync(rateEntity);
+                    await DataContext.SaveChangesAsync();
+                    return new RateDto(rateEntity);
                 }
                 else
                 {
                     if (rateInDb.StartDate >= DateTime.Now)
                     {
                         // cannot change if already started
-                        return false;
+                        return null;
                     }
 
                     rateInDb.StartDate = rate.StartDate;
                     rateInDb.EndDate = rate.EndDate;
-                    rateInDb.MinimalRate = rate.MinimalRate;
-                    rateInDb.DefaultRate = rate.DefaultRate;
+                    rateInDb.MinimalBuyRate = rate.MinimalBuyRate;
+                    rateInDb.DefaultBuyRate = rate.DefaultBuyRate;
+                    rateInDb.MinimalSellRate = rate.MinimalSellRate;
+                    rateInDb.DefaultSellRate = rate.DefaultSellRate;
                 }
                 await DataContext.SaveChangesAsync();
-                return true;
+                return new RateDto(rateInDb);
             }
             catch (Exception ex)
             {
-                return false;
+                return null;
             }
         }
 
@@ -75,6 +79,11 @@ namespace KantorServer.Application.Services
                 return rates;
             }
             catch (Exception ex) { return null; }
+        }
+
+        public Task<List<RateDto>> AddEditRates(List<RateDto> rates)
+        {
+            return null;
         }
     }
 }

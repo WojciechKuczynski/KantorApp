@@ -11,4 +11,18 @@
     <sys:Double x:Key="StandardButtonWidth">80</sys:Double>
     <sys:Double x:Key="SmallIconHeight">20</sys:Double>
     <sys:Double x:Key="SmallIconWidth">20</sys:Double>
+
+    <sys:Double x:Key="StandardFontSize">24</sys:Double>
+
+    <Style TargetType="Label">
+        <Setter Property="FontSize" Value="{StaticResource StandardFontSize}" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Margin" Value="10" />
+    </Style>
+
+    <Style TargetType="TextBox">
+        <Setter Property="FontSize" Value="{StaticResource StandardFontSize}" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Margin" Value="10" />
+    </Style>
 </ResourceDictionary>

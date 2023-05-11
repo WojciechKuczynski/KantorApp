@@ -20,6 +20,16 @@ namespace KantorClient.BLL.Services
 
         public List<Rate> Rates { get; private set; }
 
+        public async Task<Rate> AddRate(Rate rate)
+        {
+            return await _settingsRepository.AddNewRate(rate);
+        }
+
+        public async Task<Rate> EditRate(Rate rate)
+        {
+            return await _settingsRepository.EditRate(rate);
+        }
+
         public async Task<bool> LoadSettings()
         {
             try

@@ -10,7 +10,8 @@ namespace KantorServer.Application.Services.Interfaces
 {
     public interface IRateService : IService
     {
-        Task<bool> AddEditRate(RateDto rate);
+        Task<List<RateDto>> AddEditRates(List<RateDto> rates);
+        Task<RateDto> AddEditRate(RateDto rate);
         Task<bool> RemoveRate(RateDto rate);
         Task<List<Rate>> GetAllRates();
     }

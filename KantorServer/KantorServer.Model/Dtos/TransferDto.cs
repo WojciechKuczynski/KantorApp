@@ -15,6 +15,7 @@ namespace KantorServer.Model.Dtos
         public virtual KantorDto Kantor { get; set; }
         public decimal TransferValue { get; set; }
         public CurrencyDto TransferCurrency { get; set; }
+        public long ExternalId { get; set; }
 
         public TransferDto()
         {
@@ -28,6 +29,7 @@ namespace KantorServer.Model.Dtos
             Kantor = new KantorDto(transfer.Kantor);
             TransferValue = transfer.TransferValue;
             TransferCurrency = new CurrencyDto(transfer.TransferCurrency);
+            ExternalId = transfer.ExternalId;
         }
 
         public static List<TransferDto> Map(IEnumerable<Transfer> transfers) => transfers.Select(x => new TransferDto(x)).ToList();
@@ -41,6 +43,7 @@ namespace KantorServer.Model.Dtos
             entity.Kantor = Kantor.ConvertToEntity();
             entity.TransferValue = TransferValue;
             entity.TransferCurrency = TransferCurrency.ConvertToEntity();
+            entity.ExternalId = ExternalId;
             return entity;
         }
     }

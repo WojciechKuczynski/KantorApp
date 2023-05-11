@@ -5,6 +5,7 @@ using KantorClient.BLL.Services.Interfaces;
 using KantorClient.DAL;
 using KantorClient.DAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Windows;
 
 namespace KantorClient.Application
@@ -15,24 +16,28 @@ namespace KantorClient.Application
     public partial class App : System.Windows.Application
     {
         private readonly Modules _modules = new Modules();
-       
+
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             _modules.SetDependencies(new ApplicationModule());
             _modules.Verify();
 
             var dataContext = _modules.Container.GetInstance<DataContext>();
-            //dataContext.Database.Migrate();
+            if (dataContext.Database.GetPendingMigrations().Any())
+            {
+                dataContext.Database.Migrate();
+            }
+
             var mVM = _modules.Container.GetInstance<IMainWindowViewModel>();
             var authenticationService = _modules.Container.GetInstance<IAuthenticationService>();
-            LoginView login = new LoginView(mVM, authenticationService);
+            var synchronizationService = _modules.Container.GetInstance<ISynchronizationService>();
+            LoginView login = new LoginView(mVM, authenticationService, synchronizationService);
             do
             {
                 login.ShowDialog();
             }
             while (login._mainWindowVM.LoggedOut);
             login.Close();
-            new MainWindow().ShowDialog();
         }
     }
 }

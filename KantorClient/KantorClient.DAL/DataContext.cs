@@ -20,7 +20,7 @@ namespace KantorClient.DAL
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=LocalDatabase.db");
+            optionsBuilder.UseSqlite("Data Source=LocalDatabase2.db");
         }
     }
 }

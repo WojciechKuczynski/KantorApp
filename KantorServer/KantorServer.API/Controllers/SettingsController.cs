@@ -41,10 +41,8 @@ namespace KantorServer.API.Controllers
         [HttpPost("addUser")]
         public async Task<BaseServerResponse> AddUser(AddEditUserRequest request)
         {
-            if (!await CheckSession(request.SynchronizationKey))
-            {
-                return await Task.FromResult(new BaseServerResponse(false, "", "Podano niepoprawny hash. Proszę przelogować aplikację!"));
-            }
+            var checkRes = await CheckRequestArgs<BaseServerResponse>(request);
+            if (checkRes != null) { return checkRes; }
 
             if (request.User == null)
             {

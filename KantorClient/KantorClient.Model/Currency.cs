@@ -25,6 +25,7 @@ namespace KantorClient.Model
 
         public Currency(KantorServer.Model.Dtos.CurrencyDto currency)
         {
+            Id = currency.Id;
             Name = currency.Name;
             Symbol = currency.Symbol;
             ExternalId = currency.Id.ToString();

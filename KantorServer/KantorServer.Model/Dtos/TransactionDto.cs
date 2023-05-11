@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace KantorServer.Model.Dtos
 {
@@ -18,6 +19,8 @@ namespace KantorServer.Model.Dtos
         public decimal Rate { get; set; }
         public virtual KantorDto Kantor { get; set; }
         public virtual UserDto User { get; set; }
+        public long? Parent { get; set; }
+        public long ExternalId { get; set; }
 
         public TransactionDto()
         {
@@ -34,6 +37,8 @@ namespace KantorServer.Model.Dtos
             Rate = transaction.Rate;
             Kantor = new KantorDto(transaction.Kantor);
             User = new UserDto(transaction.User);
+            ExternalId = transaction.ExternalId;
+            Parent = transaction.Parent;
         }
 
         public static List<TransactionDto> Map(IEnumerable<Transaction> transactions) => transactions.Select(x => new TransactionDto(x)).ToList();
@@ -44,12 +49,27 @@ namespace KantorServer.Model.Dtos
             if (Id > 0)
                 transaction.Id = Id;
             transaction.TransactionType = TransactionType;
-            transaction.Currency = Currency.ConvertToEntity();
             transaction.Quantity = Quantity;
             transaction.FinalValue = FinalValue;
             transaction.Rate = Rate;
-            transaction.Kantor = Kantor.ConvertToEntity();
-            transaction.User = User.ConvertToEntity();
+            transaction.ExternalId = ExternalId;
+            transaction.Parent = Parent;
+            
+            if (Currency != null)
+            {
+                transaction.Currency = Currency.ConvertToEntity();
+            }
+
+            if (Kantor != null)
+            {
+                transaction.Kantor = Kantor.ConvertToEntity();
+            }
+
+            if (User != null)
+            {
+                transaction.User = User.ConvertToEntity();
+            }
+
             return transaction;
         }
     }

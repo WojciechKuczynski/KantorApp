@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KantorClient.Application"
         xmlns:rates="clr-namespace:KantorClient.Application.Views.Rates"
+        xmlns:transactions="clr-namespace:KantorClient.Application.Views.Transactions"
         mc:Ignorable="d" Background="{StaticResource BackgroundColor}"
-        Title="MainWindow" MinHeight="450" MinWidth="800">
+        Title="Kantor" MinHeight="450" MinWidth="800" Name="MainWindodw">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.1*" />
@@ -27,10 +28,10 @@
                 <StackPanel Orientation="Vertical" Grid.Row="1">
                     <Button Content="Rates" Template="{StaticResource RoundButtonTemplate}" Margin="10"
                             Command="{Binding RatesMainViewCommand}" />
-                    <!--<Button Content="Add Car" Template="{StaticResource RoundButtonTemplate}"
-                            Margin="10" Command="{Binding AddCarCommand}"
-                            Visibility="{Binding IsAdmin,Converter={StaticResource BoolVisibilityConverter}}" />
-                    <Button Content="Users" Template="{StaticResource RoundButtonTemplate}" Margin="10"
+                    <Button Content="Transactions" Template="{StaticResource RoundButtonTemplate}"
+                            Margin="10" Command="{Binding TransactionsMainViewCommand}" />
+                    
+                    <!-- <Button Content="Users" Template="{StaticResource RoundButtonTemplate}" Margin="10"
                             Command="{Binding UserListCommand}"
                             Visibility="{Binding IsAdmin,Converter={StaticResource BoolVisibilityConverter}}" />
                     <Button Content="Add User" Template="{StaticResource RoundButtonTemplate}"
@@ -46,16 +47,15 @@
                 </StackPanel>
             </Grid>
         </Border>
-        <StackPanel Grid.Column="1">
-            <Grid
-                >
-                <rates:RatesMainView DataContext="{Binding RatesMainVM}" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" />
-            </Grid>
-            <!--<Grid
-                Visibility="{Binding FormType,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource WindowViewToVisibilityConverter},ConverterParameter=2}">
-                <cars:CarMainView DataContext="{Binding CarMainVM}" />
+        <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Stretch">
+            <Grid Visibility="{Binding FormType,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource WindowViewToVisibilityConverter},ConverterParameter=2}" VerticalAlignment="Stretch">
+                <rates:RatesMainView DataContext="{Binding RatesMainVM}" Height="{Binding ElementName=MainWindow, Path=ActualHeight}"  />
             </Grid>
             <Grid
+                Visibility="{Binding FormType,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource WindowViewToVisibilityConverter},ConverterParameter=1}" VerticalAlignment="Stretch">
+                <transactions:TransactionsMainView DataContext="{Binding TransactionsMainVM}" Height="{Binding ElementName=MainWindow, Path=ActualHeight}"   />
+            </Grid>
+        <!--<<Grid
                 Visibility="{Binding FormType,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource WindowViewToVisibilityConverter},ConverterParameter=3}">
                 <cities:CityMainView DataContext="{Binding CityMainVM}" />
             </Grid>

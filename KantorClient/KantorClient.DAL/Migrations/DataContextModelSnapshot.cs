@@ -45,6 +45,10 @@ namespace KantorClient.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("ExternalId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("TEXT");
 
@@ -70,16 +74,25 @@ namespace KantorClient.DAL.Migrations
                     b.Property<long>("CurrencyId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<decimal>("DefaultRate")
+                    b.Property<decimal>("DefaultBuyRate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("DefaultSellRate")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<long?>("ExternalId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("MinimalRate")
+                    b.Property<decimal>("MinimalBuyRate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("MinimalSellRate")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("StartDate")
@@ -104,11 +117,17 @@ namespace KantorClient.DAL.Migrations
                     b.Property<long>("CurrencyId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<long?>("ExternalId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<decimal>("FinalValue")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("TEXT");
+
+                    b.Property<long?>("Parent")
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Quantity")
                         .HasColumnType("TEXT");

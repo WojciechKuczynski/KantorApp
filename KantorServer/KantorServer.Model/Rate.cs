@@ -9,11 +9,14 @@ namespace KantorServer.Model
     public class Rate : BaseModel
     {
         public virtual Currency Currency { get; set; }
-        public decimal DefaultRate { get; set; }
-        public decimal MinimalRate { get; set; }
+        public decimal DefaultBuyRate { get; set; }
+        public decimal MinimalBuyRate { get; set; }
+        public decimal DefaultSellRate { get; set; }
+        public decimal MinimalSellRate { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public bool Valid { get; set; }
+        public long ExternalId { get; set; }
 
         public Rate()
         {

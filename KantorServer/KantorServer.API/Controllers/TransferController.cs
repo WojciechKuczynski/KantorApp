@@ -20,10 +20,8 @@ namespace KantorServer.API.Controllers
         [HttpPost("/all")]
         public async Task<GetAllTransfersResponse> GetAllTransfers(GetAllTransfersRequest request)
         {
-            if (!await CheckSession(request.SynchronizationKey))
-            {
-                return await Task.FromResult(new GetAllTransfersResponse(false, "", "Podano niepoprawny hash. Proszę przelogować aplikację!"));
-            }
+            var checkRes = await CheckRequestArgs<GetAllTransfersResponse>(request);
+            if (checkRes != null) { return checkRes; }
 
             var transfers = await _transferService.GetAllTransfers();
             return new GetAllTransfersResponse(true, "", "") { Transfers = transfers };

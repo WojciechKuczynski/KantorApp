@@ -22,10 +22,10 @@
         <Label Grid.Column="0" Grid.Row="1" Content="Login:" />
         <Label Grid.Column="0" Grid.Row="2" Content="Password:" />
 
-        <TextBox Grid.Column="1" Grid.Row="1" Margin="3" Name="LoginTxt" />
-        <PasswordBox Grid.Column="1" Grid.Row="2" Margin="3" Name="PasswordTxt" />
+        <TextBox Grid.Column="1" Text="TestUser" Grid.Row="1" Margin="3" Name="LoginTxt" />
+        <PasswordBox Grid.Column="1" Password="test123" Grid.Row="2" Margin="3" Name="PasswordTxt" />
 
         <Button Grid.Column="0" Grid.Row="4" Margin="5" Content="Cancel" Click="Cancel" />
-        <Button Grid.Column="1" Grid.Row="4" Margin="5" Content="Login" Click="Login" />
+        <Button Name="LoginButton" Grid.Column="1" Grid.Row="4" Margin="5" Content="Login" Click="Login" />
     </Grid>
 </Window>

@@ -11,51 +11,62 @@ namespace KantorClient.DAL.Repositories
 {
     internal class SettingsRepository : ISettingsRepository
     {
-        private readonly DataContext _dataContext;
-        public SettingsRepository(DataContext datacontext)
+        public SettingsRepository()
         {
-            _dataContext = datacontext;
         }
 
         public async Task<bool> AddCurrencies(IEnumerable<Currency> currencies)
         {
-            try
+            using (var context = new DataContext())
             {
-                var currenciesToExclude = await _dataContext.Currencies.Where(x => currencies.Select(y => y.ExternalId.ToString()).Contains(x.ExternalId)).ToListAsync();
+                var currenciesToExclude = await context.Currencies.Where(x => currencies.Select(y => y.ExternalId.ToString()).Contains(x.ExternalId)).ToListAsync();
                 var currenciesToDb = currencies.Where(x => !currenciesToExclude.Any(y => y.ExternalId == x.ExternalId));
-                await _dataContext.Currencies.AddRangeAsync(currenciesToDb);
-                await _dataContext.SaveChangesAsync();
+                await context.Currencies.AddRangeAsync(currenciesToDb);
+                await context.SaveChangesAsync();
                 return true;
             }
-            catch (Exception ex)
+            return false;
+        }
+
+        public async Task<Rate> AddNewRate(Rate rate)
+        {
+            using (var context = new DataContext())
             {
-                return false;
+                rate.Currency = await context.Currencies.FindAsync(rate.Currency.Id);
+                var addedRate = await context.Rates.AddAsync(rate);
+                await context.SaveChangesAsync();
+                return addedRate.Entity;
             }
         }
 
         public async Task<List<Rate>> AddRates(IEnumerable<Rate> rates)
         {
-            try
+            using (var context = new DataContext())
             {
-                var ratesIds = rates.Select(rates => rates.Id.ToString());
-                var ratesToExclude = await _dataContext.Rates.Where(x => ratesIds.Contains(x.ExternalId)).ToListAsync();
+                var ratesIds = rates.Select(rates => rates.Id).ToList();
+                var ratesToExclude = await context.Rates.Where(x => x.ExternalId.HasValue && ratesIds.Contains(x.ExternalId.Value)).ToListAsync();
                 var ratesToDb = rates.Where(x => !ratesToExclude.Any(y => y.ExternalId == x.ExternalId));
                 foreach (var rate in ratesToDb)
                 {
-                    var currency = await _dataContext.Currencies.FirstOrDefaultAsync(x => x.ExternalId == rate.Currency.ExternalId);
+                    var currency = await context.Currencies.FirstOrDefaultAsync(x => x.ExternalId == rate.Currency.ExternalId);
                     if (currency != null)
                     {
                         rate.Currency = currency;
                     }
                 }
-                await _dataContext.Rates.AddRangeAsync(ratesToDb);
-                await _dataContext.SaveChangesAsync();
+                await context.Rates.AddRangeAsync(ratesToDb);
+                await context.SaveChangesAsync();
                 return ratesToDb.ToList();
             }
-            catch (Exception ex)
+        }
+
+        public async Task<Rate> EditRate(Rate rate)
+        {
+            using (var context = new DataContext())
             {
-                //TODO: dodać logowanie? albo komunikat?
-                return null;
+                var editedRate = context.Rates.Update(rate);
+                await context.SaveChangesAsync();
+                return editedRate.Entity;
             }
         }
 
@@ -80,7 +91,6 @@ namespace KantorClient.DAL.Repositories
             var requestContext = new RequestContext("https://localhost:7254/rates/all", RestSharp.Method.Post);
             var response = await ServerConnectionHandler.ExecuteFunction<GetAllRatesRequest, GetAllRatesResponse>(requestContext, request);
 
-            // TODO: dorobić mapowanie
             return response.Rates.Select(x => new Rate(x)).ToList();
         }
     }

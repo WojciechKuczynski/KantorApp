@@ -14,6 +14,7 @@ namespace KantorServer.Model
         public virtual Kantor Kantor { get; set; }
         public decimal TransferValue { get; set; }
         public virtual Currency TransferCurrency { get; set; }
+        public long ExternalId { get; set; }
 
         public Transfer()
         {

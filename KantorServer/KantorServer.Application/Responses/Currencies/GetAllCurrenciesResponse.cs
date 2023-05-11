@@ -14,6 +14,11 @@ namespace KantorServer.Application.Responses.Currencies
         {
         }
 
+        public GetAllCurrenciesResponse()
+        {
+            
+        }
+
         public List<CurrencyDto> Currencies { get; set; }
     }
 }

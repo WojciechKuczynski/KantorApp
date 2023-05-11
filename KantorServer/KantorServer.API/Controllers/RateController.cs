@@ -1,6 +1,7 @@
 ﻿using KantorServer.Application.Requests;
 using KantorServer.Application.Requests.Rates;
 using KantorServer.Application.Responses;
+using KantorServer.Application.Responses.Rates;
 using KantorServer.Application.Services.Interfaces;
 using KantorServer.Model.Dtos;
 using Microsoft.AspNetCore.Mvc;
@@ -18,24 +19,30 @@ namespace KantorServer.API.Controllers
             _rateService = rateService;
         }
 
-        [HttpPost("addRate")]
-        public async Task<BaseServerResponse> AddEditRate(AddEditRateRequest request)
+        [HttpPost("synchronizeRates")]
+        public async Task<AddEditRateResponse> SynchronizeRates(AddEditRateRequest request)
         {
-            var checkRes = await CheckRequestArgs<BaseServerResponse>(request);
+            return null;
+        }
+
+        [HttpPost("addRate")]
+        public async Task<AddEditRateResponse> AddEditRate(AddEditRateRequest request)
+        {
+            var checkRes = await CheckRequestArgs<AddEditRateResponse>(request);
             if (checkRes != null) { return checkRes; }
 
             var res = await _rateService.AddEditRate(request.Rate);
-            return new BaseServerResponse(res, "Pomyślnie dodano nowy Kurs", "Nie udało się dodać Kursu");
+            return new AddEditRateResponse(res, "Pomyślnie dodano nowy Kurs", "Nie udało się dodać Kursu");
         }
 
         [HttpPost("editRate")]
-        public async Task<BaseServerResponse> EditRate(AddEditRateRequest request)
+        public async Task<AddEditRateResponse> EditRate(AddEditRateRequest request)
         {
-            var checkRes = await CheckRequestArgs<BaseServerResponse>(request);
+            var checkRes = await CheckRequestArgs<AddEditRateResponse>(request);
             if (checkRes != null) { return checkRes; }
 
             var res = await _rateService.AddEditRate(request.Rate);
-            return new BaseServerResponse(res, "Pomyślnie edytowano Kurs", "Nie udało się edytować Kursu");
+            return new AddEditRateResponse(res, "Pomyślnie edytowano Kurs", "Nie udało się edytować Kursu");
         }
 
         [HttpPost("removeRate")]
@@ -56,27 +63,6 @@ namespace KantorServer.API.Controllers
 
             var res = await _rateService.GetAllRates();
             return new GetAllRatesResponse(true, "Pomyślnie zwrócono kursy", "Nie udało się pobrać kursów") { Rates = RateDto.Map(res) };
-        }
-
-        private async Task<T> CheckRequestArgs<T>(BaseServerRequest request) where T : BaseServerResponse
-        {
-            if (!await CheckSession(request.SynchronizationKey))
-            {
-                var res = Activator.CreateInstance<T>();
-                res.ResponseText = "Podano niepoprawny hash. Proszę przelogować aplikację!";
-                res.ResponseType = Model.Consts.ServerResponseType.Error;
-                return await Task.FromResult(res);
-            }
-
-            if (request == null)
-            {
-                var res = Activator.CreateInstance<T>();
-                res.ResponseText = "Podano niepoprawny Kurs!";
-                res.ResponseType = Model.Consts.ServerResponseType.Error;
-                return await Task.FromResult(res);
-            }
-
-            return null;
         }
     }
 }

@@ -16,6 +16,9 @@ namespace KantorServer.Model
         public decimal Rate { get; set; }
         public virtual Kantor Kantor { get; set; }
         public virtual User User { get; set; }
+        public long? Parent { get; set; }
+        public long ExternalId { get; set; }
+
 
         public Transaction()
         {

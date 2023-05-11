@@ -12,7 +12,7 @@ namespace KantorClient.Application.ViewModels.Interfaces
     {
         Window Parent { get; set; }
         bool LoggedOut { get; }
-        void Load();
+        Task Load();
         //UserSession LoggedUser { get; set; }
 
         //void LoadUser(User user);

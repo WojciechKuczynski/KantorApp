@@ -11,11 +11,14 @@ namespace KantorServer.Model.Dtos
     {
         public long Id { get; set; }
         public CurrencyDto Currency { get; set; }
-        public decimal DefaultRate { get; set; }
-        public decimal MinimalRate { get; set; }
+        public decimal DefaultBuyRate { get; set; }
+        public decimal MinimalBuyRate { get; set; }
+        public decimal DefaultSellRate { get; set; }
+        public decimal MinimalSellRate { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public bool Valid { get; set; }
+        public long ExternalId { get; set; }
 
         public RateDto()
         {
@@ -25,11 +28,14 @@ namespace KantorServer.Model.Dtos
         {
             Id = rate.Id;
             Currency = new CurrencyDto(rate.Currency);
-            DefaultRate = rate.DefaultRate;
-            MinimalRate = rate.MinimalRate;
+            DefaultBuyRate = rate.DefaultBuyRate;
+            MinimalBuyRate = rate.MinimalBuyRate;
+            DefaultSellRate = rate.DefaultSellRate;
+            MinimalSellRate = rate.MinimalSellRate;
             StartDate = rate.StartDate;
             EndDate = rate.EndDate;
             Valid = rate.Valid;
+            ExternalId = rate.ExternalId;
         }
 
         public static List<RateDto> Map(IEnumerable<Rate> rates) => rates.Select(r => new RateDto(r)).ToList();
@@ -40,11 +46,14 @@ namespace KantorServer.Model.Dtos
             if (Id > 0)
                 rate.Id = Id;
             rate.Currency = Currency.ConvertToEntity();
-            rate.DefaultRate = DefaultRate;
-            rate.MinimalRate = MinimalRate;
+            rate.DefaultBuyRate = DefaultBuyRate;
+            rate.MinimalBuyRate = MinimalBuyRate;
+            rate.DefaultSellRate = DefaultSellRate;
+            rate.MinimalSellRate = MinimalSellRate;
             rate.StartDate = StartDate;
             rate.EndDate = EndDate;
             rate.Valid = Valid;
+            rate.ExternalId = ExternalId;
             return rate;
         }
     }

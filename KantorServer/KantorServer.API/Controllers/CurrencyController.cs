@@ -20,10 +20,9 @@ namespace KantorServer.API.Controllers
         [HttpPost("all")]
         public async Task<GetAllCurrenciesResponse> GetAllCurrencies(GetAllCurrenciesRequest request)
         {
-            if (!await CheckSession(request.SynchronizationKey))
-            {
-                return await Task.FromResult(new GetAllCurrenciesResponse(false, "", "Podano niepoprawny hash. Proszę przelogować aplikację!"));
-            }
+            var checkRes = await CheckRequestArgs<GetAllCurrenciesResponse>(request);
+            if (checkRes != null) { return checkRes; }
+
             var currencies = await _settingsService.GetCurrencies();
 
             return new GetAllCurrenciesResponse(true) { Currencies = currencies };

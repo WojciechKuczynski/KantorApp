@@ -16,7 +16,6 @@ namespace KantorClient.BLL.Services
 
         public async Task<bool> LogIn(string username, string password)
         {
-            // TODO: dodanie do lokalnej bazy
             UserSession = await _userRepository.UserLogin(username, password);
             return UserSession != null;
         }

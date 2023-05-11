@@ -81,16 +81,25 @@ namespace KantorServer.DAL.Migrations
                     b.Property<long>("CurrencyId")
                         .HasColumnType("bigint");
 
-                    b.Property<decimal>("DefaultRate")
+                    b.Property<decimal>("DefaultBuyRate")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("DefaultSellRate")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<long>("ExternalId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("MinimalRate")
+                    b.Property<decimal>("MinimalBuyRate")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("MinimalSellRate")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("StartDate")
@@ -117,6 +126,9 @@ namespace KantorServer.DAL.Migrations
                     b.Property<long>("CurrencyId")
                         .HasColumnType("bigint");
 
+                    b.Property<long>("ExternalId")
+                        .HasColumnType("bigint");
+
                     b.Property<decimal>("FinalValue")
                         .HasColumnType("decimal(18,2)");
 
@@ -125,6 +137,9 @@ namespace KantorServer.DAL.Migrations
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("datetime2");
+
+                    b.Property<long?>("Parent")
+                        .HasColumnType("bigint");
 
                     b.Property<decimal>("Quantity")
                         .HasColumnType("decimal(18,2)");
@@ -156,6 +171,9 @@ namespace KantorServer.DAL.Migrations
                         .HasColumnType("bigint");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("ExternalId")
+                        .HasColumnType("bigint");
 
                     b.Property<long>("KantorId")
                         .HasColumnType("bigint");

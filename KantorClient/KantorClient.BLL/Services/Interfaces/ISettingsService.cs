@@ -12,5 +12,7 @@ namespace KantorClient.BLL.Services.Interfaces
         public Task<bool> LoadSettings();
         public List<Currency> Currencies { get; }
         public List<Rate> Rates { get; }
+        public Task<Rate> AddRate(Rate rate);
+        public Task<Rate> EditRate(Rate rate);
     }
 }

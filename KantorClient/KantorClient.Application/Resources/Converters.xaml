@@ -5,4 +5,5 @@
     <utils:WindowViewToVisibilityConverter x:Key="WindowViewToVisibilityConverter" />
     <utils:BoolVisibilityConverter x:Key="BoolVisibilityConverter" />
     <utils:BoolVisibilityInverseConverter x:Key="BoolVisibilityInverseConverter" />
+    <utils:MinimalRateConverter x:Key="MinimalRateConverter" />
 </ResourceDictionary>

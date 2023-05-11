@@ -23,12 +23,14 @@ namespace KantorClient.Application.Views
     {
         public readonly IMainWindowViewModel _mainWindowVM;
         private readonly IAuthenticationService _authenticationService;
+        private readonly ISynchronizationService _synchronizationService;
 
-        public LoginView(IMainWindowViewModel mwVM, IAuthenticationService authenticationService)
+        public LoginView(IMainWindowViewModel mwVM, IAuthenticationService authenticationService, ISynchronizationService synchronizationService)
         {
             InitializeComponent();
             _mainWindowVM = mwVM;
             _authenticationService = authenticationService;
+            _synchronizationService = synchronizationService;
         }
 
         private void Cancel(object sender, RoutedEventArgs e)
@@ -40,21 +42,22 @@ namespace KantorClient.Application.Views
         {
             try
             {
+                LoginButton.IsEnabled = false;
                 var loggedIn = await _authenticationService.LogIn(LoginTxt.Text, PasswordTxt.Password);
                 if (!loggedIn)
                 {
                     MessageBox.Show("Niepoprawny użytkownik lub hasło!");
+                    LoginButton.IsEnabled = true;
                     return;
                 }
 
                 var mainWindow = new MainWindow();
                 _mainWindowVM.Parent = mainWindow;
-                _mainWindowVM.Load();
+                await _mainWindowVM.Load();
                 mainWindow.DataContext = _mainWindowVM;
-
                 LoginTxt.Text = string.Empty;
                 PasswordTxt.Password = string.Empty;
-
+                _synchronizationService.StartSynchronization();
                 this.Hide();
                 mainWindow.ShowDialog();
             }
@@ -62,6 +65,7 @@ namespace KantorClient.Application.Views
             {
                 MessageBox.Show("Niepoprawny użytkownik lub hasło!");
             }
+            LoginButton.IsEnabled = true;
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)

@@ -15,13 +15,15 @@ namespace KantorClient.Model
         public decimal FinalValue { get; set; }
         public decimal Rate { get; set; }
         public virtual UserSession User { get; set; }
+        public long? Parent { get; set; }
+        public long? ExternalId { get; set; }
 
         public Transaction()
         {
 
         }
 
-        public Transaction(TransactionType transactionType, Currency currency, decimal quantity, decimal finalValue, decimal rate, UserSession user)
+        public Transaction(TransactionType transactionType, Currency currency, decimal quantity, decimal finalValue, decimal rate, UserSession user, long? parent)
         {
             TransactionType = transactionType;
             Currency = currency;
@@ -29,6 +31,7 @@ namespace KantorClient.Model
             FinalValue = finalValue;
             Rate = rate;
             User = user;
+            Parent = parent;
         }
     }
 }

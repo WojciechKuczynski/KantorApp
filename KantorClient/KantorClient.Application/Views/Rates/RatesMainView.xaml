@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:KantorClient.Application.Views.Rates"
-             mc:Ignorable="d" Background="Blue"
+             mc:Ignorable="d" Background="White"
+             MinHeight="450" MinWidth="800"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -12,9 +13,13 @@
             <ColumnDefinition Width="0.2*" />
         </Grid.ColumnDefinitions>
 
-        <Grid x:Name="GrayOut" Background="Gray" Opacity="0.6" Grid.ColumnSpan="2" Grid.Column="0" Panel.ZIndex="1">
+        <Grid x:Name="GrayOut" Background="Gray" Opacity="0.8" Grid.ColumnSpan="2" Grid.Column="0" Panel.ZIndex="1"
+              Visibility="{Binding AddEditVisible,Converter={StaticResource BoolVisibilityConverter}}">
         </Grid>
-        <Grid x:Name="AddEditView" Background="Orange" Margin="30" Panel.ZIndex="2" />
+        <Grid x:Name="AddEditView" Background="Transparent" Margin="30" Panel.ZIndex="2"
+              Visibility="{Binding AddEditVisible,Converter={StaticResource BoolVisibilityConverter}}">
+            <local:RatesAddEditView DataContext="{Binding AddEditVM}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+        </Grid>
 
         <!--<DataGrid>
             <DataGrid.Columns>
@@ -23,8 +28,8 @@
                 <DataGridTextColumn Header="Start" />
             </DataGrid.Columns>
         </DataGrid>-->
-        <ListView Grid.Row="0" Grid.Column="0" Background="Transparent" ItemsSource="{Binding Rates}" BorderThickness="0" VerticalAlignment="Stretch"
-                          SelectedItem="{Binding SelectedSection,UpdateSourceTrigger=PropertyChanged}">
+        <ListView Grid.Row="0" Grid.Column="0" Background="Transparent" ItemsSource="{Binding Rates}" BorderThickness="0" VerticalAlignment="Stretch" 
+                          SelectedItem="{Binding SelectedRate,UpdateSourceTrigger=PropertyChanged}">
             <ListView.Resources>
                 <Style TargetType="ListViewItem">
                     <Setter Property="Background" Value="{StaticResource Color1}" />
@@ -43,12 +48,19 @@
                                                 <RowDefinition Height="*"/>
                                                 <RowDefinition Height="auto"/>
                                             </Grid.RowDefinitions>
-                                            <Label Content="{Binding SectionName}" Foreground="{TemplateBinding Foreground}" Grid.Row="0" FontSize="16" />
                                             <StackPanel Orientation="Horizontal" Grid.Row="1">
-                                                <Label Content="Id:"/>
-                                                <Label Content="{Binding SectionId}"/>
-                                                <Label Content="Status:"/>
-                                                <Label Content="{Binding Status}"/>
+                                                <Label Content="{Binding Currency.Symbol}" FontSize="18"/>
+                                                <Rectangle VerticalAlignment="Stretch" Width="2" Fill="{StaticResource Color1}" />
+                                                <Label Content="Minimum:" FontSize="16"/>
+                                                <Label Content="{Binding MinimalRate}" FontSize="16"/>
+                                                <Label Content="Domyślna:" FontSize="16"/>
+                                                <Label Content="{Binding DefaultRate}" FontSize="16"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1">
+                                                <Label Content="Początek:" FontSize="16"/>
+                                                <Label Content="{Binding StartDate}" FontSize="16"/>
+                                                <Label Content="Koniec:" FontSize="16"/>
+                                                <Label Content="{Binding EndDate}" FontSize="16"/>
                                             </StackPanel>
                                         </Grid>
                                         <Border.Style>
@@ -56,24 +68,11 @@
                                                 <Style.Setters>
                                                     <Setter Property="Background" Value="#8888" />
                                                 </Style.Setters>
-                                                <!--<Style.Triggers>
-                                                    <DataTrigger Value="{x:Static status:SectionStatus.Started}">
-                                                        <DataTrigger.Binding>
-                                                            <Binding Path="Status" />
-                                                        </DataTrigger.Binding>
-                                                        <DataTrigger.Setters>
-                                                            <Setter Property="Background" Value="LightGreen" />
-                                                        </DataTrigger.Setters>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Valid}" Value="false">
+                                                        <Setter Property="Background" Value="FireBrick" />
                                                     </DataTrigger>
-                                                    <DataTrigger Value="{x:Static status:SectionStatus.Finished}">
-                                                        <DataTrigger.Binding>
-                                                            <Binding Path="Status" />
-                                                        </DataTrigger.Binding>
-                                                        <DataTrigger.Setters>
-                                                            <Setter Property="Background" Value="IndianRed" />
-                                                        </DataTrigger.Setters>
-                                                    </DataTrigger>
-                                                </Style.Triggers>-->
+                                                </Style.Triggers>
                                             </Style>
                                         </Border.Style>
                                     </Border>
@@ -93,7 +92,7 @@
 
         <Grid Grid.Column="1" Background="Green">
             <StackPanel Orientation="Vertical" >
-                <Button Content="Add Rate" Margin="5" />
+                <Button Content="Add Rate" Margin="5" Command="{Binding AddRateCommand}" />
             </StackPanel>
         </Grid>
     </Grid>
