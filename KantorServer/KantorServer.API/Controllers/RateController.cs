@@ -32,7 +32,10 @@ namespace KantorServer.API.Controllers
             if (checkRes != null) { return checkRes; }
 
             var res = await _rateService.AddEditRate(request.Rate);
-            return new AddEditRateResponse(res, "Pomyślnie dodano nowy Kurs", "Nie udało się dodać Kursu");
+            return new AddEditRateResponse(res, "Pomyślnie dodano nowy Kurs", "Nie udało się dodać Kursu")
+            {
+                Rate = res
+            };
         }
 
         [HttpPost("editRate")]

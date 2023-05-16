@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace KantorServer.Application.Requests.Rates
 {
+    [Serializable]
     public class AddEditRateRequest : BaseServerRequest
     {
         public RateDto Rate { get; set; }

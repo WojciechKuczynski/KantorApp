@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace KantorServer.Application.Requests.Kantor
 {
+    [Serializable]
     public class AddEditKantorRequest : BaseServerRequest
     {
         public KantorDto Kantor { get; set; }

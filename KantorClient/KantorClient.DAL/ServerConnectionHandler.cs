@@ -36,7 +36,8 @@ namespace KantorClient.DAL
             var serializeOptions = new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                WriteIndented = true
+                WriteIndented = true,
+                IncludeFields = true,
             };
             var jsonRequest = JsonSerializer.Serialize(request,serializeOptions);
             restRequest.AddParameter("application/json", jsonRequest, ParameterType.RequestBody);
