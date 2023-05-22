@@ -3,6 +3,7 @@ using System;
 using KantorClient.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KantorClient.DAL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230520114545_ChangeMinimalToMaximumBuyRate")]
+    partial class ChangeMinimalToMaximumBuyRate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
@@ -117,12 +120,6 @@ namespace KantorClient.DAL.Migrations
                     b.Property<long>("CurrencyId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("DeletionDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("Edited")
-                        .HasColumnType("INTEGER");
-
                     b.Property<long?>("ExternalId")
                         .HasColumnType("INTEGER");
 
@@ -141,19 +138,10 @@ namespace KantorClient.DAL.Migrations
                     b.Property<decimal>("Rate")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("Synchronized")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("TransactionDate")
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("TransactionType")
                         .HasColumnType("INTEGER");
 
                     b.Property<long>("UserId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("Valid")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");

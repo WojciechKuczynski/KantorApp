@@ -4,7 +4,7 @@
     {
         public virtual Currency Currency { get; set; }
         public decimal DefaultBuyRate { get; set; }
-        public decimal MinimalBuyRate { get; set; }
+        public decimal MaximumBuyRate { get; set; }
         public decimal DefaultSellRate { get; set; }
         public decimal MinimalSellRate { get; set; }
         public DateTime StartDate { get; set; }
@@ -16,11 +16,11 @@
         {
 
         }
-        public Rate(Currency currency, decimal defaultBuyRate, decimal minimalBuyRate, decimal defaultSellRate, decimal minimalSellRate, DateTime startDate, DateTime endDate, long externalId)
+        public Rate(Currency currency, decimal defaultBuyRate, decimal maximumBuyRate, decimal defaultSellRate, decimal minimalSellRate, DateTime startDate, DateTime endDate, long externalId)
         {
             Currency = currency;
             DefaultBuyRate = defaultBuyRate;
-            MinimalBuyRate = minimalBuyRate;
+            MaximumBuyRate = maximumBuyRate;
             DefaultSellRate = defaultSellRate;
             MinimalSellRate = minimalSellRate;
             StartDate = startDate;
@@ -32,7 +32,7 @@
         {
             Currency = new Currency(rate.Currency);
             DefaultBuyRate = rate.DefaultBuyRate;
-            MinimalBuyRate = rate.MinimalBuyRate;
+            MaximumBuyRate = rate.MaximumBuyRate;
             DefaultSellRate = rate.DefaultSellRate;
             MinimalSellRate = rate.MinimalSellRate;
             StartDate = rate.StartDate;

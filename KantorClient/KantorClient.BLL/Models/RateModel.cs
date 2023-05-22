@@ -9,7 +9,7 @@ namespace KantorClient.BLL.Models
         public long Id { get; set; }
         public CurrencyModel Currency { get; set; }
         public decimal DefaultBuyRate { get; set; }
-        public decimal MinimalBuyRate { get; set; }
+        public decimal MaximumBuyRate { get; set; }
         public decimal DefaultSellRate { get; set; }
         public decimal MinimalSellRate { get; set; }
         public DateTime StartDate { get; set; }
@@ -28,7 +28,7 @@ namespace KantorClient.BLL.Models
         {
             Id = rate.Id;
             DefaultBuyRate = rate.DefaultBuyRate;
-            MinimalBuyRate = rate.MinimalBuyRate;
+            MaximumBuyRate = rate.MaximumBuyRate;
             DefaultSellRate = rate.DefaultSellRate;
             MinimalSellRate = rate.MinimalSellRate;
             StartDate = rate.StartDate;
@@ -42,13 +42,13 @@ namespace KantorClient.BLL.Models
         {
             Id = model.Id,
             DefaultBuyRate = model.DefaultBuyRate,
-            MinimalBuyRate = model.MinimalBuyRate,
+            MaximumBuyRate = model.MaximumBuyRate,
             DefaultSellRate = model.DefaultSellRate,
             MinimalSellRate = model.MinimalSellRate,
             StartDate = model.StartDate,
             EndDate = model.EndDate,
             Valid = model.Valid,
-            Currency = CurrencyModel.Map(model.Currency),
+            Currency = model.Currency.Map(),
             ExternalId = model.Id
         };
     }

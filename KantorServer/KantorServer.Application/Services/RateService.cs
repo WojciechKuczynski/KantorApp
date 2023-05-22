@@ -22,6 +22,12 @@ namespace KantorServer.Application.Services
                 if (rateInDb == null)
                 {
                     var rateEntity = rate.ConvertToEntity();
+                    var currencyInDb = await DataContext.Currencies.FirstOrDefaultAsync(x => x.Symbol == rate.Currency.Symbol);
+                    if (currencyInDb != null)
+                    {
+                        rateEntity.Currency = currencyInDb;
+                    }
+
                     rateEntity.Valid = true;
                     await DataContext.Rates.AddAsync(rateEntity);
                     await DataContext.SaveChangesAsync();
@@ -34,10 +40,9 @@ namespace KantorServer.Application.Services
                         // cannot change if already started
                         return null;
                     }
-
                     rateInDb.StartDate = rate.StartDate;
                     rateInDb.EndDate = rate.EndDate;
-                    rateInDb.MinimalBuyRate = rate.MinimalBuyRate;
+                    rateInDb.MaximumBuyRate = rate.MaximumBuyRate;
                     rateInDb.DefaultBuyRate = rate.DefaultBuyRate;
                     rateInDb.MinimalSellRate = rate.MinimalSellRate;
                     rateInDb.DefaultSellRate = rate.DefaultSellRate;

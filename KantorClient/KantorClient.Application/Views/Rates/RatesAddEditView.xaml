@@ -10,9 +10,9 @@
         
     <Grid Background="Transparent">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.10*" />
+            <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="0.4*" />
-            <ColumnDefinition Width="0.10*" />
+            <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="0.4*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -45,9 +45,9 @@
 
             <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Background="LightGray" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Content="KUPNO" FontSize="16"
                 FontWeight="Black"/>
-        <Label Grid.Row="3" Grid.Column="0" Content="Minimum" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        <Label Grid.Row="3" Grid.Column="0" Content="Maximum" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />
         <TextBox Grid.Row="3" Grid.Column="1" Margin="10" HorizontalAlignment="Stretch" FontSize="20" VerticalContentAlignment="Center"
-                 Text="{Binding RateModel.MinimalBuyRate}"/>
+                 Text="{Binding RateModel.MaximumBuyRate}"/>
 
         <Label Grid.Row="3" Grid.Column="2" Content="Domyślna" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />
         <TextBox Grid.Row="3" Grid.Column="3" HorizontalAlignment="Stretch" Margin="10" FontSize="20" VerticalContentAlignment="Center"  

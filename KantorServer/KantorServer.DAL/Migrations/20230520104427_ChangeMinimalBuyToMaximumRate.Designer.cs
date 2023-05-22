@@ -4,6 +4,7 @@ using KantorServer.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KantorServer.DAL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230520104427_ChangeMinimalBuyToMaximumRate")]
+    partial class ChangeMinimalBuyToMaximumRate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -126,12 +129,6 @@ namespace KantorServer.DAL.Migrations
                     b.Property<long>("CurrencyId")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime?>("DeletionDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Edited")
-                        .HasColumnType("bit");
-
                     b.Property<long>("ExternalId")
                         .HasColumnType("bigint");
 
@@ -153,17 +150,11 @@ namespace KantorServer.DAL.Migrations
                     b.Property<decimal>("Rate")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime>("TransactionDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("TransactionType")
                         .HasColumnType("int");
 
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
-
-                    b.Property<bool>("Valid")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

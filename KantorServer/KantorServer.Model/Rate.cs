@@ -10,7 +10,7 @@ namespace KantorServer.Model
     {
         public virtual Currency Currency { get; set; }
         public decimal DefaultBuyRate { get; set; }
-        public decimal MinimalBuyRate { get; set; }
+        public decimal MaximumBuyRate { get; set; }
         public decimal DefaultSellRate { get; set; }
         public decimal MinimalSellRate { get; set; }
         public DateTime StartDate { get; set; }

@@ -60,6 +60,7 @@ namespace KantorClient.Application.ViewModels.Rates
             {
                 var rate = await _settingsService.AddRate(RateModel.Map(rateModel));
                 Rates.Add(new RateModel(rate));
+                AddEditVisible = false;
             }
         }
 
@@ -68,6 +69,7 @@ namespace KantorClient.Application.ViewModels.Rates
             if (rateModel != null)
             {
                 var rate = await _settingsService.AddRate(RateModel.Map(rateModel));
+                AddEditVisible = false;
             }
         }
     }

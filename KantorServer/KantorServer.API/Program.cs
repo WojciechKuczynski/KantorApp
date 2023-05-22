@@ -22,6 +22,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 });
 builder.Services.AddScoped<ISettingsService, SettingsService>();
 builder.Services.AddScoped<IRateService, RateService>();
+builder.Services.AddScoped<ITransactionService,TransactionService>();
 builder.Services.AddScoped<ISessionService, SessionService>();
 builder.Services.AddScoped<IUserService, UserService>();
 

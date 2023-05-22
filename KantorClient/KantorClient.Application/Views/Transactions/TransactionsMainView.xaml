@@ -4,8 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:KantorClient.Application.Views.Transactions"
+             xmlns:vm="clr-namespace:KantorClient.Application.ViewModels.Transactions"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.8*" />
@@ -20,19 +22,59 @@
             <local:TransactionsAddEditView DataContext="{Binding AddEditVM}" VerticalAlignment="Center" HorizontalAlignment="Center" />
         </Grid>
 
-        <Grid Grid.Column="1" Background="Green">
+        <Grid Grid.Column="1" Background="Transparent" Margin="5">
             <StackPanel Orientation="Vertical" >
-                <Button Content="Add Transaction" Margin="5" Command="{Binding AddTransactionCommand}" />
+                <ToggleButton Content="Pokaż usunięte" Margin="5" IsChecked="{Binding ShowDeleted}" />
+                <Button Content="Dodaj Transakcję" Margin="5" Command="{Binding AddTransactionCommand}" />
+                <Button Content="Odśwież Transakcje" Margin="5" Command="{Binding RefreshCommand}" />
             </StackPanel>
         </Grid>
 
-        <ListView Grid.Row="0" Grid.Column="0" Background="Transparent" ItemsSource="{Binding Rates}" BorderThickness="0" VerticalAlignment="Stretch" 
+        <DataGrid Grid.Row="0" Grid.Column="0" ItemsSource="{Binding Transactions}" AutoGenerateColumns="False" IsReadOnly="True" FontSize="18" HorizontalAlignment="Center" Margin="0,10,0,0">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Typ Transakcji" Binding="{Binding TransactionType, Converter={StaticResource TransactionTypeFriendlyNameConverter}}" />
+                <DataGridTextColumn Header="Waluta" Binding="{Binding Currency.Symbol}" />
+                <DataGridTextColumn Header="Kurs wymiany" Binding="{Binding Rate, StringFormat=0.00}" />
+                <DataGridTextColumn Header="Ilość" Binding="{Binding Quantity, StringFormat=0.00}" />
+                <DataGridTextColumn Header="Kwota wymiany" Binding="{Binding FinalValue, StringFormat=0.00}" />
+                <DataGridTextColumn Header="Data transakcji" Binding="{Binding TransactionDate}" />
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Edytuj" Margin="3,0"  Padding="0"
+                                    Command="{Binding DataContext.EditTransactionCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                    CommandParameter="{Binding .}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Usuń" Margin="3,0" 
+                                    Command="{Binding DataContext.DeleteTransactionCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                    CommandParameter="{Binding .}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Valid}" Value="false">
+                            <Setter Property="Background" Value="OrangeRed" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
+        </DataGrid>
+        
+        <!--<ListView Grid.Row="0" Grid.Column="0" Background="Transparent" ItemsSource="{Binding Transactions}" BorderThickness="0" VerticalAlignment="Stretch" 
                           SelectedItem="{Binding SelectedRate,UpdateSourceTrigger=PropertyChanged}">
             <ListView.Resources>
                 <Style TargetType="ListViewItem">
                     <Setter Property="Background" Value="{StaticResource Color1}" />
                     <Setter Property="BorderBrush" Value="{StaticResource Color2}" />
-                    <!--<Setter Property="Foreground" Value="{StaticResource TextColor}" />-->
+                    --><!--<Setter Property="Foreground" Value="{StaticResource TextColor}" />--><!--
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="ListViewItem">
@@ -49,14 +91,16 @@
                                             <StackPanel Orientation="Horizontal" Grid.Row="1">
                                                 <Label Content="{Binding Currency.Symbol}" FontSize="18"/>
                                                 <Rectangle VerticalAlignment="Stretch" Width="2" Fill="{StaticResource Color1}" />
-                                                <Label Content="Minimum:" FontSize="16"/>
-                                                <Label Content="{Binding MinimalRate}" FontSize="16"/>
-                                                <Label Content="Domyślna:" FontSize="16"/>
-                                                <Label Content="{Binding DefaultRate}" FontSize="16"/>
+                                                <Label Content="Kurs wymiany:" FontSize="16"/>
+                                                <Label Content="{Binding Rate}" ContentStringFormat="0.00" FontSize="16"/>
+                                                <Label Content="Ilość:" FontSize="16"/>
+                                                <Label Content="{Binding Quantity}" FontSize="16"/>
+                                                <Label Content="Wartość wymiany:" FontSize="16"/>
+                                                <Label Content="{Binding FinalValue}" FontSize="16"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1">
-                                                <Label Content="Początek:" FontSize="16"/>
-                                                <Label Content="{Binding StartDate}" FontSize="16"/>
+                                                <Label Content="Data transakcji:" FontSize="16"/>
+                                                <Label Content="{Binding Date}" FontSize="16"/>
                                                 <Label Content="Koniec:" FontSize="16"/>
                                                 <Label Content="{Binding EndDate}" FontSize="16"/>
                                             </StackPanel>
@@ -86,7 +130,7 @@
                     </Setter>
                 </Style>
             </ListView.Resources>
-        </ListView>
+        </ListView>-->
 
     </Grid>
 </UserControl>

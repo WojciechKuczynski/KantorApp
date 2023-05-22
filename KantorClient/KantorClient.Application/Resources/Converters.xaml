@@ -6,4 +6,7 @@
     <utils:BoolVisibilityConverter x:Key="BoolVisibilityConverter" />
     <utils:BoolVisibilityInverseConverter x:Key="BoolVisibilityInverseConverter" />
     <utils:MinimalRateConverter x:Key="MinimalRateConverter" />
+    <utils:DefaultRateConverter x:Key="DefaultRateConverter" />
+    <utils:BoolInverseConverter x:Key="BoolInverseConverter" />
+    <utils:TransactionTypeFriendlyNameConverter x:Key="TransactionTypeFriendlyNameConverter" />
 </ResourceDictionary>

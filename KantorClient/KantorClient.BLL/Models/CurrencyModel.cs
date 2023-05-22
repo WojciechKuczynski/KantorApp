@@ -24,12 +24,12 @@ namespace KantorClient.BLL.Models
             Symbol = currency.Symbol;
         }
 
-        public static Currency Map(CurrencyModel model) => new Currency
+        public Currency Map() => new Currency
         {
-            Id = model.Id,
-            Name = model.Name,
-            Symbol = model.Symbol,
-            ExternalId = model.Id.ToString()
+            Id = this.Id,
+            Name = this.Name,
+            Symbol = this.Symbol,
+            ExternalId = this.Id.ToString()
         };
 
         public override string ToString()

@@ -7,25 +7,25 @@
         xmlns:rates="clr-namespace:KantorClient.Application.Views.Rates"
         xmlns:transactions="clr-namespace:KantorClient.Application.Views.Transactions"
         mc:Ignorable="d" Background="{StaticResource BackgroundColor}"
-        Title="Kantor" MinHeight="450" MinWidth="800" Name="MainWindodw">
+        Title="Kantor" MinHeight="450" MinWidth="800" Name="MainWindowName">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.1*" />
+            <ColumnDefinition Width="0.15*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
         <Border Grid.Column="0" BorderThickness="0,0,2,0" BorderBrush="{StaticResource Color2}">
 
-            <Grid Grid.Column="0">
+            <Grid Grid.Column="0" >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <Border Background="{StaticResource Color1}" Grid.Row="0" Height="40">
+                <Border Background="{StaticResource Color1}" Grid.Row="0" Height="60">
                     <Label Content="KANTOR" />
                 </Border>
-                <StackPanel Orientation="Vertical" Grid.Row="1">
+                <StackPanel Orientation="Vertical" Grid.Row="1" VerticalAlignment="Stretch">
                     <Button Content="Rates" Template="{StaticResource RoundButtonTemplate}" Margin="10"
                             Command="{Binding RatesMainViewCommand}" />
                     <Button Content="Transactions" Template="{StaticResource RoundButtonTemplate}"
@@ -47,13 +47,14 @@
                 </StackPanel>
             </Grid>
         </Border>
-        <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Stretch">
+        <StackPanel Grid.Column="1" Grid.Row="1"  Height="{Binding ElementName=MainWindowName, Path=ActualHeight, UpdateSourceTrigger=PropertyChanged}" >
             <Grid Visibility="{Binding FormType,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource WindowViewToVisibilityConverter},ConverterParameter=2}" VerticalAlignment="Stretch">
-                <rates:RatesMainView DataContext="{Binding RatesMainVM}" Height="{Binding ElementName=MainWindow, Path=ActualHeight}"  />
+                <rates:RatesMainView DataContext="{Binding RatesMainVM}" VerticalAlignment="Stretch" />
             </Grid>
             <Grid
-                Visibility="{Binding FormType,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource WindowViewToVisibilityConverter},ConverterParameter=1}" VerticalAlignment="Stretch">
-                <transactions:TransactionsMainView DataContext="{Binding TransactionsMainVM}" Height="{Binding ElementName=MainWindow, Path=ActualHeight}"   />
+                Visibility="{Binding FormType,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource WindowViewToVisibilityConverter},ConverterParameter=1}" 
+                 VerticalAlignment="Stretch">
+                <transactions:TransactionsMainView DataContext="{Binding TransactionsMainVM}" VerticalAlignment="Stretch"  />
             </Grid>
         <!--<<Grid
                 Visibility="{Binding FormType,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource WindowViewToVisibilityConverter},ConverterParameter=3}">

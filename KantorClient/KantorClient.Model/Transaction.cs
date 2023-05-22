@@ -17,6 +17,11 @@ namespace KantorClient.Model
         public virtual UserSession User { get; set; }
         public long? Parent { get; set; }
         public long? ExternalId { get; set; }
+        public bool Synchronized { get; set; }
+        public bool Edited { get; set; }
+        public DateTime TransactionDate { get; set; }
+        public bool Valid { get; set; }
+        public DateTime? DeletionDate { get; set; }
 
         public Transaction()
         {

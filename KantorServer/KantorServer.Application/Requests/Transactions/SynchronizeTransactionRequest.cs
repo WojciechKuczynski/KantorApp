@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace KantorServer.Application.Requests.Transactions
 {
+    [Serializable]
     public class SynchronizeTransactionRequest : BaseServerRequest
     {
         public TransactionDto Transaction { get; set; }

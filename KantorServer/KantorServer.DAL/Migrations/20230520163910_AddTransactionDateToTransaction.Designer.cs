@@ -4,6 +4,7 @@ using KantorServer.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KantorServer.DAL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230520163910_AddTransactionDateToTransaction")]
+    partial class AddTransactionDateToTransaction
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -128,9 +131,6 @@ namespace KantorServer.DAL.Migrations
 
                     b.Property<DateTime?>("DeletionDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("Edited")
-                        .HasColumnType("bit");
 
                     b.Property<long>("ExternalId")
                         .HasColumnType("bigint");

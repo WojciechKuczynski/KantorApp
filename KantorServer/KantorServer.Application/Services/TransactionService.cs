@@ -37,10 +37,18 @@ namespace KantorServer.Application.Services
             }
         }
 
-        public async Task<TransactionDto> AddTransaction(TransactionDto transaction, string notificationKey)
+        public async Task<TransactionDto> SynchronizeTransaction(TransactionDto transaction, string notificationKey)
         {
             try
             {
+                var transactionInDb = await DataContext.Transactions.FirstOrDefaultAsync(x => x.ExternalId == transaction.ExternalId);
+                if (transactionInDb != null)
+                {
+                    // EDIT
+                    return await EditTransaction(transaction, transactionInDb, notificationKey);
+                }
+
+                // ADD
                 var transactionForDb = transaction.ConvertToEntity();
                 var userSession = await DataContext.UserSessions
                                     .Include(x => x.Kantor)
@@ -53,12 +61,12 @@ namespace KantorServer.Application.Services
 
                 transactionForDb.User = userSession.User;
                 transactionForDb.Kantor = userSession.Kantor;
-
+                transactionForDb.Currency = await DataContext.Currencies.FirstOrDefaultAsync(x => x.Symbol == transaction.Currency.Symbol);
                 if (transaction.Parent != null)
                 {
                     var parent = await DataContext.Transactions
-                                            .Include(x => x.Kantor)
-                                            .FirstOrDefaultAsync(x => x.ExternalId == transaction.Parent.Value && x.Kantor.Id == userSession.Kantor.Id);
+                                    .Include(x => x.Kantor)
+                                    .FirstOrDefaultAsync(x => x.ExternalId == transaction.Parent.Value && x.Kantor.Id == userSession.Kantor.Id);
                     if (parent != null)
                     {
                         transaction.Parent = parent.Id;
@@ -75,6 +83,52 @@ namespace KantorServer.Application.Services
             {
                 return null;
             }
+        }
+
+        private async Task<TransactionDto> EditTransaction(TransactionDto transaction,Transaction transactionInDb, string notificationKey)
+        {
+            try
+            {
+                var userSession = await DataContext.UserSessions
+                                .Include(x => x.Kantor)
+                                .Include(x => x.User)
+                                .FirstOrDefaultAsync(x => x.SynchronizationKey == notificationKey);
+
+                if (userSession == null)
+                {
+                    return null;
+                }
+
+                transactionInDb.User = userSession.User;
+                transactionInDb.Kantor = userSession.Kantor;
+                transactionInDb.Currency = await DataContext.Currencies.FirstOrDefaultAsync(x => x.Symbol == transaction.Currency.Symbol);
+                transactionInDb.TransactionDate = transaction.TransactionDate;
+                transactionInDb.TransactionType = transaction.TransactionType;
+                transactionInDb.DeletionDate = transaction.DeletionDate;
+                transactionInDb.FinalValue = transaction.FinalValue;
+                transactionInDb.Quantity = transaction.Quantity;
+                transactionInDb.Rate = transaction.Rate;
+                transactionInDb.Parent = transaction.Parent;
+                transactionInDb.Valid = transaction.Valid;
+                transactionInDb.Edited = transaction.Edited;
+
+                if (transaction.Parent != null)
+                {
+                    // where transactionId from Kantor equals Parent value
+                    var parent = await DataContext.Transactions
+                                    .Include(x => x.Kantor)
+                                    .FirstOrDefaultAsync(x => x.ExternalId == transaction.Parent.Value && x.Kantor.Id == userSession.Kantor.Id);
+                    if (parent != null)
+                    {
+                        transaction.Parent = parent.Id;
+                    }
+                }
+
+                await DataContext.SaveChangesAsync();
+                return new TransactionDto(transactionInDb);
+            }
+            catch (Exception ex) { }
+            return null;
         }
     }
 }

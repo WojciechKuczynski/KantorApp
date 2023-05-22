@@ -12,7 +12,7 @@ namespace KantorServer.Model.Dtos
         public long Id { get; set; }
         public CurrencyDto Currency { get; set; }
         public decimal DefaultBuyRate { get; set; }
-        public decimal MinimalBuyRate { get; set; }
+        public decimal MaximumBuyRate { get; set; }
         public decimal DefaultSellRate { get; set; }
         public decimal MinimalSellRate { get; set; }
         public DateTime StartDate { get; set; }
@@ -29,7 +29,7 @@ namespace KantorServer.Model.Dtos
             Id = rate.Id;
             Currency = new CurrencyDto(rate.Currency);
             DefaultBuyRate = rate.DefaultBuyRate;
-            MinimalBuyRate = rate.MinimalBuyRate;
+            MaximumBuyRate = rate.MaximumBuyRate;
             DefaultSellRate = rate.DefaultSellRate;
             MinimalSellRate = rate.MinimalSellRate;
             StartDate = rate.StartDate;
@@ -47,7 +47,7 @@ namespace KantorServer.Model.Dtos
                 rate.Id = Id;
             rate.Currency = Currency.ConvertToEntity();
             rate.DefaultBuyRate = DefaultBuyRate;
-            rate.MinimalBuyRate = MinimalBuyRate;
+            rate.MaximumBuyRate = MaximumBuyRate;
             rate.DefaultSellRate = DefaultSellRate;
             rate.MinimalSellRate = MinimalSellRate;
             rate.StartDate = StartDate;

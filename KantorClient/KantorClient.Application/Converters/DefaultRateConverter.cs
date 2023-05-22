@@ -10,13 +10,13 @@ using System.Windows.Data;
 
 namespace KantorClient.Application.Converters
 {
-    public class MinimalRateConverter : IMultiValueConverter
+    public class DefaultRateConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             if (values[0] is RateModel rate && values[1] is TransactionType transType)
             {
-                return (transType == TransactionType.Buy ? rate.MaximumBuyRate : rate.MinimalSellRate).ToString();
+                return (transType == TransactionType.Buy ? rate.DefaultBuyRate : rate.DefaultSellRate).ToString();
             }
             return 0;
         }

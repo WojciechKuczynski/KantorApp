@@ -26,7 +26,7 @@ namespace KantorClient.DAL.Repositories
                 try
                 {
                     var transactionsForSynchro = dataContext.Rates.Include(x => x.Currency)
-                        .Where(x => x.ExternalId.HasValue == false) // not synchronized
+                        .Where(x => x.ExternalId.HasValue == false || x.ExternalId == 0) // not synchronized
                         .OrderBy(x => x.Id).Take(5);
                     foreach (var t in transactionsForSynchro)
                     {
@@ -38,7 +38,7 @@ namespace KantorClient.DAL.Repositories
                                 ExternalId = t.Id,
                                 DefaultBuyRate = t.DefaultBuyRate,
                                 DefaultSellRate = t.DefaultSellRate,
-                                MinimalBuyRate = t.MinimalBuyRate,
+                                MaximumBuyRate = t.MaximumBuyRate,
                                 MinimalSellRate = t.MinimalSellRate,
                                 StartDate = t.StartDate,
                                 EndDate = t.EndDate,
@@ -67,15 +67,18 @@ namespace KantorClient.DAL.Repositories
                 try
                 {
                     var transactionsForSynchro = dataContext.Transactions
-                        .Where(x => x.ExternalId.HasValue == false) // not synchronized
+                        .Include(x => x.Currency)
+                        .Where(x => x.Synchronized == false) // not synchronized
                         .OrderBy(x => x.Id).Take(5);
                     foreach (var t in transactionsForSynchro)
                     {
                         if (t.Parent.HasValue)
                         {
                             var parent = await dataContext.Transactions.FirstOrDefaultAsync(x => x.Id == t.Parent);
-                            if (parent.ExternalId.HasValue)
-                                continue;
+                            if (parent != null)
+                            {
+                                t.Parent = parent.Id;
+                            }
                         }
                         var request = new SynchronizeTransactionRequest()
                         {
@@ -89,13 +92,21 @@ namespace KantorClient.DAL.Repositories
                                 TransactionType = (KantorServer.Model.Consts.TransactionType)t.TransactionType,
                                 Currency = new CurrencyDto { Name = t.Currency.Name, Symbol = t.Currency.Symbol },
                                 Rate = t.Rate,
+                                TransactionDate = t.TransactionDate,
+                                DeletionDate = t.DeletionDate,
+                                Valid = t.Valid,
+                                Edited = t.Edited,
+
                                 // User and Kantor taken from synchroKey
+                                User = new UserDto(),
+                                Kantor = new KantorDto()
                             }
                         };
                         var result = await SendTransactionRequest(request);
                         if (result != null)
                         {
                             t.ExternalId = result.Transaction.Id;
+                            t.Synchronized = true;
                             await dataContext.SaveChangesAsync();
                         }
                     }

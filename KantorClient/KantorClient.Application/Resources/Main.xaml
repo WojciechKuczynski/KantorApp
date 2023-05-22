@@ -8,11 +8,12 @@
     <SolidColorBrush x:Key="BackgroundColor" Color="#FFFFFF" />
 
     <sys:Double x:Key="StandardButtonHeight">40</sys:Double>
-    <sys:Double x:Key="StandardButtonWidth">80</sys:Double>
+    <sys:Double x:Key="StandardButtonWidth">120</sys:Double>
     <sys:Double x:Key="SmallIconHeight">20</sys:Double>
     <sys:Double x:Key="SmallIconWidth">20</sys:Double>
 
     <sys:Double x:Key="StandardFontSize">24</sys:Double>
+    <sys:Double x:Key="SmallFontSize">18</sys:Double>
 
     <Style TargetType="Label">
         <Setter Property="FontSize" Value="{StaticResource StandardFontSize}" />
@@ -24,5 +25,57 @@
         <Setter Property="FontSize" Value="{StaticResource StandardFontSize}" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Margin" Value="10" />
+    </Style>
+
+    <Style TargetType="Button">
+        <Style.Setters>
+            <Setter Property="FontSize" Value="{StaticResource SmallFontSize}" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Background" Value="LightGray" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="5" BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" Margin="{TemplateBinding Margin}">
+                            <Label HorizontalAlignment="Center" Content="{TemplateBinding Content}" FontSize="{TemplateBinding FontSize}" FontWeight="{TemplateBinding FontWeight}" Padding="0" Margin="0" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="DarkGray" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style.Setters>
+    </Style>
+
+    <Style TargetType="ToggleButton">
+        <Style.Setters>
+            <Setter Property="FontSize" Value="{StaticResource SmallFontSize}" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Background" Value="LightGray" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border CornerRadius="5" BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" Margin="{TemplateBinding Margin}"
+                                Height="{TemplateBinding Height}" Width="{TemplateBinding Width}">
+                            <Label HorizontalAlignment="Center" Content="{TemplateBinding Content}" FontSize="{TemplateBinding FontSize}" FontWeight="{TemplateBinding FontWeight}" Padding="0" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Background" Value="Gray" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="LightGray" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style.Setters>
     </Style>
 </ResourceDictionary>

@@ -1,10 +1,4 @@
 ﻿using KantorServer.Model.Consts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Transactions;
 
 namespace KantorServer.Model.Dtos
 {
@@ -13,18 +7,22 @@ namespace KantorServer.Model.Dtos
     {
         public long Id { get; set; }
         public TransactionType TransactionType { get; set; }
-        public virtual CurrencyDto Currency { get; set; }
+        public CurrencyDto Currency { get; set; }
         public decimal Quantity { get; set; }
         public decimal FinalValue { get; set; }
         public decimal Rate { get; set; }
-        public virtual KantorDto Kantor { get; set; }
-        public virtual UserDto User { get; set; }
+        public KantorDto Kantor { get; set; }
+        public UserDto User { get; set; }
         public long? Parent { get; set; }
         public long ExternalId { get; set; }
+        public bool Edited { get; set; }
+        public DateTime TransactionDate { get; set; }
+        public bool Valid { get; set; }
+        public DateTime? DeletionDate { get; set; }
 
         public TransactionDto()
         {
-            
+
         }
 
         public TransactionDto(Transaction transaction)
@@ -39,10 +37,11 @@ namespace KantorServer.Model.Dtos
             User = new UserDto(transaction.User);
             ExternalId = transaction.ExternalId;
             Parent = transaction.Parent;
+            Edited = transaction.Edited;
         }
 
         public static List<TransactionDto> Map(IEnumerable<Transaction> transactions) => transactions.Select(x => new TransactionDto(x)).ToList();
-    
+
         public Transaction ConvertToEntity()
         {
             var transaction = new Transaction();
@@ -54,7 +53,11 @@ namespace KantorServer.Model.Dtos
             transaction.Rate = Rate;
             transaction.ExternalId = ExternalId;
             transaction.Parent = Parent;
-            
+            transaction.TransactionDate = TransactionDate;
+            transaction.Valid = Valid;
+            transaction.DeletionDate = DeletionDate;
+            transaction.Edited = Edited;
+
             if (Currency != null)
             {
                 transaction.Currency = Currency.ConvertToEntity();

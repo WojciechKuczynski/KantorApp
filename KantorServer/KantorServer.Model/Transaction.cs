@@ -18,6 +18,10 @@ namespace KantorServer.Model
         public virtual User User { get; set; }
         public long? Parent { get; set; }
         public long ExternalId { get; set; }
+        public bool Edited { get; set; }
+        public DateTime TransactionDate { get; set; }
+        public bool Valid { get; set; }
+        public DateTime? DeletionDate { get; set; }
 
 
         public Transaction()
@@ -33,6 +37,8 @@ namespace KantorServer.Model
             Rate = rate;
             Kantor = kantor;
             User = user;
+            TransactionDate = DateTime.Now;
+            Valid = true;
         }
     }
 }

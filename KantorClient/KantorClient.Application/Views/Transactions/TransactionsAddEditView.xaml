@@ -4,19 +4,46 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:KantorClient.Application.Views.Transactions"
+             xmlns:const="clr-namespace:KantorClient.Model.Consts;assembly=KantorClient.Model"
              mc:Ignorable="d" MinHeight="400" MinWidth="800"
              d:DesignHeight="400" d:DesignWidth="800" >
-    <Border CornerRadius="15" BorderThickness="5" BorderBrush="Red">
-        <Border.Background>
-            <RadialGradientBrush 
-          GradientOrigin="0.5,0.5" 
-          Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
-                <RadialGradientBrush.GradientStops>
-                    <GradientStop Color="#FFFFFF" Offset="0.0" />
-                    <GradientStop Color="#AAFF0000" Offset="1" />
-                </RadialGradientBrush.GradientStops>
-            </RadialGradientBrush>
-        </Border.Background>
+    <Border CornerRadius="15" BorderThickness="5">
+        <Border.Style>
+            <Style TargetType="Border">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding SelectedType,UpdateSourceTrigger=PropertyChanged}" Value="{x:Static const:TransactionType.Sell}">
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <RadialGradientBrush 
+                                      GradientOrigin="0.5,0.5" 
+                                      Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">     
+                                    <RadialGradientBrush.GradientStops>
+                                        <GradientStop Color="#FFFFFF" Offset="0.0" />
+                                        <GradientStop Color="#AAFF0000" Offset="1" />
+                                    </RadialGradientBrush.GradientStops>
+                                </RadialGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="BorderBrush" Value="Red"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding SelectedType,UpdateSourceTrigger=PropertyChanged}" Value="{x:Static const:TransactionType.Buy}">
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <RadialGradientBrush 
+                                      GradientOrigin="0.5,0.5" 
+                                      Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
+                                    <RadialGradientBrush.GradientStops>
+                                        <GradientStop Color="#FFFFFF" Offset="0.0" />
+                                        <GradientStop Color="#AA007700" Offset="1" />
+                                    </RadialGradientBrush.GradientStops>
+                                </RadialGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="BorderBrush" Value="Green"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
 
         <Grid Background="Transparent">
             <Grid.RowDefinitions>
@@ -35,21 +62,21 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center"
-                   Text="TRANSAKCJA SPRZEDAŻY" FontSize="28" FontWeight="Black" Margin="5" />
+                   Text="{Binding TransactionText}" FontSize="28" FontWeight="Black" Margin="5" />
 
-            <ToggleButton Grid.Row="1" Grid.Column="2" Margin="10" FontSize="{StaticResource StandardFontSize}" Content="KUPNO" />
-            <ToggleButton Grid.Row="1" Grid.Column="1" Margin="10" FontSize="{StaticResource StandardFontSize}" Content="SPRZEDAŻ" />
+            <Button Grid.Row="1" Grid.Column="2" Margin="10" FontSize="{StaticResource StandardFontSize}" Content="KUPNO" Command="{Binding BuyCommand}" />
+            <Button Grid.Row="1" Grid.Column="1" Margin="10" FontSize="{StaticResource StandardFontSize}" Content="SPRZEDAŻ" Command="{Binding SellCommand}" />
 
             <Label Grid.Row="2" Grid.Column="0" Content="Waluta" />
-            <ComboBox Grid.Row="2" Grid.Column="1" Margin="10" ItemsSource="{Binding Currencies}" SelectedItem="{Binding SelectedCurrency}" />
+            <ComboBox Grid.Row="2" Grid.Column="1" Margin="10" ItemsSource="{Binding Currencies}" SelectedItem="{Binding SelectedCurrency}" FontSize="20" />
             <TextBox Grid.Row="2" Grid.Column="2" IsReadOnly="True" Text="ILOŚĆ NA STANIE" />
 
             <Label Grid.Row="3" Grid.Column="0" Content="Kurs" />
-            <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding ChangeRate}" />
-            <TextBox Grid.Row="3" Grid.Column="2" 
-                 Background="#55FF0000" IsReadOnly="True">
+            <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding ChangeRate ,Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=0.00}" />
+            <TextBox Grid.Row="3" Grid.Column="2"
+                 Background="#55FF0000" IsReadOnly="True" IsTabStop="False">
                 <TextBox.Text>
-                    <MultiBinding Converter="{StaticResource MinimalRateConverter}">
+                    <MultiBinding Converter="{StaticResource MinimalRateConverter}" Mode="TwoWay">
                         <Binding Path="SelectedRate" />
                         <Binding Path="SelectedType" />
                     </MultiBinding>
@@ -57,13 +84,13 @@
             </TextBox>
 
             <Label Grid.Row="4" Grid.Column="0" Content="Ilość" />
-            <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Amount}"/>
+            <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Amount,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             <Label Grid.Row="5" Grid.Column="0" Content="Wartość"/>
-            <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding FinalValue}" />
+            <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding FinalValue ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
 
-            <Button Grid.Row="6" Grid.Column="2" Content="DODAJ" Margin="10" FontSize="24" FontWeight="Black"
-                    Command="{Binding AddCommand}" />
+            <Button Grid.Row="6" Grid.Column="2" Content="{Binding AcceptTile}" Margin="10" FontSize="24" FontWeight="Black"
+                    Command="{Binding AddCommand}" IsEnabled="{Binding Loading, Converter={StaticResource BoolInverseConverter}}" />
             <Button Grid.Row="6" Grid.Column="1" Content="ANULUJ" Margin="10" FontSize="24" FontWeight="Black"
                     Command="{Binding CancelCommand}" />
 

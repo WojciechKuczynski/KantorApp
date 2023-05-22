@@ -52,9 +52,23 @@
                                                 <Label Content="{Binding Currency.Symbol}" FontSize="18"/>
                                                 <Rectangle VerticalAlignment="Stretch" Width="2" Fill="{StaticResource Color1}" />
                                                 <Label Content="Minimum:" FontSize="16"/>
-                                                <Label Content="{Binding MinimalRate}" FontSize="16"/>
+                                                <Label FontSize="16">
+                                                    <Label.Content>
+                                                        <MultiBinding Converter="{StaticResource MinimalRateConverter}" Mode="TwoWay">
+                                                            <Binding Path="{Binding .}" />
+                                                            <Binding Path="{Binding TransactionType}" />
+                                                        </MultiBinding>
+                                                    </Label.Content>
+                                                </Label>
                                                 <Label Content="Domyślna:" FontSize="16"/>
-                                                <Label Content="{Binding DefaultRate}" FontSize="16"/>
+                                                <Label FontSize="16">
+                                                    <Label.Content>
+                                                        <MultiBinding Converter="{StaticResource MinimalRateConverter}" Mode="TwoWay">
+                                                            <Binding Path="{Binding .}" />
+                                                            <Binding Path="TransactionType" />
+                                                        </MultiBinding>
+                                                    </Label.Content>
+                                                </Label>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1">
                                                 <Label Content="Początek:" FontSize="16"/>

@@ -6,6 +6,7 @@ using KantorServer.Application.Requests.Rates;
 using KantorServer.Application.Responses;
 using KantorServer.Application.Responses.Currencies;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace KantorClient.DAL.Repositories
 {
@@ -43,7 +44,7 @@ namespace KantorClient.DAL.Repositories
         {
             using (var context = new DataContext())
             {
-                var ratesIds = rates.Select(rates => rates.Id).ToList();
+                var ratesIds = rates.Select(rates => rates.ExternalId).ToList();
                 var ratesToExclude = await context.Rates.Where(x => x.ExternalId.HasValue && ratesIds.Contains(x.ExternalId.Value)).ToListAsync();
                 var ratesToDb = rates.Where(x => !ratesToExclude.Any(y => y.ExternalId == x.ExternalId));
                 foreach (var rate in ratesToDb)
@@ -56,7 +57,10 @@ namespace KantorClient.DAL.Repositories
                 }
                 await context.Rates.AddRangeAsync(ratesToDb);
                 await context.SaveChangesAsync();
-                return ratesToDb.ToList();
+                var res = await context.Rates
+                    .Include(x => x.Currency)
+                    .Where(x => x.Valid && x.StartDate <= DateTime.UtcNow && x.EndDate >= DateTime.UtcNow).ToListAsync();
+                return res;
             }
         }
 

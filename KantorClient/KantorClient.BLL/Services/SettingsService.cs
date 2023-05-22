@@ -36,8 +36,8 @@ namespace KantorClient.BLL.Services
             {
                 Currencies = await LoadCurrencies();
                 await _settingsRepository.AddCurrencies(Currencies);
-                Rates = await LoadRates();
-                var newRates = await _settingsRepository.AddRates(Rates); // Co z tym?
+                var newRates = await LoadRates();
+                Rates = await _settingsRepository.AddRates(newRates); // Co z tym?
 
                 return true;
             }

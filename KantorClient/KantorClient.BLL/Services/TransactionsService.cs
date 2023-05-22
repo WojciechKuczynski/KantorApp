@@ -1,6 +1,7 @@
 ﻿using KantorClient.BLL.Models;
 using KantorClient.BLL.Services.Interfaces;
 using KantorClient.DAL.Repositories.Interfaces;
+using KantorClient.Model;
 
 namespace KantorClient.BLL.Services
 {
@@ -11,6 +12,46 @@ namespace KantorClient.BLL.Services
         public TransactionsService(ITransactionsRepository transactionsRepository)
         {
             _transactionsRepository = transactionsRepository;
+        }
+
+        public async Task<TransactionModel> AddTransaction(TransactionModel transaction, UserSession userSession)
+        {
+            try
+            {
+                var trans = transaction.Map();
+                trans.User = userSession;
+                var addedTrans = await _transactionsRepository.AddTransaction(trans);
+                return new TransactionModel(addedTrans);
+            }
+            catch { }
+            return null;
+        }
+
+        public async Task<bool> DeleteTransaction(TransactionModel transaction)
+        {
+            try
+            {
+                var trans = transaction.Map();
+                var addedTrans = await _transactionsRepository.DeleteTransaction(trans);
+                return addedTrans != null;
+            }
+            catch { }
+            return false;
+        }
+
+        public async Task<TransactionModel> EditTransaction(TransactionModel transaction, UserSession userSession)
+        {
+            try
+            {
+                var trans = transaction.Map();
+                trans.User = userSession;
+                var editedTrans = await _transactionsRepository.EditTransaction(trans);
+                if (editedTrans == null)
+                    return null;
+                return new TransactionModel(editedTrans);
+            }
+            catch { }
+            return null;
         }
 
         public async Task<List<TransactionModel>> GetLocalTransactions()

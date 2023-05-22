@@ -25,7 +25,7 @@ namespace KantorServer.API.Controllers
             var checkRes = await CheckRequestArgs<SynchronizeTransactionResponse>(request);
             if (checkRes != null) { return checkRes; }
 
-            var res = await _transactionService.AddTransaction(request.Transaction, request.SynchronizationKey);
+            var res = await _transactionService.SynchronizeTransaction(request.Transaction, request.SynchronizationKey);
             return new SynchronizeTransactionResponse(res != null, "Synchronizacja przeszła pomyślnie", "Nie udało się zsynchronizować transakcji")
             {
                 Transaction = res
