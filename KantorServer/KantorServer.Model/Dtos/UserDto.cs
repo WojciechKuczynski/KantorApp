@@ -15,6 +15,7 @@ namespace KantorServer.Model.Dtos
         public string Password { get; set; }
         public string Name { get; set; }
         public UserPermission Permission { get; set; }
+        public bool Valid { get; set; }
 
         public UserDto()
         {

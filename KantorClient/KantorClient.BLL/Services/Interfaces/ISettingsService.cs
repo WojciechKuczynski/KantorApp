@@ -14,5 +14,6 @@ namespace KantorClient.BLL.Services.Interfaces
         public List<Rate> Rates { get; }
         public Task<Rate> AddRate(Rate rate);
         public Task<Rate> EditRate(Rate rate);
+        public Task<bool> RemoveRate(Rate rate);
     }
 }

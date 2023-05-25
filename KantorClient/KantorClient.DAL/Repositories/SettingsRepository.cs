@@ -5,6 +5,7 @@ using KantorServer.Application.Requests.Currencies;
 using KantorServer.Application.Requests.Rates;
 using KantorServer.Application.Responses;
 using KantorServer.Application.Responses.Currencies;
+using KantorServer.Application.Responses.Rates;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
@@ -33,6 +34,7 @@ namespace KantorClient.DAL.Repositories
         {
             using (var context = new DataContext())
             {
+                rate.Synchronized = false;
                 rate.Currency = await context.Currencies.FindAsync(rate.Currency.Id);
                 var addedRate = await context.Rates.AddAsync(rate);
                 await context.SaveChangesAsync();
@@ -68,6 +70,7 @@ namespace KantorClient.DAL.Repositories
         {
             using (var context = new DataContext())
             {
+                rate.Synchronized = false;
                 var editedRate = context.Rates.Update(rate);
                 await context.SaveChangesAsync();
                 return editedRate.Entity;
@@ -95,7 +98,19 @@ namespace KantorClient.DAL.Repositories
             var requestContext = new RequestContext("https://localhost:7254/rates/all", RestSharp.Method.Post);
             var response = await ServerConnectionHandler.ExecuteFunction<GetAllRatesRequest, GetAllRatesResponse>(requestContext, request);
 
-            return response.Rates.Select(x => new Rate(x)).ToList();
+            return response.Rates.Select(x => new Rate(x) { Synchronized = true }).ToList();
+        }
+
+        public async Task<bool> RemoveRate(Rate rate)
+        {
+            using (var context = new DataContext())
+            {
+                rate.Valid = false;
+                rate.Synchronized = false;
+                var editedRate = context.Rates.Update(rate);
+                await context.SaveChangesAsync();
+                return editedRate != null;
+            }
         }
     }
 }

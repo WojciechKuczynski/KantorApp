@@ -22,7 +22,7 @@ namespace KantorServer.Application.Services
             DataContext = dataContext;
         }
 
-        public async Task<bool> AddEditUser(UserDto user)
+        public async Task<UserDto> AddEditUser(UserDto user)
         {
             try
             {
@@ -31,19 +31,21 @@ namespace KantorServer.Application.Services
                 {
                     var userEntity = user.ConvertToEntity();
                     await DataContext.Users.AddAsync(userEntity);
+                    return new UserDto(userEntity);
                 }
                 else
                 {
                     userInDb.Login = user.Login;
                     userInDb.Password = user.Password;
                     userInDb.Name = user.Name;
+                    userInDb.Valid = user.Valid;
                 }
                 await DataContext.SaveChangesAsync();
-                return true;
+                return new UserDto(userInDb);
             }
             catch (Exception ex)
             {
-                return false;
+                return null;
             }
         }
 
@@ -72,7 +74,7 @@ namespace KantorServer.Application.Services
                 return null;
             }
             var password = CreateMD5(user.Password);
-            return await DataContext.Users.FirstOrDefaultAsync(x => x.Login == user.Login && x.Password == password);
+            return await DataContext.Users.FirstOrDefaultAsync(x => x.Login == user.Login && x.Password == password && x.Valid);
         }
 
         private string CreateMD5(string input)
@@ -83,6 +85,16 @@ namespace KantorServer.Application.Services
                 byte[] hashBytes = md5.ComputeHash(inputBytes);
                 return Convert.ToHexString(hashBytes); 
             }
+        }
+
+        public async Task<List<UserDto>> GetUsers()
+        {
+            try
+            {
+                var users = await DataContext.Users.ToListAsync();
+                return UserDto.Map(users);
+            }
+            catch (Exception ex) { return null; }
         }
     }
 }

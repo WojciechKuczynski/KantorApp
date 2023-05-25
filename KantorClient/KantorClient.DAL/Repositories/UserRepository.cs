@@ -1,30 +1,67 @@
 ﻿using KantorClient.DAL.Repositories.Interfaces;
 using KantorClient.DAL.ServerCommunication;
-using KantorClient.Model;
 using KantorServer.Application.Requests;
+using KantorServer.Application.Requests.Users;
 using KantorServer.Application.Responses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using KantorServer.Application.Responses.Users;
+using KantorServer.Model.Dtos;
 
 namespace KantorClient.DAL.Repositories
 {
     internal class UserRepository : IUserRepository
     {
-        public async Task<UserSession> UserLogin(string username, string password)
+        public async Task<UserDto> AddUser(UserDto user, string synchronizationKey)
+        {
+            var request = new AddEditUserRequest()
+            {
+                SynchronizationKey = synchronizationKey,
+                User = user
+            };
+
+            var requestContext = new RequestContext("https://localhost:7254/users/add", RestSharp.Method.Post);
+            var response = await ServerConnectionHandler.ExecuteFunction<AddEditUserRequest, AddEditUserResponse>(requestContext, request);
+
+            return response.User;
+        }
+
+        public async Task<UserDto> EditUser(UserDto user, string synchronizationKey)
+        {
+            var request = new AddEditUserRequest()
+            {
+                SynchronizationKey = synchronizationKey,
+                User = user
+            };
+
+            var requestContext = new RequestContext("https://localhost:7254/users/add", RestSharp.Method.Post);
+            var response = await ServerConnectionHandler.ExecuteFunction<AddEditUserRequest, AddEditUserResponse>(requestContext, request);
+
+            return response.User;
+        }
+
+        public async Task<List<UserDto>> GetUsers(string synchronizationKey)
+        {
+            var request = new GetAllUsersRequest()
+            {
+                SynchronizationKey = synchronizationKey
+            };
+            var requestContext = new RequestContext("https://localhost:7254/users/list", RestSharp.Method.Post);
+            var response = await ServerConnectionHandler.ExecuteFunction<GetAllUsersRequest, GetAllUsersResponse>(requestContext, request);
+
+            return response.Users;
+        }
+
+        public async Task<Model.UserSession> UserLogin(string username, string password)
         {
             var request = new LoginRequest()
             {
-                Kantor = new KantorServer.Model.Dtos.KantorDto { Id = 1 },
-                User = new KantorServer.Model.Dtos.UserDto { Login = username, Password = password }
+                Kantor = new KantorDto { Id = 1 },
+                User = new UserDto { Login = username, Password = password }
             };
             var requestContext = new RequestContext("https://localhost:7254/session/login", RestSharp.Method.Post);
 
             var response = await ServerConnectionHandler.ExecuteFunction<LoginRequest, LoginResponse>(requestContext, request);
 
-            var session = new UserSession() { LastAction = DateTime.Now, StartDate = DateTime.Now, SynchronizationKey = response.SynchronizationKey, UserId = 1 };
+            var session = new Model.UserSession() { LastAction = DateTime.Now, StartDate = DateTime.Now, SynchronizationKey = response.SynchronizationKey, UserId = 1 };
             using (var context = new DataContext())
             {
                 await context.UserSessions.AddAsync(session);

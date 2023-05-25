@@ -1,7 +1,9 @@
 ﻿using KantorServer.Application.Requests;
 using KantorServer.Application.Requests.Rates;
+using KantorServer.Application.Requests.Users;
 using KantorServer.Application.Responses;
 using KantorServer.Application.Responses.Rates;
+using KantorServer.Application.Responses.Users;
 using KantorServer.Application.Services.Interfaces;
 using KantorServer.Model.Dtos;
 using Microsoft.AspNetCore.Mvc;

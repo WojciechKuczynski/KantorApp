@@ -15,5 +15,6 @@ namespace KantorClient.DAL.Repositories.Interfaces
         public Task<bool> AddCurrencies(IEnumerable<Currency> currencies);
         public Task<Rate> AddNewRate(Rate rate);
         public Task<Rate> EditRate(Rate rate);
+        public Task<bool> RemoveRate(Rate rate);
     }
 }

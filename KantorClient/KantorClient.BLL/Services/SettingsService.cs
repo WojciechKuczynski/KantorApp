@@ -47,6 +47,11 @@ namespace KantorClient.BLL.Services
             }
         }
 
+        public async Task<bool> RemoveRate(Rate rate)
+        {
+            return await _settingsRepository.RemoveRate(rate);
+        }
+
         private async Task<List<Currency>> LoadCurrencies()
         {
             var currencyList = await _settingsRepository.GetCurrencies(_authenticationService.UserSession.SynchronizationKey);

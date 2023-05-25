@@ -18,7 +18,7 @@ namespace KantorServer.Application.Services
         {
             try
             {
-                var rateInDb = await DataContext.Rates.FirstOrDefaultAsync(x => x.ExternalId == rate.ExternalId);
+                var rateInDb = await DataContext.Rates.Include(x => x.Currency).FirstOrDefaultAsync(x => x.ExternalId == rate.ExternalId);
                 if (rateInDb == null)
                 {
                     var rateEntity = rate.ConvertToEntity();
@@ -46,7 +46,7 @@ namespace KantorServer.Application.Services
                     rateInDb.DefaultBuyRate = rate.DefaultBuyRate;
                     rateInDb.MinimalSellRate = rate.MinimalSellRate;
                     rateInDb.DefaultSellRate = rate.DefaultSellRate;
-                    rateInDb.Valid = true;
+                    rateInDb.Valid = rate.Valid;
                 }
                 await DataContext.SaveChangesAsync();
                 return new RateDto(rateInDb);

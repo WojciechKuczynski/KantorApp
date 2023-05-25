@@ -38,19 +38,5 @@ namespace KantorServer.API.Controllers
             var res = await _settingsService.AddKantor(request.Kantor, new CancellationToken());
             return new BaseServerResponse(res, "Pomyślnie dodano nowy Kantor", "Nie udało się dodać Kantoru");
         }
-        [HttpPost("addUser")]
-        public async Task<BaseServerResponse> AddUser(AddEditUserRequest request)
-        {
-            var checkRes = await CheckRequestArgs<BaseServerResponse>(request);
-            if (checkRes != null) { return checkRes; }
-
-            if (request.User == null)
-            {
-                return await Task.FromResult(new BaseServerResponse(false, "", "Podano niepoprawnego Użytkownika"));
-            }
-
-            var res = await _userService.AddEditUser(request.User);
-            return new BaseServerResponse(res, "Pomyślnie dodano nowego Użytkownika", "Nie udało się dodać Użytkownika");
-        }
     }
 }

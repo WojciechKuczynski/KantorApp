@@ -26,7 +26,7 @@ namespace KantorClient.DAL.Repositories
                 try
                 {
                     var transactionsForSynchro = dataContext.Rates.Include(x => x.Currency)
-                        .Where(x => x.ExternalId.HasValue == false || x.ExternalId == 0) // not synchronized
+                        .Where(x => x.Synchronized == false) // not synchronized
                         .OrderBy(x => x.Id).Take(5);
                     foreach (var t in transactionsForSynchro)
                     {
@@ -49,6 +49,7 @@ namespace KantorClient.DAL.Repositories
                         if (result != null)
                         {
                             t.ExternalId = result.Rate.Id;
+                            t.Synchronized = true;
                             await dataContext.SaveChangesAsync();
                         }
                     }

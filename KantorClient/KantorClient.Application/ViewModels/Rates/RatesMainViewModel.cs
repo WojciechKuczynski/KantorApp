@@ -3,11 +3,13 @@ using KantorClient.Application.ViewModels.Interfaces.Rates;
 using KantorClient.Application.Views.Rates;
 using KantorClient.BLL.Models;
 using KantorClient.BLL.Services.Interfaces;
+using KantorClient.Model;
 using Prism.Commands.Ex;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace KantorClient.Application.ViewModels.Rates
@@ -31,6 +33,7 @@ namespace KantorClient.Application.ViewModels.Rates
             _settingsService = settingsService;
             AddEditVM = ratesAddEditVM;
             AddRateCommand = new DelegateCommand(AddRate);
+            RemoveRateCommand = new DelegateCommand<RateModel>(RemoveRate);
         }
         public async Task Load(bool loaded)
         {
@@ -47,6 +50,30 @@ namespace KantorClient.Application.ViewModels.Rates
         {
             AddEditVM.LoadForm(SelectedRate);
             AddEditVisible = true;
+        }
+
+        public ICommand RemoveRateCommand { get; private set; }
+        private async void RemoveRate(RateModel model)
+        {
+            if (model != null)
+            {
+                var option = MessageBox.Show("Czy chcesz usunąć ten Kurs?", "Pytanie", MessageBoxButton.YesNo);
+                if (option == MessageBoxResult.No)
+                {
+                    return;
+                }
+
+                var success = await _settingsService.RemoveRate(RateModel.Map(model));
+                if (!success)
+                {
+                    MessageBox.Show("Nie udało się usunąć Kursu");
+                }
+                else
+                {
+                    var deleted = Rates.FirstOrDefault(x => x == model);
+                    deleted.Valid = false;
+                }
+            }
         }
 
         public void CancelAddEditWindow()
@@ -68,7 +95,9 @@ namespace KantorClient.Application.ViewModels.Rates
         {
             if (rateModel != null)
             {
-                var rate = await _settingsService.AddRate(RateModel.Map(rateModel));
+                var rate = await _settingsService.EditRate(RateModel.Map(rateModel));
+                var rateInList = Rates.FirstOrDefault(x => x.Id == rate.Id);
+                rateInList = new RateModel(rate);
                 AddEditVisible = false;
             }
         }

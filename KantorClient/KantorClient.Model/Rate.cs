@@ -11,6 +11,7 @@
         public DateTime EndDate { get; set; }
         public bool Valid { get; set; }
         public long? ExternalId { get; set; }
+        public bool Synchronized { get; set; }
 
         public Rate()
         {

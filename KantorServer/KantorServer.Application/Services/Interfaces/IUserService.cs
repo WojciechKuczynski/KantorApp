@@ -10,7 +10,8 @@ namespace KantorServer.Application.Services.Interfaces
 {
     public interface IUserService : IService
     {
-        Task<bool> AddEditUser(UserDto user);
+        Task<UserDto> AddEditUser(UserDto user);
         Task<LoginResponse> UserLogin(UserDto user, KantorDto kantor);
+        Task<List<UserDto>> GetUsers();
     }
 }
