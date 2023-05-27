@@ -30,7 +30,9 @@ namespace KantorClient.BLL.Models
 
             Name = user.Name;
             Login = user.Login;
+            Password = user.Password;
             Permission = (UserPermission) user.Permission;
+            Valid = user.Valid;
         }
     }
 }

@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:KantorClient.Application"
         xmlns:rates="clr-namespace:KantorClient.Application.Views.Rates"
         xmlns:transactions="clr-namespace:KantorClient.Application.Views.Transactions"
+        xmlns:users="clr-namespace:KantorClient.Application.Views.Users"
         mc:Ignorable="d" Background="{StaticResource BackgroundColor}"
         Title="Kantor" MinHeight="450" MinWidth="800" Name="MainWindowName">
     <Grid>
@@ -26,15 +27,13 @@
                     <Label Content="KANTOR" />
                 </Border>
                 <StackPanel Orientation="Vertical" Grid.Row="1" VerticalAlignment="Stretch">
-                    <Button Content="Rates" Template="{StaticResource RoundButtonTemplate}" Margin="10"
+                    <Button Content="Rates" Style="{StaticResource MenuButton}" Margin="10"
                             Command="{Binding RatesMainViewCommand}" />
-                    <Button Content="Transactions" Template="{StaticResource RoundButtonTemplate}"
+                    <Button Content="Transactions" Style="{StaticResource MenuButton}"
                             Margin="10" Command="{Binding TransactionsMainViewCommand}" />
-                    
-                    <!-- <Button Content="Users" Template="{StaticResource RoundButtonTemplate}" Margin="10"
-                            Command="{Binding UserListCommand}"
-                            Visibility="{Binding IsAdmin,Converter={StaticResource BoolVisibilityConverter}}" />
-                    <Button Content="Add User" Template="{StaticResource RoundButtonTemplate}"
+                    <Button Content="Users" Style="{StaticResource MenuButton}" Margin="10"
+                            Command="{Binding UsersMainViewCommand}" />
+                    <!-- <Button Content="Add User" Template="{StaticResource RoundButtonTemplate}"
                             Margin="10" Command="{Binding AddUserCommand}"
                             Visibility="{Binding IsAdmin,Converter={StaticResource BoolVisibilityConverter}}" />
                     <Button Content="Cities" Template="{StaticResource RoundButtonTemplate}" Margin="10"
@@ -56,11 +55,12 @@
                  VerticalAlignment="Stretch">
                 <transactions:TransactionsMainView DataContext="{Binding TransactionsMainVM}" VerticalAlignment="Stretch"  />
             </Grid>
-        <!--<<Grid
-                Visibility="{Binding FormType,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource WindowViewToVisibilityConverter},ConverterParameter=3}">
-                <cities:CityMainView DataContext="{Binding CityMainVM}" />
-            </Grid>
             <Grid
+                Visibility="{Binding FormType,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource WindowViewToVisibilityConverter},ConverterParameter=3}"
+                VerticalAlignment="Stretch" >
+                <users:UsersMainView DataContext="{Binding UsersMainVM}" VerticalAlignment="Stretch"/>
+            </Grid>
+    <!-- <Grid
                 Visibility="{Binding FormType,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource WindowViewToVisibilityConverter},ConverterParameter=4}">
                 <rentals:RentalsMainView DataContext="{Binding RentalsMainVM}" />
             </Grid>

@@ -9,4 +9,35 @@
             <ContentPresenter Margin="{TemplateBinding Padding}" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
     </ControlTemplate>
+
+    <Style x:Key="MenuButton" TargetType="Button">
+        <Style.Setters>
+            <Setter Property="Background" Value="LightGray" />
+            <Setter Property="Foreground" Value="{StaticResource Color1}" />
+            <Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                            Height="{StaticResource StandardButtonHeight}" Width="{StaticResource StandardButtonWidth}" 
+                            Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="15,0,15,0" Padding="0"> 
+                            <Label Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" FontSize="18" HorizontalAlignment="Center" FontWeight="Bold" Margin="0" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="White" />
+                                <Setter Property="Foreground" Value="{StaticResource Color2}" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="LightGray" />
+                                <Setter Property="Foreground" Value="{StaticResource Color2}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        </Style.Setters>
+    </Style>
 </ResourceDictionary>

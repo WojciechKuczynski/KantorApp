@@ -32,6 +32,7 @@ namespace KantorServer.Model.Dtos
             Password = user.Password;
             Name = user.Name;
             Permission = user.Permission;
+            Valid = user.Valid;
         }
 
         public static List<UserDto> Map(List<User> users) => users.Select(x => new UserDto(x)).ToList();
@@ -45,6 +46,7 @@ namespace KantorServer.Model.Dtos
             user.Password = Password;
             user.Name = Name;
             user.Permission = Permission;
+            user.Valid = Valid;
             return user;
         }
     }

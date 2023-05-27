@@ -31,6 +31,7 @@ namespace KantorServer.Application.Services
                 {
                     var userEntity = user.ConvertToEntity();
                     await DataContext.Users.AddAsync(userEntity);
+                    await DataContext.SaveChangesAsync();
                     return new UserDto(userEntity);
                 }
                 else
@@ -79,6 +80,7 @@ namespace KantorServer.Application.Services
 
         private string CreateMD5(string input)
         {
+
             using (var md5 = MD5.Create())
             {
                 byte[] inputBytes = Encoding.ASCII.GetBytes(input);

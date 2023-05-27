@@ -15,20 +15,13 @@
         <Grid x:Name="GrayOut" Background="Gray" Opacity="0.8" Grid.ColumnSpan="2" Grid.Column="0" Panel.ZIndex="1"
               Visibility="{Binding AddEditVisible,Converter={StaticResource BoolVisibilityConverter}}">
         </Grid>
-        <!--<Grid x:Name="AddEditView" Background="Transparent" Margin="30" Panel.ZIndex="2"
+        <Grid x:Name="AddEditView" Background="Transparent" Margin="30" Panel.ZIndex="2"
               Visibility="{Binding AddEditVisible,Converter={StaticResource BoolVisibilityConverter}}">
-            <local:RatesAddEditView DataContext="{Binding AddEditVM}" VerticalAlignment="Center" HorizontalAlignment="Center" />
-        </Grid>-->
+            <local:UsersAddEditView DataContext="{Binding AddEditVM}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+        </Grid>
 
-        <!--<DataGrid>
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Start" />
-                <DataGridTextColumn Header="End" />
-                <DataGridTextColumn Header="Start" />
-            </DataGrid.Columns>
-        </DataGrid>-->
-        <ListView Grid.Row="0" Grid.Column="0" Background="Transparent" ItemsSource="{Binding Rates,UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" VerticalAlignment="Stretch" 
-                          SelectedItem="{Binding SelectedRate,UpdateSourceTrigger=PropertyChanged}">
+        <ListView Grid.Row="0" Grid.Column="0" Background="Transparent" ItemsSource="{Binding Users,UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" VerticalAlignment="Stretch" 
+                          SelectedItem="{Binding SelectedUser,UpdateSourceTrigger=PropertyChanged}">
             <ListView.Resources>
                 <Style TargetType="ListViewItem">
                     <Setter Property="Background" Value="{StaticResource Color1}" />
@@ -45,83 +38,36 @@
                                         <Grid Grid.Column="0">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="*"/>
-                                                <RowDefinition Height="auto"/>
                                             </Grid.RowDefinitions>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="auto" />
                                                 <ColumnDefinition Width="*" />
                                                 <ColumnDefinition Width="auto" />
-                                                <ColumnDefinition Width="auto" />
                                             </Grid.ColumnDefinitions>
-                                            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.RowSpan="2" Grid.Column="0">
-                                                <Label Content="{Binding Currency.Symbol}" FontSize="18"/>
+                                            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
+                                                <Label Content="{Binding Id}" FontSize="18"/>
                                                 <Rectangle VerticalAlignment="Stretch" Width="2" Fill="{StaticResource Color1}" />
+                                                <Label Content="{Binding Name}" />
                                             </StackPanel>
-                                            <Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="1">
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="*"/>
-                                                </Grid.RowDefinitions>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="auto" />
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="*" />
-                                                </Grid.ColumnDefinitions>
-                                                <Label Content="SPRZEDAŻ:" FontSize="16" Grid.Row="0" Grid.Column="0" />
-                                                <TextBlock FontSize="16" VerticalAlignment="Center" Margin="5"
-                                                           Grid.Row="0" Grid.Column="1">
-                                                    <Run Text="Minimum" />
-                                                    <Run Text="{Binding MinimalSellRate, StringFormat=0.00}" FontWeight="Bold" />
-                                                </TextBlock>
-                                                <TextBlock FontSize="16" VerticalAlignment="Center" Margin="5"
-                                                           Grid.Row="0" Grid.Column="2">
-                                                    <Run Text="Domyślna" />
-                                                    <Run Text="{Binding DefaultSellRate, StringFormat=0.00}" FontWeight="Bold" />
-                                                </TextBlock>
-
-                                                <Label Content="KUPNO:" FontSize="16" Grid.Row="1" Grid.Column="0"  />
-                                                <TextBlock FontSize="16" VerticalAlignment="Center" Margin="5"
-                                                           Grid.Row="1" Grid.Column="1" >
-                                                    <Run Text="Maximum" />
-                                                    <Run Text="{Binding MaximumBuyRate, StringFormat=0.00}" FontWeight="Bold" />
-                                                </TextBlock>
-                                                <TextBlock FontSize="16" VerticalAlignment="Center" Margin="5"
-                                                           Grid.Row="1" Grid.Column="2" >
-                                                    <Run Text="Domyślna" />
-                                                    <Run Text="{Binding DefaultBuyRate, StringFormat=0.00}" FontWeight="Bold" />
-                                                </TextBlock>
-                                            </Grid>
-                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="0" Grid.RowSpan="2" Grid.Column="2">
-                                                <Label Content="Początek:" FontSize="16"/>
-                                                <Label Content="{Binding StartDate}" FontSize="16"/>
-                                                <Label Content="Koniec:" FontSize="16"/>
-                                                <Label Content="{Binding EndDate}" FontSize="16"/>
-                                            </StackPanel>
-                                            <Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="3" 
-                                                    >
+                                            <Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="3" >
                                                 <Button.Style>
                                                     <Style TargetType="Button">
                                                         <Style.Setters>
+                                                            <Setter Property="Background" Value="Transparent" />
                                                             <Setter Property="Template">
                                                                 <Setter.Value>
                                                                     <ControlTemplate TargetType="Button">
-                                                                        <Border CornerRadius="0,8,8,0" Width="40" BorderThickness="2,0,0,0" BorderBrush="{TemplateBinding BorderBrush}">
+                                                                        <Border CornerRadius="0,8,8,0" Width="40" Background="{TemplateBinding Background}" BorderThickness="2,0,0,0" BorderBrush="{TemplateBinding BorderBrush}">
                                                                             <Label Content="D" Margin="0" />
-                                                                            <Border.Style>
-                                                                                <Style>
-                                                                                    <Style.Triggers>
-                                                                                        <Trigger Property="Border.IsMouseOver" Value="True" >
-                                                                                            <Setter Property="Border.Background" Value="FireBrick" />
-                                                                                        </Trigger>
-                                                                                    </Style.Triggers>
-                                                                                    <Setter Property="Border.Background" Value="Transparent" />
-                                                                                </Style>
-                                                                            </Border.Style>
                                                                         </Border>
+                                                                        <ControlTemplate.Triggers>
+                                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                                <Setter Property="Background" Value="IndianRed" />
+                                                                            </Trigger>
+                                                                        </ControlTemplate.Triggers>
                                                                     </ControlTemplate>
                                                                 </Setter.Value>
                                                             </Setter>
-                                                            <Setter Property="Command" Value="{Binding DataContext.RemoveRateCommand,RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                                            <Setter Property="Command" Value="{Binding DataContext.RemoveUserCommand,RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                                             <Setter Property="CommandParameter" Value="{Binding .}" />
                                                         </Style.Setters>
                                                     </Style>
@@ -158,7 +104,7 @@
 
         <Grid Grid.Column="1" Background="Green">
             <StackPanel Orientation="Vertical" >
-                <Button Content="Add Rate" Margin="5" Command="{Binding AddRateCommand}" />
+                <Button Content="Dodaj pracownika" Margin="5" Command="{Binding AddUserCommand}" />
             </StackPanel>
         </Grid>
     </Grid>

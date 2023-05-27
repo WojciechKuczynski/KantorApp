@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using KantorClient.Application.ViewModels.Interfaces.Transactions;
+using KantorClient.Application.ViewModels.Interfaces.Users;
 
 namespace KantorClient.Application.ViewModels
 {
@@ -23,8 +24,11 @@ namespace KantorClient.Application.ViewModels
         public IRatesMainViewModel RatesMainVM { get; private set; }
 
         public ITransactionsMainViewModel TransactionsMainVM { get; private set; } 
+
+        public IUsersMainViewModel UsersMainVM { get; private set; }
         #endregion
-        public MainWindowViewModel(ISettingsService settingsService, IRatesMainViewModel ratesMainVM, ITransactionsMainViewModel transactionsMainVM)
+
+        public MainWindowViewModel(ISettingsService settingsService, IRatesMainViewModel ratesMainVM, ITransactionsMainViewModel transactionsMainVM, IUsersMainViewModel usersMainViewModel)
         {
             _settingService = settingsService;
 
@@ -34,8 +38,12 @@ namespace KantorClient.Application.ViewModels
             TransactionsMainVM = transactionsMainVM;
             TransactionsMainVM.Parent = this;
 
+            UsersMainVM = usersMainViewModel;
+            UsersMainVM.Parent = this;
+
             RatesMainViewCommand = new DelegateCommand(RatesMainView);
             TransactionsMainViewCommand = new DelegateCommand(TransactionsMainView);
+            UsersMainViewCommand = new DelegateCommand(UsersMainView);
         }
 
         public Window Parent { get; set; }
@@ -47,6 +55,7 @@ namespace KantorClient.Application.ViewModels
             var loaded = await _settingService.LoadSettings();
             await RatesMainVM.Load(loaded);
             await TransactionsMainVM.Load(loaded);
+            await UsersMainVM.Load(loaded);
         }
 
         #region Commands
@@ -60,6 +69,12 @@ namespace KantorClient.Application.ViewModels
         private void TransactionsMainView()
         {
             FormType = MainWindowView.TransactionList;
+        }
+
+        public ICommand UsersMainViewCommand { get; private set; }
+        private void UsersMainView()
+        {
+            FormType = MainWindowView.Users;
         }
         #endregion
     }

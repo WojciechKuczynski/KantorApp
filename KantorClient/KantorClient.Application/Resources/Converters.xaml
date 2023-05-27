@@ -9,4 +9,5 @@
     <utils:DefaultRateConverter x:Key="DefaultRateConverter" />
     <utils:BoolInverseConverter x:Key="BoolInverseConverter" />
     <utils:TransactionTypeFriendlyNameConverter x:Key="TransactionTypeFriendlyNameConverter" />
+    <utils:PasswordEqualConverter x:Key="PasswordEqualConverter" />
 </ResourceDictionary>
