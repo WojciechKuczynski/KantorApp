@@ -3,6 +3,7 @@ using System;
 using KantorClient.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KantorClient.DAL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230528155244_AddSynchronizationColumnsOnTransfer")]
+    partial class AddSynchronizationColumnsOnTransfer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
@@ -192,11 +195,11 @@ namespace KantorClient.DAL.Migrations
                     b.Property<bool>("Synchronized")
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime>("TransactionDate")
+                        .HasColumnType("TEXT");
+
                     b.Property<long>("TransferCurrencyId")
                         .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("TransferDate")
-                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("TransferValue")
                         .HasColumnType("TEXT");

@@ -25,6 +25,7 @@ builder.Services.AddScoped<IRateService, RateService>();
 builder.Services.AddScoped<ITransactionService,TransactionService>();
 builder.Services.AddScoped<ISessionService, SessionService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ITransferService, TransferService>();
 
 
 //builder.Services.AddCertificateForwarding(options =>

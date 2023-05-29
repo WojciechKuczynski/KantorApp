@@ -8,9 +8,11 @@ namespace KantorClient.BLL.Services
     {
         private BackgroundWorker _rateSynchronization;
         private BackgroundWorker _transactionSynchronization;
+        private BackgroundWorker _transferSynchronization;
 
         private bool _rateSynchro;
         private bool _transactionSynchro;
+        private bool _transferSynchro;
 
         private readonly ISynchronizationRepository _synchronizationRepository;
         private readonly IAuthenticationService _authenticationService;
@@ -19,13 +21,33 @@ namespace KantorClient.BLL.Services
         {
             _rateSynchronization = new BackgroundWorker();
             _transactionSynchronization = new BackgroundWorker();
+            _transferSynchronization = new BackgroundWorker();
 
             _rateSynchronization.DoWork += RateSynchronization_DoWork;
             _transactionSynchronization.DoWork += TransactionSynchronization_DoWork;
+            _transferSynchronization.DoWork += TransferSynchronization_DoWork;
 
             _synchronizationRepository = synchronizationRepository;
             _authenticationService = authenticationService;
 
+        }
+
+        private void TransferSynchronization_DoWork(object? sender, DoWorkEventArgs e)
+        {
+            int arg = (int)e.Argument;
+            var synchroKey = _authenticationService.UserSession.SynchronizationKey;
+            while (_transferSynchro)
+            {
+                try
+                {
+                    _synchronizationRepository.SynchronizeTransfers(synchroKey).GetAwaiter();
+                    Thread.Sleep(arg);
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
         }
 
         private void TransactionSynchronization_DoWork(object? sender, DoWorkEventArgs e)
@@ -70,6 +92,9 @@ namespace KantorClient.BLL.Services
         {
             _transactionSynchro = true;
             _transactionSynchronization.RunWorkerAsync(1 * 60 * 1000); // co 1 minut.
+
+            _transferSynchro = true;
+            _transferSynchronization.RunWorkerAsync(1 * 60 * 1000); // co 1 minut.
 
             _rateSynchro = true;
             _rateSynchronization.RunWorkerAsync(5 * 60 * 1000);

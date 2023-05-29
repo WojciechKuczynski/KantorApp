@@ -1,9 +1,4 @@
 ﻿using KantorClient.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KantorClient.DAL.Repositories.Interfaces
 {
@@ -16,5 +11,7 @@ namespace KantorClient.DAL.Repositories.Interfaces
         public Task<Rate> AddNewRate(Rate rate);
         public Task<Rate> EditRate(Rate rate);
         public Task<bool> RemoveRate(Rate rate);
+
+        public Task<List<Rate>> GetNBPRates();
     }
 }

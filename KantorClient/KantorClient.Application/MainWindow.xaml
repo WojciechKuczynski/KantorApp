@@ -7,6 +7,7 @@
         xmlns:rates="clr-namespace:KantorClient.Application.Views.Rates"
         xmlns:transactions="clr-namespace:KantorClient.Application.Views.Transactions"
         xmlns:users="clr-namespace:KantorClient.Application.Views.Users"
+        xmlns:transfers="clr-namespace:KantorClient.Application.Views.Transfers"
         mc:Ignorable="d" Background="{StaticResource BackgroundColor}"
         Title="Kantor" MinHeight="450" MinWidth="800" Name="MainWindowName">
     <Grid>
@@ -33,16 +34,8 @@
                             Margin="10" Command="{Binding TransactionsMainViewCommand}" />
                     <Button Content="Users" Style="{StaticResource MenuButton}" Margin="10"
                             Command="{Binding UsersMainViewCommand}" />
-                    <!-- <Button Content="Add User" Template="{StaticResource RoundButtonTemplate}"
-                            Margin="10" Command="{Binding AddUserCommand}"
-                            Visibility="{Binding IsAdmin,Converter={StaticResource BoolVisibilityConverter}}" />
-                    <Button Content="Cities" Template="{StaticResource RoundButtonTemplate}" Margin="10"
-                            Command="{Binding CityMainViewCommand}"
-                            Visibility="{Binding IsAdmin,Converter={StaticResource BoolVisibilityConverter}}" />
-                    <Button Content="Rentals" Template="{StaticResource RoundButtonTemplate}" Margin="10"
-                            Command="{Binding RentalsMainViewCommand}" />
-                    <Button Content="Rent Car" Template="{StaticResource RoundButtonTemplate}" Margin="10"
-                            Command="{Binding RentalDetailsViewCommand}" />-->
+                    <Button Content="Transfers" Style="{StaticResource MenuButton}" Margin="10"
+                            Command="{Binding TransfersMainViewCommand}" />
                 </StackPanel>
             </Grid>
         </Border>
@@ -60,22 +53,11 @@
                 VerticalAlignment="Stretch" >
                 <users:UsersMainView DataContext="{Binding UsersMainVM}" VerticalAlignment="Stretch"/>
             </Grid>
-    <!-- <Grid
-                Visibility="{Binding FormType,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource WindowViewToVisibilityConverter},ConverterParameter=4}">
-                <rentals:RentalsMainView DataContext="{Binding RentalsMainVM}" />
-            </Grid>
             <Grid
-                Visibility="{Binding FormType,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource WindowViewToVisibilityConverter},ConverterParameter=5}">
-                <rentals:RentalDetailsView DataContext="{Binding RentalDetailsVM}" />
+                Visibility="{Binding FormType,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource WindowViewToVisibilityConverter},ConverterParameter=4}"
+                VerticalAlignment="Stretch" >
+                <transfers:TransfersMainView DataContext="{Binding TransfersMainVM}" VerticalAlignment="Stretch"/>
             </Grid>
-            <Grid
-                Visibility="{Binding FormType,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource WindowViewToVisibilityConverter},ConverterParameter=6}">
-                <rentals:UserDetailsView DataContext="{Binding UserDetailsVM}" />
-            </Grid>
-            <Grid
-                Visibility="{Binding FormType,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource WindowViewToVisibilityConverter},ConverterParameter=7}">
-                <users:UserMainView DataContext="{Binding UserMainVM}" />
-            </Grid>-->
         </StackPanel>
     </Grid>
 </Window>

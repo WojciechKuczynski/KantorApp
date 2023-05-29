@@ -10,6 +10,7 @@ namespace KantorClient.Application.Consts
     {
         TransactionList = 1,
         Rates = 2,
-        Users = 3
+        Users = 3,
+        Transfers = 4
     }
 }

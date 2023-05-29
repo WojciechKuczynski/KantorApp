@@ -1,6 +1,9 @@
-﻿using KantorServer.Application.Requests.Transfers;
+﻿using KantorServer.Application.Requests.Transactions;
+using KantorServer.Application.Requests.Transfers;
 using KantorServer.Application.Responses;
+using KantorServer.Application.Responses.Transactions;
 using KantorServer.Application.Responses.Transfers;
+using KantorServer.Application.Services;
 using KantorServer.Application.Services.Interfaces;
 using KantorServer.Model.Dtos;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +28,19 @@ namespace KantorServer.API.Controllers
 
             var transfers = await _transferService.GetAllTransfers();
             return new GetAllTransfersResponse(true, "", "") { Transfers = transfers };
+        }
+
+        [HttpPost("synchronize")]
+        public async Task<SynchronizeTransferResponse> SynchronizeTransactions(SynchronizeTransferRequest request)
+        {
+            var checkRes = await CheckRequestArgs<SynchronizeTransferResponse>(request);
+            if (checkRes != null) { return checkRes; }
+
+            var res = await _transferService.SynchronizeTransfer(request.Transfer, request.SynchronizationKey);
+            return new SynchronizeTransferResponse(res != null, "Synchronizacja przeszła pomyślnie", "Nie udało się zsynchronizować transferu")
+            {
+                Transfer = res
+            };
         }
     }
 }

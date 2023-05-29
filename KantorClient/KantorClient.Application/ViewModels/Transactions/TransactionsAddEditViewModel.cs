@@ -4,12 +4,9 @@ using KantorClient.BLL.Services.Interfaces;
 using KantorClient.Model.Consts;
 using Prism.Commands.Ex;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -40,7 +37,7 @@ namespace KantorClient.Application.ViewModels.Transactions
         public TransactionsAddEditViewModel(ISettingsService settingsService)
         {
             _settingsService = settingsService;
-            
+
             SelectedType = TransactionType.Sell;
 
             AddCommand = new DelegateCommand(Add);
@@ -54,13 +51,14 @@ namespace KantorClient.Application.ViewModels.Transactions
         public string AcceptTile => NewTransaction ? "DODAJ" : "EDYTUJ";
 
         public bool Loading { get; set; }
+        public decimal NbpRate { get; set; }
 
         public bool NewTransaction { get; set; }
 
         public decimal Amount
         {
             get { return _amount; }
-            set 
+            set
             {
                 if (!_locker)
                 {
@@ -82,7 +80,7 @@ namespace KantorClient.Application.ViewModels.Transactions
                     _locker = true;
                     if (SelectedType == TransactionType.Sell)
                     {
-                        Amount = Math.Round(value / _changeRate,MidpointRounding.ToNegativeInfinity);
+                        Amount = Math.Round(value / _changeRate, MidpointRounding.ToNegativeInfinity);
                     }
                     else
                     {
@@ -98,8 +96,8 @@ namespace KantorClient.Application.ViewModels.Transactions
         public decimal ChangeRate
         {
             get { return _changeRate; }
-            set 
-            { 
+            set
+            {
                 if (!_locker)
                 {
                     _locker = true;
@@ -141,7 +139,7 @@ namespace KantorClient.Application.ViewModels.Transactions
         public TransactionType SelectedType
         {
             get { return _selectedType; }
-            set 
+            set
             {
                 _selectedType = value;
                 if (SelectedRate != null)
@@ -187,10 +185,16 @@ namespace KantorClient.Application.ViewModels.Transactions
         private void AssignRateForCurrency(CurrencyModel currency)
         {
             var rate = _settingsService.Rates.FirstOrDefault(x => x.Currency.Id == currency.Id);
-            if ( rate == null) 
+            var nbpRate = _settingsService.NbpRates.FirstOrDefault(x => x.Currency.Id == currency.Id);
+            if (nbpRate != null)
+            {
+                NbpRate = nbpRate.DefaultBuyRate;
+            }
+
+            if (rate == null)
             {
                 MessageBox.Show("Nie ma Ratów dla tej waluty");
-                return; 
+                return;
             }
             SelectedRate = new RateModel(rate);
         }

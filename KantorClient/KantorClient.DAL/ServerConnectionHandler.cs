@@ -17,7 +17,7 @@ namespace KantorClient.DAL
         {
             var options = new RestClientOptions(reqContext.Url)
             {
-                //Proxy = WebRequest.DefaultWebProxy,
+                //Proxy = WebRequest.DefaultWebProxy,transfer
                 //RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true
             };
 
@@ -31,7 +31,7 @@ namespace KantorClient.DAL
             var restRequest = new RestRequest()
             {
                 RequestFormat = DataFormat.Json,
-                Method = Method.Post,
+                Method = reqContext.Method,
             };
             var serializeOptions = new JsonSerializerOptions
             {

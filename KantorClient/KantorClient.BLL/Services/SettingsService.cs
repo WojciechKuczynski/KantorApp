@@ -19,6 +19,7 @@ namespace KantorClient.BLL.Services
         public List<Currency> Currencies { get; private set; }
 
         public List<Rate> Rates { get; private set; }
+        public List<Rate> NbpRates { get; set; }
 
         public async Task<Rate> AddRate(Rate rate)
         {
@@ -30,6 +31,19 @@ namespace KantorClient.BLL.Services
             return await _settingsRepository.EditRate(rate);
         }
 
+        public async Task GetNBPRates()
+        {
+            var nbpRates = await _settingsRepository.GetNBPRates();
+            foreach (var rate in nbpRates)
+            {
+                var curr = Currencies.FirstOrDefault(x => x.Symbol == rate.Currency.Symbol);
+                if (curr != null)
+                {
+                    rate.Currency = curr;
+                }
+            }
+        }
+
         public async Task<bool> LoadSettings()
         {
             try
@@ -38,7 +52,7 @@ namespace KantorClient.BLL.Services
                 await _settingsRepository.AddCurrencies(Currencies);
                 var newRates = await LoadRates();
                 Rates = await _settingsRepository.AddRates(newRates); // Co z tym?
-
+                await GetNBPRates();
                 return true;
             }
             catch (Exception ex)
@@ -51,6 +65,7 @@ namespace KantorClient.BLL.Services
         {
             return await _settingsRepository.RemoveRate(rate);
         }
+
 
         private async Task<List<Currency>> LoadCurrencies()
         {

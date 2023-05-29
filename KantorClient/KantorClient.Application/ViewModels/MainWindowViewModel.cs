@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using KantorClient.Application.ViewModels.Interfaces.Transactions;
 using KantorClient.Application.ViewModels.Interfaces.Users;
+using KantorClient.Application.ViewModels.Interfaces.Transfers;
 
 namespace KantorClient.Application.ViewModels
 {
@@ -26,9 +27,13 @@ namespace KantorClient.Application.ViewModels
         public ITransactionsMainViewModel TransactionsMainVM { get; private set; } 
 
         public IUsersMainViewModel UsersMainVM { get; private set; }
+
+        public ITransfersMainViewModel TransfersMainVM { get; private set; }
         #endregion
 
-        public MainWindowViewModel(ISettingsService settingsService, IRatesMainViewModel ratesMainVM, ITransactionsMainViewModel transactionsMainVM, IUsersMainViewModel usersMainViewModel)
+        public MainWindowViewModel(ISettingsService settingsService, IRatesMainViewModel ratesMainVM, 
+                                   ITransactionsMainViewModel transactionsMainVM, IUsersMainViewModel usersMainViewModel, 
+                                   ITransfersMainViewModel transfersMainViewModel)
         {
             _settingService = settingsService;
 
@@ -41,9 +46,13 @@ namespace KantorClient.Application.ViewModels
             UsersMainVM = usersMainViewModel;
             UsersMainVM.Parent = this;
 
+            TransfersMainVM = transfersMainViewModel;
+            TransfersMainVM.Parent = this;
+
             RatesMainViewCommand = new DelegateCommand(RatesMainView);
             TransactionsMainViewCommand = new DelegateCommand(TransactionsMainView);
             UsersMainViewCommand = new DelegateCommand(UsersMainView);
+            TransfersMainViewCommand = new DelegateCommand(TransfersMainView);
         }
 
         public Window Parent { get; set; }
@@ -56,6 +65,7 @@ namespace KantorClient.Application.ViewModels
             await RatesMainVM.Load(loaded);
             await TransactionsMainVM.Load(loaded);
             await UsersMainVM.Load(loaded);
+            await TransfersMainVM.Load(loaded);
         }
 
         #region Commands
@@ -75,6 +85,12 @@ namespace KantorClient.Application.ViewModels
         private void UsersMainView()
         {
             FormType = MainWindowView.Users;
+        }
+
+        public ICommand TransfersMainViewCommand { get; private set; }
+        private void TransfersMainView()
+        {
+            FormType = MainWindowView.Transfers;
         }
         #endregion
     }

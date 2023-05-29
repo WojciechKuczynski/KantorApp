@@ -12,5 +12,6 @@ namespace KantorClient.DAL.Repositories.Interfaces
     {
         Task SynchronizeTransactions(string synchronizationToken);
         Task SynchronizeRate(string synchronizationToken);
+        Task SynchronizeTransfers(string synchronizationToken);
     }
 }

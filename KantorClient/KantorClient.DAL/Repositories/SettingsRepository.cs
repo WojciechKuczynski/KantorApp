@@ -1,4 +1,6 @@
 ﻿using KantorClient.DAL.Repositories.Interfaces;
+using KantorClient.DAL.RequestArgs;
+using KantorClient.DAL.ResponseArgs;
 using KantorClient.DAL.ServerCommunication;
 using KantorClient.Model;
 using KantorServer.Application.Requests.Currencies;
@@ -87,6 +89,26 @@ namespace KantorClient.DAL.Repositories
             var response = await ServerConnectionHandler.ExecuteFunction<GetAllCurrenciesRequest, GetAllCurrenciesResponse>(requestContext, request);
 
             return response.Currencies.Select(x => new Currency(x)).ToList();
+        }
+
+        public async Task<List<Rate>> GetNBPRates()
+        {
+            try
+            {
+                var requestContext = new RequestContext("http://api.nbp.pl/api/exchangerates/tables/A/last", RestSharp.Method.Get);
+                var response = await ServerConnectionHandler.ExecuteFunction<NbpRequestArgs, NbpResponseArgs>(requestContext, null);
+
+                return response.Root[0].rates.Select(x => new Rate()
+                {
+                    Synchronized = true,
+                    Currency = new Currency { Symbol = x.code, Name = x.currency },
+                    DefaultBuyRate = x.mid
+                }).ToList();
+            }
+            catch(Exception)
+            {
+                return new List<Rate>();
+            }
         }
 
         public async Task<List<Rate>> GetRates(string synchronizationKey)

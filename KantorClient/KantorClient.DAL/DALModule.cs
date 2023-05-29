@@ -15,6 +15,7 @@ namespace KantorClient.DAL
             container.RegisterSingleton<ISettingsRepository, SettingsRepository>();
             container.RegisterSingleton<ISynchronizationRepository, SynchronizationRepository>();
             container.RegisterSingleton<ITransactionsRepository, TransactionsRepository>();
+            container.RegisterSingleton<ITransferRepository, TransferRepository>();
         }
     }
 }
