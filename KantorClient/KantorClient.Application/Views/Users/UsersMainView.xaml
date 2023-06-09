@@ -102,10 +102,12 @@
             </ListView.Resources>
         </ListView>
 
-        <Grid Grid.Column="1" Background="Green">
-            <StackPanel Orientation="Vertical" >
-                <Button Content="Dodaj pracownika" Margin="5" Command="{Binding AddUserCommand}" />
-            </StackPanel>
-        </Grid>
+        <Border Grid.Column="1" CornerRadius="15,0,0,15"  Background="#11FFFFFF">
+            <Grid>
+                <StackPanel Orientation="Vertical" >
+                    <Button Content="Dodaj pracownika" Margin="5" Command="{Binding AddUserCommand}" />
+                </StackPanel>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

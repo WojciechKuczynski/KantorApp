@@ -22,15 +22,17 @@
             <local:TransactionsAddEditView DataContext="{Binding AddEditVM}" VerticalAlignment="Center" HorizontalAlignment="Center" />
         </Grid>
 
-        <Grid Grid.Column="1" Background="Transparent" Margin="5">
-            <StackPanel Orientation="Vertical" >
-                <ToggleButton Content="Pokaż usunięte" Margin="5" IsChecked="{Binding ShowDeleted}" />
-                <Button Content="Dodaj Transakcję" Margin="5" Command="{Binding AddTransactionCommand}" />
-                <Button Content="Odśwież Transakcje" Margin="5" Command="{Binding RefreshCommand}" />
-            </StackPanel>
-        </Grid>
+        <Border Grid.Column="1" CornerRadius="15,0,0,15"  Background="#11FFFFFF">
+            <Grid Grid.Column="1" Background="Transparent" Margin="5">
+                <StackPanel Orientation="Vertical" >
+                    <ToggleButton Content="Pokaż usunięte" Margin="5" IsChecked="{Binding ShowDeleted}" />
+                    <Button Content="Dodaj Transakcję" Margin="5" Command="{Binding AddTransactionCommand}" />
+                    <Button Content="Odśwież Transakcje" Margin="5" Command="{Binding RefreshCommand}" />
+                </StackPanel>
+            </Grid>
+        </Border>
 
-        <DataGrid Grid.Row="0" Grid.Column="0" ItemsSource="{Binding Transactions}" AutoGenerateColumns="False" IsReadOnly="True" FontSize="18" HorizontalAlignment="Center" Margin="0,10,0,0">
+        <DataGrid Grid.Row="0" Grid.Column="0" ItemsSource="{Binding Transactions}" BorderBrush="Transparent" AutoGenerateColumns="False" IsReadOnly="True" FontSize="18" HorizontalAlignment="Center" Margin="0,10,0,0">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Typ Transakcji" Binding="{Binding TransactionType, Converter={StaticResource TransactionTypeFriendlyNameConverter}}" />
                 <DataGridTextColumn Header="Waluta" Binding="{Binding Currency.Symbol}" />

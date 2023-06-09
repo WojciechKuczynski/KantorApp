@@ -5,6 +5,7 @@ using KantorServer.Application.Requests.Users;
 using KantorServer.Application.Responses;
 using KantorServer.Application.Responses.Users;
 using KantorServer.Model.Dtos;
+using Microsoft.EntityFrameworkCore;
 
 namespace KantorClient.DAL.Repositories
 {
@@ -64,6 +65,12 @@ namespace KantorClient.DAL.Repositories
             var session = new Model.UserSession() { LastAction = DateTime.Now, StartDate = DateTime.Now, SynchronizationKey = response.SynchronizationKey, UserId = 1 };
             using (var context = new DataContext())
             {
+                var lastSession = await context.UserSessions.OrderByDescending(x => x.StartDate).FirstOrDefaultAsync();
+                if (lastSession != null)
+                {
+                    session.Cash = lastSession.Cash;
+                }
+
                 await context.UserSessions.AddAsync(session);
                 await context.SaveChangesAsync();
             }

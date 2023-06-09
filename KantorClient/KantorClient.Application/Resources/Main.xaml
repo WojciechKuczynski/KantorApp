@@ -5,7 +5,15 @@
 
     <SolidColorBrush x:Key="Color1" Color="#A8512C" />
     <SolidColorBrush x:Key="Color2" Color="#F56D33" />
-    <SolidColorBrush x:Key="BackgroundColor" Color="#FFFFFF" />
+    <!--<SolidColorBrush x:Key="BackgroundColor" Color="#FFFFFF" />-->
+        <LinearGradientBrush x:Key="BackgroundColor">
+        <LinearGradientBrush.GradientStops>
+                <GradientStop Color="#DDDDDD" Offset="0.0" />
+            <GradientStop Color="#AAAAAA" Offset="0.3" />
+            <GradientStop Color="#777777" Offset="0.7" />
+            <GradientStop Color="#444444" Offset="1" />
+            </LinearGradientBrush.GradientStops>
+        </LinearGradientBrush>
 
     <sys:Double x:Key="StandardButtonHeight">40</sys:Double>
     <sys:Double x:Key="StandardButtonWidth">120</sys:Double>
