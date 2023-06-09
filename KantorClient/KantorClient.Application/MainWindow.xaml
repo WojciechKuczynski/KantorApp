@@ -20,12 +20,12 @@
 
             <Grid Grid.Column="0" >
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="80" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <Border Background="{StaticResource Color1}" Grid.Row="0" Height="60">
-                    <Label Content="KANTOR" />
+                <Border Background="{StaticResource Color1}" Grid.Row="0" Height="80">
+                    <Label Content="PLAC NOWY" FontSize="20"/>
                 </Border>
                 <StackPanel Orientation="Vertical" Grid.Row="1" VerticalAlignment="Stretch">
                     <Button Content="Rates" Style="{StaticResource MenuButton}" Margin="10"
@@ -39,25 +39,70 @@
                 </StackPanel>
             </Grid>
         </Border>
-        <StackPanel Grid.Column="1" Grid.Row="1"  Height="{Binding ElementName=MainWindowName, Path=ActualHeight, UpdateSourceTrigger=PropertyChanged}" >
-            <Grid Visibility="{Binding FormType,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource WindowViewToVisibilityConverter},ConverterParameter=2}" VerticalAlignment="Stretch">
-                <rates:RatesMainView DataContext="{Binding RatesMainVM}" VerticalAlignment="Stretch" />
-            </Grid>
-            <Grid
+            <Grid Grid.Column="1" Grid.Row="1" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="80" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="50" />
+                </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" BorderBrush="Black" BorderThickness="0,0,0,3">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Label Content="Pracownik:" FontSize="16" Margin="0" />
+                        <Label Content="Jan Kowalski" FontSize="16" Margin="0" />
+                    </StackPanel>
+                    
+                    <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+                        <Label Content="Status:" FontSize="16" Margin="0" />
+                        <Label Content="Online" Foreground="Green" FontSize="16" Margin="0" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+                        <Label Content="Ostatnie odświeżenie danych:" FontSize="16" Margin="0" />
+                        <Label Content="31.05.2023 12:13:35" FontSize="16" Margin="0" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+                        <Label Content="Stan gotówki:" FontSize="16" Margin="0" />
+                        <TextBox IsReadOnly="True" Width="100" Text="12365 zł" VerticalContentAlignment="Center" Margin="5" Background="#88FFFFFF" />
+                    </StackPanel>
+                    
+                </Grid>
+            </Border>
+
+            <StackPanel Grid.Row="1" >
+                    <!--Height="{Binding ElementName=MainWindowName, Path=ActualHeight, UpdateSourceTrigger=PropertyChanged}"-->
+                    <Grid Visibility="{Binding FormType,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource WindowViewToVisibilityConverter},ConverterParameter=2}" VerticalAlignment="Stretch">
+                        <rates:RatesMainView DataContext="{Binding RatesMainVM}" VerticalAlignment="Stretch" />
+                    </Grid>
+                    <Grid
                 Visibility="{Binding FormType,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource WindowViewToVisibilityConverter},ConverterParameter=1}" 
                  VerticalAlignment="Stretch">
-                <transactions:TransactionsMainView DataContext="{Binding TransactionsMainVM}" VerticalAlignment="Stretch"  />
-            </Grid>
-            <Grid
+                        <transactions:TransactionsMainView DataContext="{Binding TransactionsMainVM}" VerticalAlignment="Stretch"  />
+                    </Grid>
+                    <Grid
                 Visibility="{Binding FormType,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource WindowViewToVisibilityConverter},ConverterParameter=3}"
                 VerticalAlignment="Stretch" >
-                <users:UsersMainView DataContext="{Binding UsersMainVM}" VerticalAlignment="Stretch"/>
-            </Grid>
-            <Grid
+                        <users:UsersMainView DataContext="{Binding UsersMainVM}" VerticalAlignment="Stretch"/>
+                    </Grid>
+                    <Grid
                 Visibility="{Binding FormType,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource WindowViewToVisibilityConverter},ConverterParameter=4}"
                 VerticalAlignment="Stretch" >
-                <transfers:TransfersMainView DataContext="{Binding TransfersMainVM}" VerticalAlignment="Stretch"/>
+                        <transfers:TransfersMainView DataContext="{Binding TransfersMainVM}" VerticalAlignment="Stretch"/>
+                    </Grid>
+                </StackPanel>
             </Grid>
-        </StackPanel>
     </Grid>
 </Window>

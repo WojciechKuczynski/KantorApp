@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="KantorClient.Application.Views.Transfers.TransfersMainView"
+﻿<UserControl x:Class="KantorClient.Application.Views.CashRegistry.CashRegistryMainView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:KantorClient.Application.Views.Transfers"
+             xmlns:local="clr-namespace:KantorClient.Application.Views.CashRegistry"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -34,7 +34,7 @@
         </Grid>
         <Grid x:Name="AddEditView" Background="Transparent" Margin="30" Panel.ZIndex="2"
               Visibility="{Binding AddEditVisible,Converter={StaticResource BoolVisibilityConverter}}">
-            <local:TransfersAddEditView DataContext="{Binding AddEditVM}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            <local:CashRegistryAddEditView DataContext="{Binding AddEditVM}" VerticalAlignment="Center" HorizontalAlignment="Center" />
         </Grid>
 
         <ListView Grid.Row="0" Grid.Column="0" Background="Transparent" ItemsSource="{Binding Transfers,UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" VerticalAlignment="Stretch" 

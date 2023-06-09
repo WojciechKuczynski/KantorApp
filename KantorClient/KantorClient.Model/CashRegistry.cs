@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace KantorClient.Model
+﻿namespace KantorClient.Model
 {
     public class CashRegistry : BaseModel
     {
@@ -13,7 +7,7 @@ namespace KantorClient.Model
 
         public CashRegistry()
         {
-            
+
         }
     }
 }

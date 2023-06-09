@@ -185,7 +185,7 @@ namespace KantorClient.Application.ViewModels.Transactions
         private void AssignRateForCurrency(CurrencyModel currency)
         {
             var rate = _settingsService.Rates.FirstOrDefault(x => x.Currency.Id == currency.Id);
-            var nbpRate = _settingsService.NbpRates.FirstOrDefault(x => x.Currency.Id == currency.Id);
+            var nbpRate = _settingsService.NbpRates?.FirstOrDefault(x => x.Currency.Id == currency.Id);
             if (nbpRate != null)
             {
                 NbpRate = nbpRate.DefaultBuyRate;

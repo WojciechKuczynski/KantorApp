@@ -15,5 +15,6 @@ namespace KantorClient.Model
         public DateTime StartDate { get; set; }
         public DateTime? LastAction { get; set; }
         public string SynchronizationKey { get; set; }
+        public decimal Cash { get; set; }
     }
 }
