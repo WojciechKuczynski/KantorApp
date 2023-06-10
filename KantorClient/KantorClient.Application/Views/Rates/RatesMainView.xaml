@@ -160,7 +160,8 @@
         <Border Grid.Column="1" CornerRadius="15,0,0,15"  Background="#11FFFFFF">
             <Grid>
                 <StackPanel Orientation="Vertical" >
-                    <Button Content="Add Rate" Margin="5" Command="{Binding AddRateCommand}" />
+                    <Button Content="Dodaj Kurs" Margin="5" Command="{Binding AddRateCommand}" />
+                    <Button Content="Odśwież Dane" Margin="5" Command="{Binding RefreshCommand}" />
                 </StackPanel>
             </Grid>
         </Border>

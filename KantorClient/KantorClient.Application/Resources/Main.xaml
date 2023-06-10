@@ -16,7 +16,7 @@
         </LinearGradientBrush>
 
     <sys:Double x:Key="StandardButtonHeight">40</sys:Double>
-    <sys:Double x:Key="StandardButtonWidth">120</sys:Double>
+    <sys:Double x:Key="StandardButtonWidth">140</sys:Double>
     <sys:Double x:Key="SmallIconHeight">20</sys:Double>
     <sys:Double x:Key="SmallIconWidth">20</sys:Double>
 

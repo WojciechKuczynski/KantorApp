@@ -10,12 +10,15 @@ using System.Threading.Tasks;
 using KantorClient.Application.ViewModels.Interfaces.Transactions;
 using KantorClient.Application.ViewModels.Interfaces.Users;
 using KantorClient.Application.ViewModels.Interfaces.Transfers;
+using KantorClient.Application.ViewModels.Interfaces.CashRegistry;
+using KantorClient.Model;
 
 namespace KantorClient.Application.ViewModels
 {
     public class MainWindowViewModel : INotifyPropertyChanged, IMainWindowViewModel
     {
         private readonly ISettingsService _settingService;
+        private readonly IAuthenticationService _authenticationService;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -29,13 +32,16 @@ namespace KantorClient.Application.ViewModels
         public IUsersMainViewModel UsersMainVM { get; private set; }
 
         public ITransfersMainViewModel TransfersMainVM { get; private set; }
+
+        public ICashRegistryMainViewModel CashRegistryMainVM { get; private set; }
         #endregion
 
-        public MainWindowViewModel(ISettingsService settingsService, IRatesMainViewModel ratesMainVM, 
+        public MainWindowViewModel(ISettingsService settingsService,IAuthenticationService authenticationService, IRatesMainViewModel ratesMainVM, 
                                    ITransactionsMainViewModel transactionsMainVM, IUsersMainViewModel usersMainViewModel, 
-                                   ITransfersMainViewModel transfersMainViewModel)
+                                   ITransfersMainViewModel transfersMainViewModel, ICashRegistryMainViewModel cashRegistryMainViewModel)
         {
             _settingService = settingsService;
+            _authenticationService = authenticationService;
 
             RatesMainVM = ratesMainVM;
             RatesMainVM.Parent = this;
@@ -49,23 +55,37 @@ namespace KantorClient.Application.ViewModels
             TransfersMainVM = transfersMainViewModel;
             TransfersMainVM.Parent = this;
 
+            CashRegistryMainVM = cashRegistryMainViewModel;
+            CashRegistryMainVM.Parent = this;
+
             RatesMainViewCommand = new DelegateCommand(RatesMainView);
             TransactionsMainViewCommand = new DelegateCommand(TransactionsMainView);
             UsersMainViewCommand = new DelegateCommand(UsersMainView);
             TransfersMainViewCommand = new DelegateCommand(TransfersMainView);
+            CashRegistryMainViewCommand = new DelegateCommand(CashRegistryMainView);
         }
 
         public Window Parent { get; set; }
 
         public bool LoggedOut { get; set; }
 
+        public decimal Cash { get; set; }
+
         public async Task Load()
         {
             var loaded = await _settingService.LoadSettings();
+
+            Cash = _authenticationService.UserSession.Cash;
             await RatesMainVM.Load(loaded);
             await TransactionsMainVM.Load(loaded);
             await UsersMainVM.Load(loaded);
             await TransfersMainVM.Load(loaded);
+            await CashRegistryMainVM.Load(loaded);
+        }
+
+        public void SetPln(decimal quantity)
+        {
+            Cash = quantity;
         }
 
         #region Commands
@@ -91,6 +111,12 @@ namespace KantorClient.Application.ViewModels
         private void TransfersMainView()
         {
             FormType = MainWindowView.Transfers;
+        }
+
+        public ICommand CashRegistryMainViewCommand { get; private set; }
+        private void CashRegistryMainView()
+        {
+            FormType = MainWindowView.CashRegistry;
         }
         #endregion
     }

@@ -8,6 +8,7 @@
         xmlns:transactions="clr-namespace:KantorClient.Application.Views.Transactions"
         xmlns:users="clr-namespace:KantorClient.Application.Views.Users"
         xmlns:transfers="clr-namespace:KantorClient.Application.Views.Transfers"
+        xmlns:registry="clr-namespace:KantorClient.Application.Views.CashRegistry"
         mc:Ignorable="d" Background="{StaticResource BackgroundColor}"
         Title="Kantor" MinHeight="450" MinWidth="800" Name="MainWindowName">
     <Grid>
@@ -28,14 +29,16 @@
                     <Label Content="PLAC NOWY" FontSize="20"/>
                 </Border>
                 <StackPanel Orientation="Vertical" Grid.Row="1" VerticalAlignment="Stretch">
-                    <Button Content="Rates" Style="{StaticResource MenuButton}" Margin="10"
+                    <Button Content="Kursy" Style="{StaticResource MenuButton}" Margin="10"
                             Command="{Binding RatesMainViewCommand}" />
-                    <Button Content="Transactions" Style="{StaticResource MenuButton}"
+                    <Button Content="Transakcje" Style="{StaticResource MenuButton}"
                             Margin="10" Command="{Binding TransactionsMainViewCommand}" />
-                    <Button Content="Users" Style="{StaticResource MenuButton}" Margin="10"
+                    <Button Content="Użytkownicy" Style="{StaticResource MenuButton}" Margin="10"
                             Command="{Binding UsersMainViewCommand}" />
-                    <Button Content="Transfers" Style="{StaticResource MenuButton}" Margin="10"
+                    <Button Content="Transfery" Style="{StaticResource MenuButton}" Margin="10"
                             Command="{Binding TransfersMainViewCommand}" />
+                    <Button Content="Stan gotówki" Style="{StaticResource MenuButton}" Margin="10"
+                            Command="{Binding CashRegistryMainViewCommand}" />
                 </StackPanel>
             </Grid>
         </Border>
@@ -76,7 +79,7 @@
 
                     <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
                         <Label Content="Stan gotówki:" FontSize="16" Margin="0" />
-                        <TextBox IsReadOnly="True" Width="100" Text="12365 zł" VerticalContentAlignment="Center" Margin="5" Background="#88FFFFFF" />
+                        <TextBox IsReadOnly="True" Width="100" Text="{Binding Cash,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalContentAlignment="Center" Margin="5" Background="#88FFFFFF" />
                     </StackPanel>
                     
                 </Grid>
@@ -102,7 +105,12 @@
                 VerticalAlignment="Stretch" >
                         <transfers:TransfersMainView DataContext="{Binding TransfersMainVM}" VerticalAlignment="Stretch"/>
                     </Grid>
-                </StackPanel>
+                <Grid
+                Visibility="{Binding FormType,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource WindowViewToVisibilityConverter},ConverterParameter=5}"
+                VerticalAlignment="Stretch" >
+                    <registry:CashRegistryMainView DataContext="{Binding CashRegistryMainVM}" VerticalAlignment="Stretch"/>
+                </Grid>
+            </StackPanel>
             </Grid>
     </Grid>
 </Window>

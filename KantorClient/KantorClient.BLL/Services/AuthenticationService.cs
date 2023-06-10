@@ -19,5 +19,12 @@ namespace KantorClient.BLL.Services
             UserSession = await _userRepository.UserLogin(username, password);
             return UserSession != null;
         }
+
+        public async Task<bool> SetPln(decimal value)
+        {
+            var session = await _userRepository.SetPln(UserSession, value);
+            UserSession.Cash = session.Cash;
+            return UserSession != null;
+        }
     }
 }

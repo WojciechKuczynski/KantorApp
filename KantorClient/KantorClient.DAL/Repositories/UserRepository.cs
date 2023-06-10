@@ -1,5 +1,6 @@
 ﻿using KantorClient.DAL.Repositories.Interfaces;
 using KantorClient.DAL.ServerCommunication;
+using KantorClient.Model;
 using KantorServer.Application.Requests;
 using KantorServer.Application.Requests.Users;
 using KantorServer.Application.Responses;
@@ -51,6 +52,15 @@ namespace KantorClient.DAL.Repositories
             return response.Users;
         }
 
+        public async Task<UserSession> SetPln(UserSession session, decimal value)
+        {
+            using var context = new DataContext();
+            var sessionInDb = await context.UserSessions.FindAsync(session.Id);
+            sessionInDb.Cash = value;
+            await context.SaveChangesAsync();
+            return sessionInDb;
+        }
+
         public async Task<Model.UserSession> UserLogin(string username, string password)
         {
             var request = new LoginRequest()
@@ -61,6 +71,10 @@ namespace KantorClient.DAL.Repositories
             var requestContext = new RequestContext("https://localhost:7254/session/login", RestSharp.Method.Post);
 
             var response = await ServerConnectionHandler.ExecuteFunction<LoginRequest, LoginResponse>(requestContext, request);
+            if (response == null)
+            {
+                return null;
+            }
 
             var session = new Model.UserSession() { LastAction = DateTime.Now, StartDate = DateTime.Now, SynchronizationKey = response.SynchronizationKey, UserId = 1 };
             using (var context = new DataContext())
