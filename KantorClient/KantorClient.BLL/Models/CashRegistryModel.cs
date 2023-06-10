@@ -35,6 +35,13 @@ namespace KantorClient.BLL.Models
             Quantity = this.Quantity,
             Currency = this.Currency.Map()
         };
+
+        public CashRegistryModel Clone() => new CashRegistryModel
+        {
+            Id = this.Id,
+            Quantity = this.Quantity,
+            Currency = this.Currency
+        };
     }
 
 }

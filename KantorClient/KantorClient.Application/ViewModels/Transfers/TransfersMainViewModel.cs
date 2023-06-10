@@ -37,6 +37,7 @@ namespace KantorClient.Application.ViewModels.Transfers
             AddEditVM.Parent = this;
 
             AddTransferCommand = new DelegateCommand(AddTransfer);
+            RefreshCommand = new DelegateCommand(Refresh);
 
         }
         public async Task<bool> AddTransfer(TransferModel model)
@@ -89,6 +90,13 @@ namespace KantorClient.Application.ViewModels.Transfers
         {
             AddEditVM.LoadForm(SelectedTransfer);
             AddEditVisible = true;
+        }
+        
+        public ICommand RefreshCommand { get; private set; }
+        private async void Refresh()
+        {
+            TransfersCollection = await _transfersService.GetLocalTransfers();
+            Transfers = new ObservableCollection<TransferModel>(TransfersCollection);
         }
     }
 }

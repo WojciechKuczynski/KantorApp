@@ -9,5 +9,6 @@ namespace KantorClient.Application.ViewModels.Interfaces
 {
     public interface IMainWindowContainer
     {
+        void SetPln(decimal quantity);
     }
 }

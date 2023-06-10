@@ -30,15 +30,19 @@
         </Grid.ColumnDefinitions>
 
         <Grid x:Name="GrayOut" Background="Gray" Opacity="0.8" Grid.ColumnSpan="2" Grid.Column="0" Panel.ZIndex="1"
-              Visibility="{Binding AddEditVisible,Converter={StaticResource BoolVisibilityConverter}}">
+              Visibility="{Binding EditMode,Converter={StaticResource BoolVisibilityConverter}}">
         </Grid>
         <Grid x:Name="AddEditView" Background="Transparent" Margin="30" Panel.ZIndex="2"
               Visibility="{Binding AddEditVisible,Converter={StaticResource BoolVisibilityConverter}}">
             <local:CashRegistryAddEditView DataContext="{Binding AddEditVM}" VerticalAlignment="Center" HorizontalAlignment="Center" />
         </Grid>
+        <Grid x:Name="SetPlnView" Background="Transparent" Margin="30" Panel.ZIndex="2"
+              Visibility="{Binding SetPlnVisible,Converter={StaticResource BoolVisibilityConverter}}">
+            <local:CashRegistryPlnView DataContext="{Binding SetPlnVM}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+        </Grid>
 
-        <ListView Grid.Row="0" Grid.Column="0" Background="Transparent" ItemsSource="{Binding Transfers,UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" VerticalAlignment="Stretch" 
-                          SelectedItem="{Binding SelectedTransfer,UpdateSourceTrigger=PropertyChanged}">
+        <ListView Grid.Row="0" Grid.Column="0" Background="Transparent" ItemsSource="{Binding Registries, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" VerticalAlignment="Stretch" 
+                          SelectedItem="{Binding SelectedRegistry,UpdateSourceTrigger=PropertyChanged}">
             <ListView.Resources>
                 <Style TargetType="ListViewItem">
                     <Setter Property="Background" Value="{StaticResource Color1}" />
@@ -61,10 +65,10 @@
                                                 <ColumnDefinition Width="auto" />
                                             </Grid.ColumnDefinitions>
                                             <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
-                                                <Label Content="{Binding TransferCurrency.Symbol}" FontSize="18"/>
+                                                <Label Content="{Binding Currency.Symbol}" FontSize="18"/>
                                                 <Rectangle VerticalAlignment="Stretch" Width="2" Fill="{StaticResource Color1}" />
-                                                <Label Content="{Binding Type}" />
-                                                <Label Content="{Binding TransferValue}" />
+                                                <!--<Label Content="{Binding Type}" />-->
+                                                <Label Content="{Binding Quantity}" />
                                             </StackPanel>
                                             <Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="3" >
                                                 <Button.Style>
@@ -85,7 +89,7 @@
                                                                     </ControlTemplate>
                                                                 </Setter.Value>
                                                             </Setter>
-                                                            <Setter Property="Command" Value="{Binding DataContext.RemoveTransferCommand,RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                                            <Setter Property="Command" Value="{Binding DataContext.RemoveRegistryCommand,RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                                             <Setter Property="CommandParameter" Value="{Binding .}" />
                                                         </Style.Setters>
                                                     </Style>
@@ -128,7 +132,9 @@
         <Border Grid.Column="1" CornerRadius="15,0,0,15"  Background="#11FFFFFF">
             <Grid>
                 <StackPanel Orientation="Vertical" >
-                    <Button Content="Dodaj transfer" Margin="5" Command="{Binding AddTransferCommand}" />
+                    <Button Content="Dodaj Stan gotówki" Margin="5" Command="{Binding AddRegistryCommand}" IsEnabled="{Binding AddEditVisible, Converter={StaticResource BoolInverseConverter}}" />
+                    <Button Content="Odśwież dane" Margin="5" Command="{Binding RefreshCommand}" />
+                    <Button Content="Ustaw stan PLN" Margin="5" Command="{Binding SetPLNCommand}" />
                 </StackPanel>
             </Grid>
         </Border>

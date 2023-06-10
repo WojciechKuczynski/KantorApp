@@ -11,6 +11,7 @@ namespace KantorClient.Application.Consts
         TransactionList = 1,
         Rates = 2,
         Users = 3,
-        Transfers = 4
+        Transfers = 4,
+        CashRegistry = 5,
     }
 }

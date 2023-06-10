@@ -34,6 +34,7 @@ namespace KantorClient.Application.ViewModels.Rates
             AddEditVM = ratesAddEditVM;
             AddRateCommand = new DelegateCommand(AddRate);
             RemoveRateCommand = new DelegateCommand<RateModel>(RemoveRate);
+            RefreshCommand = new DelegateCommand(Refresh);
         }
         public async Task Load(bool loaded)
         {
@@ -73,6 +74,16 @@ namespace KantorClient.Application.ViewModels.Rates
                     var deleted = Rates.FirstOrDefault(x => x == model);
                     deleted.Valid = false;
                 }
+            }
+        }
+
+        public ICommand RefreshCommand { get; private set; }
+        private void Refresh()
+        {
+            var rates = _settingsService?.Rates?.Select(x => new RateModel(x));
+            if (rates != null)
+            {
+                Rates = new ObservableCollection<RateModel>(rates);
             }
         }
 
