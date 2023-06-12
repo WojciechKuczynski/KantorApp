@@ -11,7 +11,7 @@ namespace KantorClient.Model
     {
         // Id z bazy servera
         public long UserId { get; set; }
-        
+        public string Name { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime? LastAction { get; set; }
         public string SynchronizationKey { get; set; }

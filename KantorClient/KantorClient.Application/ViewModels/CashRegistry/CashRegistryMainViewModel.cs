@@ -129,7 +129,7 @@ namespace KantorClient.Application.ViewModels.CashRegistry
             var changed = _authenticationService.SetPln(quantity).GetAwaiter();
             if (changed.GetResult())
             {
-                Parent.SetPln(quantity);
+                
             }
             SetPlnVisible = false;
             return Task.CompletedTask;

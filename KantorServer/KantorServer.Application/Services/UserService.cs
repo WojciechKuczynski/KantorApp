@@ -65,7 +65,7 @@ namespace KantorServer.Application.Services
 
             await DataContext.UserSessions.AddAsync(userSession);
             await DataContext.SaveChangesAsync();
-            return new LoginResponse(true, "Poprawnie zalogowano!", "") { SynchronizationKey = synchronizationKey };
+            return new LoginResponse(true, "Poprawnie zalogowano!", "") { SynchronizationKey = synchronizationKey, UserId = userSession.User.Id, Name = userSession.User.Name };
         }
 
         private async Task<User?> CheckUserLogin(UserDto user)

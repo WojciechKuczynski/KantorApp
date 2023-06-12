@@ -10,6 +10,8 @@ namespace KantorServer.Application.Responses
     public class LoginResponse : BaseServerResponse
     {
         public string SynchronizationKey { get; set; }
+        public long UserId { get; set; }
+        public string Name { get; set; }
         public LoginResponse() : base(false) { }
         public LoginResponse(bool isCorrect, string successMsg, string failMsg) : base(isCorrect, successMsg, failMsg)
         {
