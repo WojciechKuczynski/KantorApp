@@ -8,10 +8,12 @@ namespace KantorClient.BLL.Services
     public class TransactionsService : ITransactionsService
     {
         private readonly ITransactionsRepository _transactionsRepository;
+        private readonly IAuthenticationService _authenticationService;
 
-        public TransactionsService(ITransactionsRepository transactionsRepository)
+        public TransactionsService(ITransactionsRepository transactionsRepository, IAuthenticationService authenticationService)
         {
             _transactionsRepository = transactionsRepository;
+            _authenticationService = authenticationService;
         }
 
         public async Task<TransactionModel> AddTransaction(TransactionModel transaction, UserSession userSession)
@@ -21,6 +23,7 @@ namespace KantorClient.BLL.Services
                 var trans = transaction.Map();
                 trans.User = userSession;
                 var addedTrans = await _transactionsRepository.AddTransaction(trans);
+                await HandleCashRegistry(addedTrans);
                 return new TransactionModel(addedTrans);
             }
             catch { }
@@ -32,8 +35,10 @@ namespace KantorClient.BLL.Services
             try
             {
                 var trans = transaction.Map();
-                var addedTrans = await _transactionsRepository.DeleteTransaction(trans);
-                return addedTrans != null;
+                var deletedTrans = await _transactionsRepository.DeleteTransaction(trans);
+                deletedTrans.FinalValue *= -1; // when deleted we want to negate cashRegistry update
+                await HandleCashRegistry(deletedTrans);
+                return deletedTrans != null;
             }
             catch { }
             return false;
@@ -48,6 +53,7 @@ namespace KantorClient.BLL.Services
                 var editedTrans = await _transactionsRepository.EditTransaction(trans);
                 if (editedTrans == null)
                     return null;
+                await HandleCashRegistry(editedTrans);
                 return new TransactionModel(editedTrans);
             }
             catch { }
@@ -72,6 +78,22 @@ namespace KantorClient.BLL.Services
                 //TODO: logging
             }
             return new List<TransactionModel>();
+        }
+
+        private async Task HandleCashRegistry(Transaction trans)
+        {
+            if (trans == null)
+                return;
+
+            switch(trans.TransactionType)
+            {
+                case Model.Consts.TransactionType.Buy:
+                    await _authenticationService.AddPln((-1) * trans.FinalValue);
+                    break;
+                case Model.Consts.TransactionType.Sell:
+                    await _authenticationService.AddPln(trans.FinalValue);
+                    break;
+            }
         }
     }
 }

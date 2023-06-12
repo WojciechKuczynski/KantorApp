@@ -76,7 +76,7 @@ namespace KantorClient.DAL.Repositories
                 return null;
             }
 
-            var session = new Model.UserSession() { LastAction = DateTime.Now, StartDate = DateTime.Now, SynchronizationKey = response.SynchronizationKey, UserId = 1 };
+            var session = new Model.UserSession() { LastAction = DateTime.Now, StartDate = DateTime.Now, SynchronizationKey = response.SynchronizationKey, UserId = response.UserId, Name = response.Name };
             using (var context = new DataContext())
             {
                 var lastSession = await context.UserSessions.OrderByDescending(x => x.StartDate).FirstOrDefaultAsync();

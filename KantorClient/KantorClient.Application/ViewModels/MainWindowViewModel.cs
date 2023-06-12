@@ -63,6 +63,13 @@ namespace KantorClient.Application.ViewModels
             UsersMainViewCommand = new DelegateCommand(UsersMainView);
             TransfersMainViewCommand = new DelegateCommand(TransfersMainView);
             CashRegistryMainViewCommand = new DelegateCommand(CashRegistryMainView);
+
+            _authenticationService.CashUpdated += _authenticationService_CashUpdated;
+        }
+
+        private void _authenticationService_CashUpdated(object sender, decimal newValue)
+        {
+            Cash = newValue;
         }
 
         public Window Parent { get; set; }
@@ -71,11 +78,14 @@ namespace KantorClient.Application.ViewModels
 
         public decimal Cash { get; set; }
 
+        public UserSession Session { get; set; }
+
         public async Task Load()
         {
             var loaded = await _settingService.LoadSettings();
 
-            Cash = _authenticationService.UserSession.Cash;
+            Session = _authenticationService.UserSession;
+            Cash = Session.Cash;
             await RatesMainVM.Load(loaded);
             await TransactionsMainVM.Load(loaded);
             await UsersMainVM.Load(loaded);

@@ -64,7 +64,7 @@
 
                     <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
                         <Label Content="Pracownik:" FontSize="16" Margin="0" />
-                        <Label Content="Jan Kowalski" FontSize="16" Margin="0" />
+                        <Label Content="{Binding Session.Name}" FontSize="16" Margin="0" />
                     </StackPanel>
                     
                     <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">

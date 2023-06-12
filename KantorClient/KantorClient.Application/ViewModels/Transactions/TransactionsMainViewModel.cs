@@ -137,6 +137,7 @@ namespace KantorClient.Application.ViewModels.Transactions
             {
                 model.Valid = false;
                 model.DeletionDate = DateTime.Now;
+                Refresh();
             }
         }
 
