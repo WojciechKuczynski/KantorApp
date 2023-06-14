@@ -25,18 +25,21 @@ namespace KantorClient.Application.ViewModels.CashRegistry
         public CashRegistryModel SelectedRegistry { get; set; }
         public ICashRegistryAddEditViewModel AddEditVM { get; set; }
         public ICashRegistryPlnViewModel SetPlnVM { get; set; }
-        public bool AddEditVisible { get; set; }
+        public bool AddEnabled => !FormOpened;
+        public bool EditEnabled => SelectedRegistry != null && !FormOpened; 
         public bool SetPlnVisible { get; set; }
-        public bool EditMode => AddEditVisible || SetPlnVisible;
+        public bool FormOpened { get; set; }
+        public bool EditMode => FormOpened || SetPlnVisible;
 
         public CashRegistryMainViewModel(ISettingsService settingsService, ICashRegistryService cashRegistryService, IAuthenticationService authenticationService)
         {
-            AddEditVisible = false;
+            FormOpened = false;
 
             AddRegistryCommand = new DelegateCommand(AddCashRegistry);
             RemoveRegistryCommand = new DelegateCommand<CashRegistryModel>(RemoveRegistry);
             RefreshCommand = new DelegateCommand(Refresh);
             SetPLNCommand = new DelegateCommand(SetPLN);
+            EditRegistryCommand = new DelegateCommand(EditCashRegistry);
 
             AddEditVM = new CashRegistryAddEditViewModel(this, settingsService);
             SetPlnVM = new CashRegistryPlnViewModel(this);
@@ -59,7 +62,7 @@ namespace KantorClient.Application.ViewModels.CashRegistry
 
         public void CancelAddEditWindow()
         {
-            AddEditVisible = false;
+            FormOpened = false;
         }
 
         public async Task EditRegistry(CashRegistryModel model)
@@ -99,15 +102,22 @@ namespace KantorClient.Application.ViewModels.CashRegistry
         public ICommand AddRegistryCommand { get; private set; }
         private void AddCashRegistry()
         {
-            AddEditVisible = true;
-            AddEditVM.LoadForm(SelectedRegistry);
+            AddEditVM.LoadForm();
+            FormOpened = true;
         }
+
+        public ICommand EditRegistryCommand { get; private set; }
+        private void EditCashRegistry()
+        {
+            AddEditVM.LoadForm(SelectedRegistry);
+            FormOpened = true;
+        }
+
 
         public ICommand RemoveRegistryCommand { get; private set; }
         private void RemoveRegistry(CashRegistryModel model)
         {
-            AddEditVisible = true;
-            AddEditVM.LoadForm(model);
+            _cashRegistryService.DeleteRegistry(model);
         }
 
         public ICommand RefreshCommand { get; private set; }

@@ -14,20 +14,13 @@
         </Grid.ColumnDefinitions>
 
         <Grid x:Name="GrayOut" Background="Gray" Opacity="0.8" Grid.ColumnSpan="2" Grid.Column="0" Panel.ZIndex="1"
-              Visibility="{Binding AddEditVisible,Converter={StaticResource BoolVisibilityConverter}}">
+              Visibility="{Binding FormOpened,Converter={StaticResource BoolVisibilityConverter}}">
         </Grid>
         <Grid x:Name="AddEditView" Background="Transparent" Margin="30" Panel.ZIndex="2"
-              Visibility="{Binding AddEditVisible,Converter={StaticResource BoolVisibilityConverter}}">
+              Visibility="{Binding FormOpened,Converter={StaticResource BoolVisibilityConverter}}">
             <local:RatesAddEditView DataContext="{Binding AddEditVM}" VerticalAlignment="Center" HorizontalAlignment="Center" />
         </Grid>
 
-        <!--<DataGrid>
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Start" />
-                <DataGridTextColumn Header="End" />
-                <DataGridTextColumn Header="Start" />
-            </DataGrid.Columns>
-        </DataGrid>-->
         <ListView Grid.Row="0" Grid.Column="0" Background="Transparent" ItemsSource="{Binding Rates,UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" VerticalAlignment="Stretch" 
                           SelectedItem="{Binding SelectedRate,UpdateSourceTrigger=PropertyChanged}">
             <ListView.Resources>
@@ -160,7 +153,8 @@
         <Border Grid.Column="1" CornerRadius="15,0,0,15"  Background="#11FFFFFF">
             <Grid>
                 <StackPanel Orientation="Vertical" >
-                    <Button Content="Dodaj Kurs" Margin="5" Command="{Binding AddRateCommand}" />
+                    <Button Content="Dodaj Kurs" Margin="5" Command="{Binding AddRateCommand}" IsEnabled="{Binding AddEnabled}" />
+                    <Button Content="Edytuj Kurs" Margin="5" Command="{Binding EditRateCommand}" IsEnabled="{Binding EditEnabled}" />
                     <Button Content="Odśwież Dane" Margin="5" Command="{Binding RefreshCommand}" />
                 </StackPanel>
             </Grid>

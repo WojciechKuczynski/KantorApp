@@ -33,7 +33,7 @@
               Visibility="{Binding EditMode,Converter={StaticResource BoolVisibilityConverter}}">
         </Grid>
         <Grid x:Name="AddEditView" Background="Transparent" Margin="30" Panel.ZIndex="2"
-              Visibility="{Binding AddEditVisible,Converter={StaticResource BoolVisibilityConverter}}">
+              Visibility="{Binding FormOpened,Converter={StaticResource BoolVisibilityConverter}}">
             <local:CashRegistryAddEditView DataContext="{Binding AddEditVM}" VerticalAlignment="Center" HorizontalAlignment="Center" />
         </Grid>
         <Grid x:Name="SetPlnView" Background="Transparent" Margin="30" Panel.ZIndex="2"
@@ -132,7 +132,8 @@
         <Border Grid.Column="1" CornerRadius="15,0,0,15"  Background="#11FFFFFF">
             <Grid>
                 <StackPanel Orientation="Vertical" >
-                    <Button Content="Dodaj Stan gotówki" Margin="5" Command="{Binding AddRegistryCommand}" IsEnabled="{Binding AddEditVisible, Converter={StaticResource BoolInverseConverter}}" />
+                    <Button Content="Dodaj Stan gotówki" Margin="5" Command="{Binding AddRegistryCommand}" IsEnabled="{Binding AddEnabled}" />
+                    <Button Content="Edytuj Stan gotówki" Margin="5" Command="{Binding EditRegistryCommand}" IsEnabled="{Binding EditEnabled}" />
                     <Button Content="Odśwież dane" Margin="5" Command="{Binding RefreshCommand}" />
                     <Button Content="Ustaw stan PLN" Margin="5" Command="{Binding SetPLNCommand}" />
                 </StackPanel>

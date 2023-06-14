@@ -24,7 +24,10 @@ namespace KantorClient.Application.ViewModels.Transfers
         
         public IMainWindowContainer Parent { get; set; }
         public ITransfersAddEditViewModel AddEditVM { get; set; }
-        public bool AddEditVisible { get; set; }
+        public bool AddEnabled => !FormOpened;
+        public bool EditEnabled => SelectedTransfer != null && !FormOpened;
+        public bool FormOpened { get; set; }
+
         public ObservableCollection<TransferModel> Transfers { get; set; }
         public TransferModel SelectedTransfer { get; set; }
 
@@ -38,6 +41,7 @@ namespace KantorClient.Application.ViewModels.Transfers
 
             AddTransferCommand = new DelegateCommand(AddTransfer);
             RefreshCommand = new DelegateCommand(Refresh);
+            EditTransferCommand = new DelegateCommand(EditTransfer);
 
         }
         public async Task<bool> AddTransfer(TransferModel model)
@@ -54,7 +58,7 @@ namespace KantorClient.Application.ViewModels.Transfers
 
         public void CancelForm()
         {
-            AddEditVisible = false;
+            FormOpened = false;
         }
 
         public async Task<bool> EditTransfer(TransferModel model)
@@ -88,10 +92,17 @@ namespace KantorClient.Application.ViewModels.Transfers
         public ICommand AddTransferCommand { get; private set; }
         private void AddTransfer()
         {
-            AddEditVM.LoadForm(SelectedTransfer);
-            AddEditVisible = true;
+            AddEditVM.LoadForm();
+            FormOpened = true;
         }
-        
+
+        public ICommand EditTransferCommand { get; private set; }
+        private void EditTransfer()
+        {
+            AddEditVM.LoadForm(SelectedTransfer);
+            FormOpened = true;
+        }
+
         public ICommand RefreshCommand { get; private set; }
         private async void Refresh()
         {

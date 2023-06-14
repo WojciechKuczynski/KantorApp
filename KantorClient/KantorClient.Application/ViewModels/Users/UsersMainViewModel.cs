@@ -29,7 +29,9 @@ namespace KantorClient.Application.ViewModels.Users
             AddUserCommand = new DelegateCommand(AddUser);
         }
         public IMainWindowContainer Parent { get; set; }
-        public bool AddEditVisible { get; set; }
+        public bool AddEnabled => !FormOpened;
+        public bool EditEnabled => SelectedUser != null && !FormOpened;
+        public bool FormOpened { get; set; }
         public IUsersAddEditViewModel AddEditVM { get; set; }
         public ObservableCollection<UserModel> Users { get; set; }
         public UserModel SelectedUser { get; set; }
@@ -44,7 +46,7 @@ namespace KantorClient.Application.ViewModels.Users
                 if (added != null)
                 {
                     Users.Add(added);
-                    AddEditVisible = false;
+                    FormOpened = false;
                 }
                 else
                 {
@@ -55,7 +57,7 @@ namespace KantorClient.Application.ViewModels.Users
 
         public void CancelAddEditWindow()
         {
-            AddEditVisible = false;
+            FormOpened = false;
         }
 
         public async Task EditUser(UserModel model)
@@ -72,7 +74,7 @@ namespace KantorClient.Application.ViewModels.Users
                     }
                     var old = Users.FirstOrDefault(x => x == model);
                     old = edited;
-                    AddEditVisible = false;
+                    FormOpened = false;
                 }
             }
             catch(Exception ex)
@@ -94,7 +96,14 @@ namespace KantorClient.Application.ViewModels.Users
         private void AddUser()
         {
             AddEditVM.LoadForm(SelectedUser);
-            AddEditVisible = true;
+            FormOpened = true;
+        }
+
+        public ICommand EditUserCommand { get; private set; }
+        private void EditUser()
+        {
+            AddEditVM.LoadForm(SelectedUser);
+            FormOpened = true;
         }
 
         #endregion
