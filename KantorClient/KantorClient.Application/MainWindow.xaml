@@ -79,7 +79,7 @@
 
                     <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
                         <Label Content="Stan gotówki:" FontSize="16" Margin="0" />
-                        <TextBox IsReadOnly="True" Width="100" Text="{Binding Cash,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalContentAlignment="Center" Margin="5" Background="#88FFFFFF" />
+                        <TextBox IsReadOnly="True" Width="100" Text="{Binding Cash,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay,StringFormat=# zł}"  VerticalContentAlignment="Center" Margin="5" Background="#88FFFFFF" />
                     </StackPanel>
                     
                 </Grid>

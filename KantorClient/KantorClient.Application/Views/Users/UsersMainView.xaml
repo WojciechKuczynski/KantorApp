@@ -105,7 +105,9 @@
         <Border Grid.Column="1" CornerRadius="15,0,0,15"  Background="#11FFFFFF">
             <Grid>
                 <StackPanel Orientation="Vertical" >
-                    <Button Content="Dodaj pracownika" Margin="5" Command="{Binding AddUserCommand}" />
+                    <Button Content="Dodaj pracownika" Margin="5" Command="{Binding AddUserCommand}" IsEnabled="{Binding AddEnabled}" />
+                    <Button Content="Edytuj pracownika" Margin="5" Command="{Binding EditUserCommand}" IsEnabled="{Binding EditEnabled}"/>
+                    <Button Content="Odśwież dane" Margin="5" Command="{Binding RefreshCommand}" />
                 </StackPanel>
             </Grid>
         </Border>

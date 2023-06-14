@@ -30,10 +30,10 @@
         </Grid.ColumnDefinitions>
 
         <Grid x:Name="GrayOut" Background="Gray" Opacity="0.8" Grid.ColumnSpan="2" Grid.Column="0" Panel.ZIndex="1"
-              Visibility="{Binding AddEditVisible,Converter={StaticResource BoolVisibilityConverter}}">
+              Visibility="{Binding FormOpened,Converter={StaticResource BoolVisibilityConverter}}">
         </Grid>
         <Grid x:Name="AddEditView" Background="Transparent" Margin="30" Panel.ZIndex="2"
-              Visibility="{Binding AddEditVisible,Converter={StaticResource BoolVisibilityConverter}}">
+              Visibility="{Binding FormOpened,Converter={StaticResource BoolVisibilityConverter}}">
             <local:TransfersAddEditView DataContext="{Binding AddEditVM}" VerticalAlignment="Center" HorizontalAlignment="Center" />
         </Grid>
 
@@ -128,7 +128,8 @@
         <Border Grid.Column="1" CornerRadius="15,0,0,15"  Background="#11FFFFFF">
             <Grid>
                 <StackPanel Orientation="Vertical" >
-                    <Button Content="Dodaj Transfer" Margin="5" Command="{Binding AddTransferCommand}" />
+                    <Button Content="Dodaj Transfer" Margin="5" Command="{Binding AddTransferCommand}" IsEnabled="{Binding AddEnabled}" />
+                    <Button Content="Edytuj Transfer" Margin="5" Command="{Binding EditTransferCommand}" IsEnabled="{Binding EditEnabled}" />
                     <Button Content="Odśwież Dane" Margin="5" Command="{Binding RefreshCommand}" />
                 </StackPanel>
             </Grid>

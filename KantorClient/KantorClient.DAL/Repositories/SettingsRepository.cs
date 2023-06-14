@@ -63,7 +63,7 @@ namespace KantorClient.DAL.Repositories
                 await context.SaveChangesAsync();
                 var res = await context.Rates
                     .Include(x => x.Currency)
-                    .Where(x => x.Valid && x.StartDate <= DateTime.UtcNow && x.EndDate >= DateTime.UtcNow).ToListAsync();
+                    .Where(x => x.Valid && x.EndDate >= DateTime.UtcNow).ToListAsync();
                 return res;
             }
         }

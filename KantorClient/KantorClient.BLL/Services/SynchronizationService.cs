@@ -16,8 +16,9 @@ namespace KantorClient.BLL.Services
 
         private readonly ISynchronizationRepository _synchronizationRepository;
         private readonly IAuthenticationService _authenticationService;
+        private readonly ISettingsService _settingsService;
 
-        public SynchronizationService(ISynchronizationRepository synchronizationRepository, IAuthenticationService authenticationService)
+        public SynchronizationService(ISynchronizationRepository synchronizationRepository, IAuthenticationService authenticationService, ISettingsService settingsService)
         {
             _rateSynchronization = new BackgroundWorker();
             _transactionSynchronization = new BackgroundWorker();
@@ -29,7 +30,7 @@ namespace KantorClient.BLL.Services
 
             _synchronizationRepository = synchronizationRepository;
             _authenticationService = authenticationService;
-
+            _settingsService = settingsService;
         }
 
         private void TransferSynchronization_DoWork(object? sender, DoWorkEventArgs e)
@@ -41,6 +42,7 @@ namespace KantorClient.BLL.Services
                 try
                 {
                     _synchronizationRepository.SynchronizeTransfers(synchroKey).GetAwaiter();
+                    _settingsService.LoadRates().GetAwaiter();
                     Thread.Sleep(arg);
                 }
                 catch (Exception ex)
@@ -78,6 +80,7 @@ namespace KantorClient.BLL.Services
             {
                 try
                 {
+                    // wysyłanie ratów
                     _synchronizationRepository.SynchronizeRate(synchroKey).GetAwaiter();
                     Thread.Sleep(arg);
                 }

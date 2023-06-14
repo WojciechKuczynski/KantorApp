@@ -50,8 +50,7 @@ namespace KantorClient.BLL.Services
             {
                 Currencies = await LoadCurrencies();
                 await _settingsRepository.AddCurrencies(Currencies);
-                var newRates = await LoadRates();
-                Rates = await _settingsRepository.AddRates(newRates); // Co z tym?
+                await LoadRates();
                 await GetNBPRates();
                 return true;
             }
@@ -74,10 +73,10 @@ namespace KantorClient.BLL.Services
             return currencyList;
         }
 
-        private async Task<List<Rate>> LoadRates()
+        public async Task LoadRates()
         {
             var rates = await _settingsRepository.GetRates(_authenticationService.UserSession.SynchronizationKey);
-            return rates;
+            Rates = await _settingsRepository.AddRates(rates); // Co z tym?
         }
     }
 }

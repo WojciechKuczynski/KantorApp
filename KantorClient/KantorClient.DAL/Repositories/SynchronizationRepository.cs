@@ -1,21 +1,13 @@
 ﻿using KantorClient.DAL.Repositories.Interfaces;
 using KantorClient.DAL.ServerCommunication;
-using KantorClient.Model;
-using KantorServer.Application.Requests;
 using KantorServer.Application.Requests.Rates;
 using KantorServer.Application.Requests.Transactions;
 using KantorServer.Application.Requests.Transfers;
-using KantorServer.Application.Responses;
 using KantorServer.Application.Responses.Rates;
 using KantorServer.Application.Responses.Transactions;
 using KantorServer.Application.Responses.Transfers;
 using KantorServer.Model.Dtos;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KantorClient.DAL.Repositories
 {

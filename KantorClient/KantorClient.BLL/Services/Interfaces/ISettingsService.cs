@@ -18,6 +18,7 @@ namespace KantorClient.BLL.Services.Interfaces
         public Task<Rate> AddRate(Rate rate);
         public Task<Rate> EditRate(Rate rate);
         public Task<bool> RemoveRate(Rate rate);
+        public Task LoadRates();
 
         public Task GetNBPRates();
     }
