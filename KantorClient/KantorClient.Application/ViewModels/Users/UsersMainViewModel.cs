@@ -27,11 +27,14 @@ namespace KantorClient.Application.ViewModels.Users
             AddEditVM.Parent = this;
 
             AddUserCommand = new DelegateCommand(AddUser);
+            RefreshCommand = new DelegateCommand(Refresh);
+            EditUserCommand = new DelegateCommand(EditUser);
         }
         public IMainWindowContainer Parent { get; set; }
         public bool AddEnabled => !FormOpened;
         public bool EditEnabled => SelectedUser != null && !FormOpened;
         public bool FormOpened { get; set; }
+        public bool Loading { get; set; }
         public IUsersAddEditViewModel AddEditVM { get; set; }
         public ObservableCollection<UserModel> Users { get; set; }
         public UserModel SelectedUser { get; set; }
@@ -64,7 +67,6 @@ namespace KantorClient.Application.ViewModels.Users
         {
             try
             {
-
                 if (model != null)
                 {
                     var edited = await _usersService.EditUser(model);
@@ -104,6 +106,21 @@ namespace KantorClient.Application.ViewModels.Users
         {
             AddEditVM.LoadForm(SelectedUser);
             FormOpened = true;
+        }
+
+        public ICommand RefreshCommand { get; private set; }
+        private async void Refresh()
+        {
+            try
+            {
+                Loading = true;
+                var users = await _usersService.GetUsers();
+                Users = new ObservableCollection<UserModel>(users);
+            }
+            finally
+            {
+                Loading = false;
+            }
         }
 
         #endregion

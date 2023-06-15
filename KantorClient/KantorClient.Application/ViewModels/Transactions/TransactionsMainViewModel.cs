@@ -36,6 +36,7 @@ namespace KantorClient.Application.ViewModels.Transactions
         public ITransactionsAddEditViewModel AddEditVM { get; set; }
         
         public bool AddEditVisible { get; set; }
+        public bool Loading { get; set; }
         
         public ObservableCollection<TransactionModel> Transactions { get; set; }
 
@@ -112,7 +113,15 @@ namespace KantorClient.Application.ViewModels.Transactions
         public ICommand RefreshCommand { get; private set; }
         private async void Refresh()
         {
-            await RefreshTransactions();
+            try
+            {
+                Loading = true;
+                await RefreshTransactions();
+            }
+            finally
+            {
+                Loading = false;
+            }
         }
 
         public ICommand AddTransactionCommand { get; private set; }

@@ -25,6 +25,7 @@ namespace KantorClient.Application.ViewModels.Rates
         public bool AddEnabled => !FormOpened;
         public bool EditEnabled => SelectedRate != null && !FormOpened;
         public bool FormOpened { get; set; }
+        public bool Loading { get; set; }
 
         public ObservableCollection<RateModel> Rates { get; set; }
 
@@ -90,10 +91,18 @@ namespace KantorClient.Application.ViewModels.Rates
         public ICommand RefreshCommand { get; private set; }
         private void Refresh()
         {
-            var rates = _settingsService?.Rates?.Select(x => new RateModel(x));
-            if (rates != null)
+            try
             {
-                Rates = new ObservableCollection<RateModel>(rates);
+                Loading = true;
+                var rates = _settingsService?.Rates?.Select(x => new RateModel(x));
+                if (rates != null)
+                {
+                    Rates = new ObservableCollection<RateModel>(rates);
+                }
+            }
+            finally
+            {
+                Loading = false;
             }
         }
 

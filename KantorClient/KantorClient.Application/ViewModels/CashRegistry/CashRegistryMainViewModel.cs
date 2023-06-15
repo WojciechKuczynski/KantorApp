@@ -30,6 +30,7 @@ namespace KantorClient.Application.ViewModels.CashRegistry
         public bool SetPlnVisible { get; set; }
         public bool FormOpened { get; set; }
         public bool EditMode => FormOpened || SetPlnVisible;
+        public bool Loading { get; set; }
 
         public CashRegistryMainViewModel(ISettingsService settingsService, ICashRegistryService cashRegistryService, IAuthenticationService authenticationService)
         {
@@ -123,8 +124,16 @@ namespace KantorClient.Application.ViewModels.CashRegistry
         public ICommand RefreshCommand { get; private set; }
         private async void Refresh()
         {
-            var registries = await _cashRegistryService.GetRegistries();
-            Registries = new ObservableCollection<CashRegistryModel>(registries);
+            try
+            {
+                Loading = true;
+                var registries = await _cashRegistryService.GetRegistries();
+                Registries = new ObservableCollection<CashRegistryModel>(registries);
+            }
+            finally
+            {
+                Loading = false;
+            }
         }
 
         public ICommand SetPLNCommand { get; private set; }
