@@ -27,6 +27,7 @@ namespace KantorClient.Application.ViewModels.Transfers
         public bool AddEnabled => !FormOpened;
         public bool EditEnabled => SelectedTransfer != null && !FormOpened;
         public bool FormOpened { get; set; }
+        public bool Loading { get; set; }
 
         public ObservableCollection<TransferModel> Transfers { get; set; }
         public TransferModel SelectedTransfer { get; set; }
@@ -106,8 +107,16 @@ namespace KantorClient.Application.ViewModels.Transfers
         public ICommand RefreshCommand { get; private set; }
         private async void Refresh()
         {
-            TransfersCollection = await _transfersService.GetLocalTransfers();
-            Transfers = new ObservableCollection<TransferModel>(TransfersCollection);
+            try
+            {
+                Loading = true;
+                TransfersCollection = await _transfersService.GetLocalTransfers();
+                Transfers = new ObservableCollection<TransferModel>(TransfersCollection);
+            }
+            finally
+            {
+                Loading = false;
+            }
         }
     }
 }
