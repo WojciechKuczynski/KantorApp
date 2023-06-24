@@ -1,4 +1,5 @@
 ﻿using KantorClient.BLL.Services.Interfaces;
+using KantorClient.Common.Exceptions;
 using KantorClient.DAL.Repositories.Interfaces;
 using System.ComponentModel;
 
@@ -31,6 +32,20 @@ namespace KantorClient.BLL.Services
             _synchronizationRepository = synchronizationRepository;
             _authenticationService = authenticationService;
             _settingsService = settingsService;
+
+            _authenticationService.OnlineModeChanged += AuthenticationService_OnlineModeChanged;
+        }
+
+        private void AuthenticationService_OnlineModeChanged(object sender, bool newValue)
+        {
+            if (newValue)
+            {
+                StartSynchronization();
+            }
+            else
+            {
+                StopSynchronization();
+            }
         }
 
         private void TransferSynchronization_DoWork(object? sender, DoWorkEventArgs e)
@@ -44,6 +59,10 @@ namespace KantorClient.BLL.Services
                     _synchronizationRepository.SynchronizeTransfers(synchroKey).GetAwaiter();
                     _settingsService.LoadRates().GetAwaiter();
                     Thread.Sleep(arg);
+                }
+                catch (ServerNotReachedException ex)
+                {
+                    _authenticationService.SetOnlineMode(false);
                 }
                 catch (Exception ex)
                 {
@@ -64,6 +83,10 @@ namespace KantorClient.BLL.Services
                     _synchronizationRepository.SynchronizeTransactions(synchroKey).GetAwaiter();
                     Thread.Sleep(arg);
                 }
+                catch (ServerNotReachedException ex)
+                {
+                    _authenticationService.SetOnlineMode(false);
+                }
                 catch (Exception ex)
                 {
 
@@ -82,7 +105,13 @@ namespace KantorClient.BLL.Services
                 {
                     // wysyłanie ratów
                     _synchronizationRepository.SynchronizeRate(synchroKey).GetAwaiter();
+                    // pobieranie ratów
+                    _settingsService.LoadRates();
                     Thread.Sleep(arg);
+                }
+                catch (ServerNotReachedException ex)
+                {
+                    _authenticationService.SetOnlineMode(false);
                 }
                 catch (Exception ex)
                 {
@@ -93,14 +122,46 @@ namespace KantorClient.BLL.Services
 
         public void StartSynchronization()
         {
-            _transactionSynchro = true;
-            _transactionSynchronization.RunWorkerAsync(1 * 60 * 1000); // co 1 minut.
+            while (_transactionSynchronization.IsBusy || _transferSynchronization.IsBusy || _rateSynchronization.IsBusy)
+            {
+                Thread.Sleep(1000 * 5);
+            }
 
-            _transferSynchro = true;
-            _transferSynchronization.RunWorkerAsync(1 * 60 * 1000); // co 1 minut.
+            if (!_transferSynchro)
+            {
+                _transactionSynchro = true;
+                _transactionSynchronization.RunWorkerAsync(1 * 60 * 1000); // co 1 minut.
+            }
 
-            _rateSynchro = true;
-            _rateSynchronization.RunWorkerAsync(5 * 60 * 1000);
+            if (!_transferSynchro)
+            {
+                _transferSynchro = true;
+                _transferSynchronization.RunWorkerAsync(1 * 60 * 1000); // co 1 minut.
+            }
+
+            if (!_rateSynchro)
+            {
+                _rateSynchro = true;
+                _rateSynchronization.RunWorkerAsync(5 * 60 * 1000);
+            }
+        }
+
+        private void StopSynchronization()
+        {
+            if (_transactionSynchro)
+            {
+                _transactionSynchro = false;
+            }
+
+            if (_transferSynchro)
+            {
+                _transferSynchro = false;
+            }
+
+            if (_rateSynchro)
+            {
+                _rateSynchro = false;
+            }
         }
     }
 }

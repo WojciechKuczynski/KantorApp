@@ -1,4 +1,5 @@
-﻿using KantorClient.DAL.Repositories.Interfaces;
+﻿using KantorClient.Common.Exceptions;
+using KantorClient.DAL.Repositories.Interfaces;
 using KantorClient.DAL.ServerCommunication;
 using KantorServer.Application.Requests.Rates;
 using KantorServer.Application.Requests.Transactions;
@@ -47,6 +48,10 @@ namespace KantorClient.DAL.Repositories
                             await dataContext.SaveChangesAsync();
                         }
                     }
+                }
+                catch (ServerNotReachedException ex)
+                {
+                    throw ex;
                 }
                 catch (Exception ex)
                 {
@@ -106,6 +111,10 @@ namespace KantorClient.DAL.Repositories
                         }
                     }
                 }
+                catch(ServerNotReachedException ex)
+                {
+                    throw ex;
+                }
                 catch (Exception ex)
                 {
 
@@ -163,6 +172,10 @@ namespace KantorClient.DAL.Repositories
                         }
                     }
                 }
+                catch (ServerNotReachedException ex)
+                {
+                    throw ex;
+                }
                 catch (Exception ex)
                 {
 
@@ -174,6 +187,10 @@ namespace KantorClient.DAL.Repositories
         {
             var requestContext = new RequestContext("https://localhost:7254/transactions/synchronize", RestSharp.Method.Post);
             var response = await ServerConnectionHandler.ExecuteFunction<SynchronizeTransactionRequest, SynchronizeTransactionResponse>(requestContext, request);
+            if (response == null)
+            {
+                throw new ServerNotReachedException();
+            }
             return response;
         }
 
@@ -181,6 +198,10 @@ namespace KantorClient.DAL.Repositories
         {
             var requestContext = new RequestContext("https://localhost:7254/transfers/synchronize", RestSharp.Method.Post);
             var response = await ServerConnectionHandler.ExecuteFunction<SynchronizeTransferRequest, SynchronizeTransferResponse>(requestContext, request);
+            if (response == null)
+            {
+                throw new ServerNotReachedException();
+            }
             return response;
         }
 
@@ -188,6 +209,10 @@ namespace KantorClient.DAL.Repositories
         {
             var requestContext = new RequestContext("https://localhost:7254/rates/addRate", RestSharp.Method.Post);
             var response = await ServerConnectionHandler.ExecuteFunction<AddEditRateRequest, AddEditRateResponse>(requestContext, request);
+            if (response == null)
+            {
+                throw new ServerNotReachedException();
+            }
             return response;
         }
     }

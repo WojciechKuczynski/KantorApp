@@ -10,5 +10,6 @@ namespace KantorClient.Application.ViewModels.Interfaces
     {
         IMainWindowContainer Parent { get; set; }
         Task Load(bool loaded = false);
+        Task OnShow();
     }
 }

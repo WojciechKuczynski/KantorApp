@@ -105,6 +105,7 @@ namespace KantorClient.Application.ViewModels.CashRegistry
         {
             AddEditVM.LoadForm();
             FormOpened = true;
+            Refresh();
         }
 
         public ICommand EditRegistryCommand { get; private set; }
@@ -112,6 +113,7 @@ namespace KantorClient.Application.ViewModels.CashRegistry
         {
             AddEditVM.LoadForm(SelectedRegistry);
             FormOpened = true;
+            Refresh();
         }
 
 
@@ -151,6 +153,12 @@ namespace KantorClient.Application.ViewModels.CashRegistry
                 
             }
             SetPlnVisible = false;
+            return Task.CompletedTask;
+        }
+
+        public Task OnShow()
+        {
+            Refresh();
             return Task.CompletedTask;
         }
     }

@@ -9,11 +9,13 @@ namespace KantorClient.BLL.Services
     {
         private readonly ITransactionsRepository _transactionsRepository;
         private readonly IAuthenticationService _authenticationService;
+        private readonly ICashRegistryService _cashRegistryService;
 
-        public TransactionsService(ITransactionsRepository transactionsRepository, IAuthenticationService authenticationService)
+        public TransactionsService(ITransactionsRepository transactionsRepository, IAuthenticationService authenticationService, ICashRegistryService cashRegistryService)
         {
             _transactionsRepository = transactionsRepository;
             _authenticationService = authenticationService;
+            _cashRegistryService = cashRegistryService;
         }
 
         public async Task<TransactionModel> AddTransaction(TransactionModel transaction, UserSession userSession)
@@ -89,9 +91,11 @@ namespace KantorClient.BLL.Services
             {
                 case Model.Consts.TransactionType.Buy:
                     await _authenticationService.AddPln((-1) * trans.FinalValue);
+                    await _cashRegistryService.AddCurrency(trans.Currency, trans.Quantity);
                     break;
                 case Model.Consts.TransactionType.Sell:
                     await _authenticationService.AddPln(trans.FinalValue);
+                    await _cashRegistryService.AddCurrency(trans.Currency, (-1) * trans.Quantity);
                     break;
             }
         }

@@ -31,12 +31,14 @@ namespace KantorClient.Application.ViewModels.Transactions
 
 
         private readonly ISettingsService _settingsService;
+        private readonly ICashRegistryService _cashRegistryService;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public TransactionsAddEditViewModel(ISettingsService settingsService)
+        public TransactionsAddEditViewModel(ISettingsService settingsService, ICashRegistryService cashRegistryService)
         {
             _settingsService = settingsService;
+            _cashRegistryService = cashRegistryService;
 
             SelectedType = TransactionType.Sell;
 
@@ -54,6 +56,8 @@ namespace KantorClient.Application.ViewModels.Transactions
         public decimal NbpRate { get; set; }
 
         public bool NewTransaction { get; set; }
+
+        public decimal CurrencyAmount { get; set; }
 
         public decimal Amount
         {
@@ -108,7 +112,7 @@ namespace KantorClient.Application.ViewModels.Transactions
             }
         }
 
-        public string TransactionText { get; set; }
+        public string TransactionText => SelectedType == TransactionType.Sell ? "TRANSAKCJA SPRZEDAŻY" : "TRANSAKCJA KUPNA";
 
         public CurrencyModel SelectedCurrency
         {
@@ -116,7 +120,10 @@ namespace KantorClient.Application.ViewModels.Transactions
             set
             {
                 _selectedCurrency = value;
-                AssignRateForCurrency(value);
+                if (value != null)
+                {
+                    AssignRateForCurrency(value);
+                }
             }
         }
 
@@ -132,7 +139,10 @@ namespace KantorClient.Application.ViewModels.Transactions
             set
             {
                 _selectedRate = value;
-                ChangeRate = SelectedType == TransactionType.Sell ? value.DefaultSellRate : value.DefaultBuyRate;
+                if (value != null)
+                {
+                    ChangeRate = SelectedType == TransactionType.Sell ? value.DefaultSellRate : value.DefaultBuyRate;
+                }
             }
         }
 
@@ -179,10 +189,18 @@ namespace KantorClient.Application.ViewModels.Transactions
             else
             {
                 NewTransaction = true;
+                SelectedCurrency = null;
+                SelectedType = TransactionType.Sell;
+                SelectedRate = null;
+                NbpRate = 0;
+                CurrencyAmount = 0;
+                Amount = 0;
+                ChangeRate = 0;
+                FinalValue = 0;
             }
         }
 
-        private void AssignRateForCurrency(CurrencyModel currency)
+        private async Task AssignRateForCurrency(CurrencyModel currency)
         {
             var rate = _settingsService.Rates.FirstOrDefault(x => x.Currency.Id == currency.Id);
             var nbpRate = _settingsService.NbpRates?.FirstOrDefault(x => x.Currency.Id == currency.Id);
@@ -193,9 +211,10 @@ namespace KantorClient.Application.ViewModels.Transactions
 
             if (rate == null)
             {
-                MessageBox.Show("Nie ma Ratów dla tej waluty");
+                MessageBox.Show("Nie ma Kursów dla tej waluty");
                 return;
             }
+            CurrencyAmount = await _cashRegistryService.GetAmountForCurrency(currency);
             SelectedRate = new RateModel(rate);
         }
 
@@ -288,15 +307,13 @@ namespace KantorClient.Application.ViewModels.Transactions
         public ICommand SellCommand { get; private set; }
         private void SelectSell()
         {
-            SelectedType = TransactionType.Sell;
-            TransactionText = "TRANSAKCJA SPRZEDAŻY";
+            SelectedType = TransactionType.Sell; 
         }
 
         public ICommand BuyCommand { get; private set; }
         private void SelectBuy()
         {
             SelectedType = TransactionType.Buy;
-            TransactionText = "TRANSAKCJA KUPNA";
         }
 
         #endregion

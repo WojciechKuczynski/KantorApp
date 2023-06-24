@@ -1,6 +1,7 @@
 ﻿using KantorClient.BLL.Services.Interfaces;
 using KantorClient.Common.Events;
 using KantorClient.DAL.Repositories.Interfaces;
+using KantorClient.DAL.ResponseArgs;
 using KantorClient.Model;
 
 namespace KantorClient.BLL.Services
@@ -10,6 +11,7 @@ namespace KantorClient.BLL.Services
         private readonly IUserRepository _userRepository;
 
         public event CashUpdated CashUpdated;
+        public event OnlineModeChanged OnlineModeChanged;
 
         public UserSession UserSession { get; private set; }
 
@@ -18,10 +20,12 @@ namespace KantorClient.BLL.Services
             _userRepository = userRepository;
         }
 
-        public async Task<bool> LogIn(string username, string password)
+        public async Task<LoginResponseArgs> LogIn(string username, string password, bool offlineMode)
         {
-            UserSession = await _userRepository.UserLogin(username, password);
-            return UserSession != null;
+            var response = await _userRepository.UserLogin(username, password);
+            UserSession = response.LoggedSession;
+            SetOnlineMode(response.LoggedSession != null);
+            return response;
         }
 
         public async Task<bool> SetPln(decimal value)
@@ -31,10 +35,16 @@ namespace KantorClient.BLL.Services
             CashUpdated?.Invoke(this, value);
             return UserSession != null;
         }
-
+        
         public async Task<bool> AddPln(decimal value)
         {
             return await SetPln(UserSession.Cash + value);
+        }
+
+        public void SetOnlineMode(bool mode)
+        {
+            var code = this.GetHashCode();
+            this.OnlineModeChanged?.Invoke(this, mode);
         }
     }
 }

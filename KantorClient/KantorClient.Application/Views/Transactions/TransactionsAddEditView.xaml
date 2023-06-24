@@ -85,7 +85,7 @@
 
             <Label Grid.Row="4" Grid.Column="0" Content="Ilość" />
             <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Amount,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <TextBox Grid.Row="4" Grid.Column="2" IsReadOnly="True" Text="Ilość na stanie" />
+            <TextBox Grid.Row="4" Grid.Column="2" IsReadOnly="True" Text="{Binding CurrencyAmount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             
             <Label Grid.Row="5" Grid.Column="0" Content="Wartość"/>
             <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding FinalValue ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />

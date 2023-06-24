@@ -44,7 +44,7 @@
         </Border>
             <Grid Grid.Column="1" Grid.Row="1" >
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="80" />
+                    <RowDefinition Height="95" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="50" />
                 </Grid.RowDefinitions>
@@ -69,7 +69,19 @@
                     
                     <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
                         <Label Content="Status:" FontSize="16" Margin="0" />
-                        <Label Content="Online" Foreground="Green" FontSize="16" Margin="0" />
+                        <Label Content="{Binding OnlineText,Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" FontSize="16" Margin="0">
+                            <Label.Style>
+                                <Style TargetType="Label">
+                                    <Setter Property="Foreground" Value="Red" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding OnlineMode, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                            <Setter Property="Foreground" Value="Green" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Label.Style>
+                        </Label>
+                        <Button Content="Zaloguj" Padding="2" Width="90" Visibility="{Binding OnlineMode,Converter={StaticResource BoolVisibilityInverseConverter}}" Command="{Binding LoginCommand}" />
                     </StackPanel>
 
                     <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">

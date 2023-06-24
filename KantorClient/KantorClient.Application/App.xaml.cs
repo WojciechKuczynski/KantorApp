@@ -30,8 +30,7 @@ namespace KantorClient.Application
 
             var mVM = _modules.Container.GetInstance<IMainWindowViewModel>();
             var authenticationService = _modules.Container.GetInstance<IAuthenticationService>();
-            var synchronizationService = _modules.Container.GetInstance<ISynchronizationService>();
-            LoginView login = new LoginView(mVM, authenticationService, synchronizationService);
+            var login = new LoginView(mVM, authenticationService, true);
             do
             {
                 login.ShowDialog();

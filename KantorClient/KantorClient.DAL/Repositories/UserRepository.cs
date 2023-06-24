@@ -1,4 +1,5 @@
 ﻿using KantorClient.DAL.Repositories.Interfaces;
+using KantorClient.DAL.ResponseArgs;
 using KantorClient.DAL.ServerCommunication;
 using KantorClient.Model;
 using KantorServer.Application.Requests;
@@ -61,7 +62,7 @@ namespace KantorClient.DAL.Repositories
             return sessionInDb;
         }
 
-        public async Task<Model.UserSession> UserLogin(string username, string password)
+        public async Task<LoginResponseArgs> UserLogin(string username, string password)
         {
             var request = new LoginRequest()
             {
@@ -73,7 +74,20 @@ namespace KantorClient.DAL.Repositories
             var response = await ServerConnectionHandler.ExecuteFunction<LoginRequest, LoginResponse>(requestContext, request);
             if (response == null)
             {
-                return null;
+                return new LoginResponseArgs
+                {
+                    Error = true,
+                    ErrorMessage = "Nie można połączyć się z serwerem!",
+                };
+            }
+
+            if (response.ResponseType == KantorServer.Model.Consts.ServerResponseType.Error)
+            {
+                return new LoginResponseArgs
+                {
+                    Error = true,
+                    ErrorMessage = response.ResponseText,
+                };
             }
 
             var session = new Model.UserSession() { LastAction = DateTime.Now, StartDate = DateTime.Now, SynchronizationKey = response.SynchronizationKey, UserId = response.UserId, Name = response.Name };
@@ -88,7 +102,11 @@ namespace KantorClient.DAL.Repositories
                 await context.UserSessions.AddAsync(session);
                 await context.SaveChangesAsync();
             }
-            return session;
+            return new LoginResponseArgs
+            {
+                Error = false,
+                LoggedSession = session,
+            };
         }
     }
 }

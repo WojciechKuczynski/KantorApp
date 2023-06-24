@@ -1,6 +1,7 @@
 ﻿using KantorClient.BLL.Models;
 using KantorClient.BLL.Services.Interfaces;
 using KantorClient.DAL.Repositories.Interfaces;
+using KantorClient.Model;
 
 namespace KantorClient.BLL.Services
 {
@@ -11,6 +12,18 @@ namespace KantorClient.BLL.Services
         public CashRegistryService(ICashRegistryRepository cashRegistryRepository)
         {
             _cashRegistryRepository = cashRegistryRepository;
+        }
+
+        public async Task<bool> AddCurrency(Currency currency, decimal value)
+        {
+            var registry = await GetRegistryForCurrency(currency);
+            if (registry != null)
+            {
+                registry.Quantity += value;
+                await EditRegistry(registry);
+                return true;
+            }
+            return false;
         }
 
         public async Task<CashRegistryModel> AddRegistry(CashRegistryModel registry)
@@ -51,6 +64,18 @@ namespace KantorClient.BLL.Services
             return null;
         }
 
+        public async Task<decimal> GetAmountForCurrency(CurrencyModel currency)
+        {
+            try
+            {
+                var entity = currency.Map();
+                var registry = await _cashRegistryRepository.GetRegistryForCurrency(entity);
+                return registry.Quantity;
+            }
+            catch { }
+            return 0;
+        }
+
         public async Task<List<CashRegistryModel>> GetRegistries()
         {
             try
@@ -69,6 +94,26 @@ namespace KantorClient.BLL.Services
                 //TODO: logging
             }
             return new List<CashRegistryModel>();
+        }
+
+        private async Task<CashRegistryModel> GetRegistryForCurrency(Currency currency)
+        {
+            try
+            {
+                var registry = await _cashRegistryRepository.GetRegistryForCurrency(currency);
+                if (registry == null)
+                {
+                    return null;
+                }
+
+                return new CashRegistryModel(registry);
+            }
+            catch(Exception ex) 
+            {
+
+            }
+
+            return null;
         }
     }
 }

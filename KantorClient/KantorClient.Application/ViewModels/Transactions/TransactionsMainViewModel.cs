@@ -150,6 +150,12 @@ namespace KantorClient.Application.ViewModels.Transactions
             }
         }
 
+        public Task OnShow()
+        {
+            Refresh();
+            return Task.CompletedTask;
+        }
+
 
         #endregion
     }

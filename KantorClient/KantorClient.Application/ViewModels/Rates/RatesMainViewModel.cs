@@ -1,9 +1,7 @@
 ﻿using KantorClient.Application.ViewModels.Interfaces;
 using KantorClient.Application.ViewModels.Interfaces.Rates;
-using KantorClient.Application.Views.Rates;
 using KantorClient.BLL.Models;
 using KantorClient.BLL.Services.Interfaces;
-using KantorClient.Model;
 using Prism.Commands.Ex;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -42,7 +40,7 @@ namespace KantorClient.Application.ViewModels.Rates
         }
         public async Task Load(bool loaded)
         {
-            if (loaded) 
+            if (loaded)
             {
                 Rates = new ObservableCollection<RateModel>(_settingsService.Rates.Select(x => new RateModel(x)));
             }
@@ -130,6 +128,12 @@ namespace KantorClient.Application.ViewModels.Rates
                 rateInList = new RateModel(rate);
                 FormOpened = false;
             }
+        }
+
+        public Task OnShow()
+        {
+            Refresh();
+            return Task.CompletedTask;
         }
     }
 }

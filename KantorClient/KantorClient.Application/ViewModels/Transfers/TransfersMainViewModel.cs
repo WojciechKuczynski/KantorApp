@@ -118,5 +118,11 @@ namespace KantorClient.Application.ViewModels.Transfers
                 Loading = false;
             }
         }
+
+        public Task OnShow()
+        {
+            Refresh();
+            return Task.CompletedTask;
+        }
     }
 }

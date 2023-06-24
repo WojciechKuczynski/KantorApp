@@ -1,18 +1,8 @@
 ﻿using KantorClient.Application.ViewModels.Interfaces;
 using KantorClient.BLL.Services.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace KantorClient.Application.Views
 {
@@ -23,14 +13,15 @@ namespace KantorClient.Application.Views
     {
         public readonly IMainWindowViewModel _mainWindowVM;
         private readonly IAuthenticationService _authenticationService;
-        private readonly ISynchronizationService _synchronizationService;
 
-        public LoginView(IMainWindowViewModel mwVM, IAuthenticationService authenticationService, ISynchronizationService synchronizationService)
+        private bool _loginMode;
+
+        public LoginView(IMainWindowViewModel mwVM, IAuthenticationService authenticationService, bool loginMode)
         {
             InitializeComponent();
             _mainWindowVM = mwVM;
             _authenticationService = authenticationService;
-            _synchronizationService = synchronizationService;
+            _loginMode = loginMode;
         }
 
         private void Cancel(object sender, RoutedEventArgs e)
@@ -43,27 +34,29 @@ namespace KantorClient.Application.Views
             try
             {
                 LoginButton.IsEnabled = false;
-                var loggedIn = await _authenticationService.LogIn(LoginTxt.Text, PasswordTxt.Password);
-                if (!loggedIn)
+                var loggedResponseArgs = await _authenticationService.LogIn(LoginTxt.Text, PasswordTxt.Password, false);
+                if (loggedResponseArgs.Error)
                 {
-                    MessageBox.Show("Niepoprawny użytkownik lub hasło!");
+                    MessageBox.Show(loggedResponseArgs.ErrorMessage);
                     LoginButton.IsEnabled = true;
                     return;
                 }
 
-                var mainWindow = new MainWindow();
-                _mainWindowVM.Parent = mainWindow;
-                await _mainWindowVM.Load();
-                mainWindow.DataContext = _mainWindowVM;
+                if (_loginMode)
+                {
+                    var mainWindow = new MainWindow();
+                    _mainWindowVM.Parent = mainWindow;
+                    await _mainWindowVM.Load();
+                    mainWindow.DataContext = _mainWindowVM;
+                    mainWindow.Show();
+                }
                 LoginTxt.Text = string.Empty;
                 PasswordTxt.Password = string.Empty;
-                _synchronizationService.StartSynchronization();
                 this.Hide();
-                mainWindow.ShowDialog();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Niepoprawny użytkownik lub hasło!");
+                MessageBox.Show("Wystąpił błąd podczas logowania!" + "\n" + ex.GetBaseException());
             }
             LoginButton.IsEnabled = true;
         }

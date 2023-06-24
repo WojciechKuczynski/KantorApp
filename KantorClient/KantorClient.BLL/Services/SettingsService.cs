@@ -1,6 +1,8 @@
 ﻿using KantorClient.BLL.Services.Interfaces;
+using KantorClient.Common.Exceptions;
 using KantorClient.DAL.Repositories.Interfaces;
 using KantorClient.Model;
+using SQLitePCL;
 
 namespace KantorClient.BLL.Services
 {
@@ -14,12 +16,20 @@ namespace KantorClient.BLL.Services
             _authenticationService = authenticationService;
             _settingsRepository = settingsRepository;
 
+            _authenticationService.OnlineModeChanged += _authenticationService_OnlineModeChanged;
+
+        }
+
+        private void _authenticationService_OnlineModeChanged(object sender, bool newValue)
+        {
+            OnlineMode = newValue;
         }
 
         public List<Currency> Currencies { get; private set; }
 
         public List<Rate> Rates { get; private set; }
         public List<Rate> NbpRates { get; set; }
+        public bool OnlineMode { get; set; }
 
         public async Task<Rate> AddRate(Rate rate)
         {
@@ -54,10 +64,12 @@ namespace KantorClient.BLL.Services
                 await GetNBPRates();
                 return true;
             }
-            catch (Exception ex)
+            catch (ServerNotReachedException)
             {
-                return false;
+                _authenticationService.SetOnlineMode(false);
             }
+
+            return false;
         }
 
         public async Task<bool> RemoveRate(Rate rate)
@@ -68,15 +80,35 @@ namespace KantorClient.BLL.Services
 
         private async Task<List<Currency>> LoadCurrencies()
         {
-            var currencyList = await _settingsRepository.GetCurrencies(_authenticationService.UserSession.SynchronizationKey);
+            try
+            {
+                var currencyList = await _settingsRepository.GetCurrencies(_authenticationService.UserSession.SynchronizationKey);
 
-            return currencyList;
+                return currencyList;
+            }
+            catch(ServerNotReachedException)
+            {
+                _authenticationService.SetOnlineMode(false);
+            }
+            return new List<Currency>();
         }
 
         public async Task LoadRates()
         {
-            var rates = await _settingsRepository.GetRates(_authenticationService.UserSession.SynchronizationKey);
-            Rates = await _settingsRepository.AddRates(rates); // Co z tym?
+            try
+            {
+                if (!OnlineMode)
+                {
+                    return;
+                }
+
+                var rates = await _settingsRepository.GetRates(_authenticationService.UserSession.SynchronizationKey);
+                Rates = await _settingsRepository.AddRates(rates); // Co z tym?
+            }
+            catch (ServerNotReachedException)
+            {
+                _authenticationService.SetOnlineMode(false);
+            }
         }
     }
 }

@@ -67,5 +67,13 @@ namespace KantorClient.DAL.Repositories
 
             return localRegistries;
         }
+
+        public async Task<CashRegistry> GetRegistryForCurrency(Model.Currency currency)
+        {
+            using var dataContext = new DataContext();
+            var registry = await dataContext.CashRegistries.Include(x => x.Currency).FirstOrDefaultAsync(x => x.Currency.Id == currency.Id);
+
+            return registry;
+        }
     }
 }

@@ -123,6 +123,12 @@ namespace KantorClient.Application.ViewModels.Users
             }
         }
 
+        public Task OnShow()
+        {
+            Refresh();
+            return Task.CompletedTask;
+        }
+
         #endregion
     }
 }

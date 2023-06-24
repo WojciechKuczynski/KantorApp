@@ -9,7 +9,9 @@ using KantorServer.Application.Responses;
 using KantorServer.Application.Responses.Currencies;
 using KantorServer.Application.Responses.Rates;
 using Microsoft.EntityFrameworkCore;
+using KantorClient.Common.Exceptions;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 
 namespace KantorClient.DAL.Repositories
 {
@@ -87,6 +89,10 @@ namespace KantorClient.DAL.Repositories
             };
             var requestContext = new RequestContext("https://localhost:7254/currencies/all", RestSharp.Method.Post);
             var response = await ServerConnectionHandler.ExecuteFunction<GetAllCurrenciesRequest, GetAllCurrenciesResponse>(requestContext, request);
+            if (response == null)
+            {
+                throw new ServerNotReachedException();
+            }
 
             return response.Currencies.Select(x => new Currency(x)).ToList();
         }
@@ -119,7 +125,10 @@ namespace KantorClient.DAL.Repositories
             };
             var requestContext = new RequestContext("https://localhost:7254/rates/all", RestSharp.Method.Post);
             var response = await ServerConnectionHandler.ExecuteFunction<GetAllRatesRequest, GetAllRatesResponse>(requestContext, request);
-
+            if (response == null)
+            {
+                throw new ServerNotReachedException();
+            }
             return response.Rates.Select(x => new Rate(x) { Synchronized = true }).ToList();
         }
 
