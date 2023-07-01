@@ -7,7 +7,7 @@ namespace KantorClient.BLL.Services.Interfaces
 {
     public interface IAuthenticationService
     {
-        public Task<LoginResponseArgs> LogIn(string username, string password, bool offlineMode);
+        public Task<LoginResponseArgs> LogIn(string username, string password, string kantorSymbol, bool offlineMode);
         public Task<bool> SetPln(decimal value);
         public Task<bool> AddPln(decimal value);
 

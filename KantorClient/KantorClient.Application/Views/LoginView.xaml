@@ -4,11 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Logowanie" Height="250" Width="300"
+        Title="Logowanie" Height="320" Width="300"
         KeyDown="Window_KeyDown" Activated="Window_Activated">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
@@ -21,9 +22,11 @@
 
         <Label Grid.Column="0" Grid.Row="1" Content="Login:" />
         <Label Grid.Column="0" Grid.Row="2" Content="Password:" />
+        <Label Grid.Column="0" Grid.Row="3" Content="Kantor:" />
 
         <TextBox Grid.Column="1" Text="TestUser" Grid.Row="1" Margin="3" Name="LoginTxt" />
-        <PasswordBox Grid.Column="1" Password="test123" Grid.Row="2" Margin="3" Name="PasswordTxt" />
+        <PasswordBox Grid.Column="1" Password="test123" Grid.Row="2" Margin="3" Name="PasswordTxt" VerticalContentAlignment="Center" />
+        <TextBox Grid.Column="1" Text="" Grid.Row="3" Margin="3" Name="KantorTxt" />
 
         <Button Grid.Column="0" Grid.Row="4" Margin="5" Content="Cancel" Click="Cancel" />
         <Button Name="LoginButton" Grid.Column="1" Grid.Row="4" Margin="5" Content="Login" Click="Login" />

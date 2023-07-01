@@ -1,4 +1,5 @@
 ﻿using KantorServer.Application.Requests;
+using KantorServer.Application.Requests.Reports;
 using KantorServer.Application.Responses.Reports;
 using KantorServer.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,7 @@ namespace KantorServer.API.Controllers
         }
 
         [HttpPost("settings")]
-        public async Task<ReportsSettingsResponse> GetReportsInformation(BaseServerRequest request)
+        public async Task<ReportsSettingsResponse> GetReportsInformation(ReportsSettingsRequest request)
         {
             var checkRes = await CheckRequestArgs<ReportsSettingsResponse>(request);
             if (checkRes != null) { return checkRes; }

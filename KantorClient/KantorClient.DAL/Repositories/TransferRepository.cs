@@ -72,10 +72,12 @@ namespace KantorClient.DAL.Repositories
             return newTransfer;
         }
 
-        public async Task<IEnumerable<Transfer>> GetLocalTransfers()
+        public async Task<IEnumerable<Transfer>> GetLocalTransfers(UserSession userSession)
         {
             using var dataContext = new DataContext();
-            var localTransfers = await dataContext.Transfers.Include(x => x.TransferCurrency).Include(x => x.User).Take(100).ToListAsync();
+            var localTransfers = await dataContext.Transfers.Include(x => x.TransferCurrency).Include(x => x.User)
+                .Where(x => x.User.KantorId == userSession.KantorId)
+                .Take(100).ToListAsync();
 
             return localTransfers;
         }

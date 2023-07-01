@@ -8,6 +8,7 @@ using KantorClient.Application.ViewModels.Interfaces.Transfers;
 using KantorClient.Application.ViewModels.Interfaces.Users;
 using KantorClient.Application.Views;
 using KantorClient.BLL.Services.Interfaces;
+using KantorClient.DAL.Repositories.Interfaces;
 using KantorClient.Model;
 using Prism.Commands;
 using System.ComponentModel;
@@ -21,6 +22,7 @@ namespace KantorClient.Application.ViewModels
     {
         private readonly ISettingsService _settingService;
         private readonly IAuthenticationService _authenticationService;
+        private readonly IConfigurationRepository _configurationRepository;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -111,6 +113,7 @@ namespace KantorClient.Application.ViewModels
             await UsersMainVM.Load(loaded);
             await TransfersMainVM.Load(loaded);
             await CashRegistryMainVM.Load(loaded);
+            await ReportsMainVM.Load(loaded);
         }
 
         public void SetPln(decimal quantity)
@@ -164,7 +167,7 @@ namespace KantorClient.Application.ViewModels
         public ICommand LoginCommand { get; private set; }
         private void Login()
         {
-            var login = new LoginView(null, _authenticationService, false);
+            var login = new LoginView(null, _authenticationService, _configurationRepository, false);
             login.ShowDialog();
         }
         #endregion

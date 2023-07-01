@@ -4,6 +4,7 @@
     {
         public virtual Currency Currency { get; set; }
         public decimal Quantity { get; set; }
+        public long KantorId { get; set; }
 
         public CashRegistry()
         {

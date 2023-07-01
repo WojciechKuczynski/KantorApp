@@ -1,9 +1,4 @@
 ﻿using KantorClient.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KantorClient.BLL.Models
 {
@@ -12,10 +7,11 @@ namespace KantorClient.BLL.Models
         public long Id { get; set; }
         public CurrencyModel Currency { get; set; }
         public decimal Quantity { get; set; }
+        public long KantorId { get; set; }
 
         public CashRegistryModel()
         {
-            
+
         }
 
         public CashRegistryModel(CashRegistry registry)
@@ -27,20 +23,23 @@ namespace KantorClient.BLL.Models
             }
 
             Quantity = registry.Quantity;
+            KantorId = registry.KantorId;
         }
 
         public CashRegistry Map() => new CashRegistry()
         {
             Id = this.Id,
             Quantity = this.Quantity,
-            Currency = this.Currency.Map()
+            Currency = this.Currency.Map(),
+            KantorId = this.KantorId
         };
 
         public CashRegistryModel Clone() => new CashRegistryModel
         {
             Id = this.Id,
             Quantity = this.Quantity,
-            Currency = this.Currency
+            Currency = this.Currency,
+            KantorId = this.KantorId
         };
     }
 

@@ -68,14 +68,17 @@ namespace KantorClient.BLL.Services
         {
             try
             {
-                var transactions = await _transactionsRepository.GetLocalTransactions();
-                if (transactions == null)
+                if (_authenticationService.UserSession != null)
                 {
-                    return new List<TransactionModel>();
-                }
+                    var transactions = await _transactionsRepository.GetLocalTransactions(_authenticationService.UserSession);
+                    if (transactions == null)
+                    {
+                        return new List<TransactionModel>();
+                    }
 
-                var transactionModels = transactions.Select(x => new TransactionModel(x));
-                return transactionModels.ToList();
+                    var transactionModels = transactions.Select(x => new TransactionModel(x));
+                    return transactionModels.ToList();
+                }
             }
             catch (Exception ex)
             {

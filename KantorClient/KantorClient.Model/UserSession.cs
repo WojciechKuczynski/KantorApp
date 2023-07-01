@@ -18,5 +18,6 @@ namespace KantorClient.Model
         public string SynchronizationKey { get; set; }
         public decimal Cash { get; set; }
         public UserPermission UserPermission { get; set; }
+        public long KantorId { get; set; }
     }
 }
