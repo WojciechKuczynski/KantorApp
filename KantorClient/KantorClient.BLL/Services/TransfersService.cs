@@ -3,16 +3,18 @@ using KantorClient.BLL.Services.Interfaces;
 using KantorClient.DAL.Repositories;
 using KantorClient.DAL.Repositories.Interfaces;
 using KantorClient.Model;
+using System.Runtime.CompilerServices;
 
 namespace KantorClient.BLL.Services
 {
     public class TransfersService : ITransfersService
     {
         private readonly ITransferRepository _transferRepository;
-
-        public TransfersService(ITransferRepository transferRepository)
+        private readonly IAuthenticationService _authenticationService;
+        public TransfersService(ITransferRepository transferRepository, IAuthenticationService authenticationService)
         {
             _transferRepository = transferRepository;
+            _authenticationService = authenticationService;
         }
 
         public async Task<TransferModel> AddTransfer(TransferModel transfer, UserSession userSession)
@@ -59,14 +61,17 @@ namespace KantorClient.BLL.Services
         {
             try
             {
-                var transfers = await _transferRepository.GetLocalTransfers();
-                if (transfers == null)
+                if (_authenticationService.UserSession != null)
                 {
-                    return new List<TransferModel>();
-                }
+                    var transfers = await _transferRepository.GetLocalTransfers(_authenticationService.UserSession);
+                    if (transfers == null)
+                    {
+                        return new List<TransferModel>();
+                    }
 
-                var transferModels = transfers.Select(x => new TransferModel(x));
-                return transferModels.ToList();
+                    var transferModels = transfers.Select(x => new TransferModel(x));
+                    return transferModels.ToList();
+                }
             }
             catch (Exception ex)
             {

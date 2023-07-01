@@ -53,7 +53,7 @@ namespace KantorServer.Application.Services
         public async Task<LoginResponse> UserLogin(UserDto user, KantorDto kantor)
         {
             var userInDb = await CheckUserLogin(user);
-            var kantorInDb = await DataContext.Kantors.FirstOrDefaultAsync(x => x.Id == kantor.Id);
+            var kantorInDb = await DataContext.Kantors.FirstOrDefaultAsync(x => x.IdentificationKey == kantor.IdentificationKey);
 
             if (userInDb == null || kantorInDb == null)
             {
@@ -65,7 +65,7 @@ namespace KantorServer.Application.Services
 
             await DataContext.UserSessions.AddAsync(userSession);
             await DataContext.SaveChangesAsync();
-            return new LoginResponse(true, "Poprawnie zalogowano!", "") { SynchronizationKey = synchronizationKey, UserId = userSession.User.Id, Name = userSession.User.Name, Permission = userSession.User.Permission, KantorName = kantorInDb.Name };
+            return new LoginResponse(true, "Poprawnie zalogowano!", "") { SynchronizationKey = synchronizationKey, UserId = userSession.User.Id, Name = userSession.User.Name, Permission = userSession.User.Permission, Kantor = new KantorDto(kantorInDb) };
         }
 
         private async Task<User?> CheckUserLogin(UserDto user)

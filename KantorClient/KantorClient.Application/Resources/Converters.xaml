@@ -13,4 +13,5 @@
     <utils:PermissionToBoolConverter x:Key="PermissionToBoolConverter" />
     <utils:PermissionToVisibilityConverter x:Key="PermissionToVisibilityConverter" />
     <utils:NullValueConverter x:Key="NullValueConverter" />
+    <utils:NullVisibilityConverter x:Key="NullVisibilityConverter" />
 </ResourceDictionary>

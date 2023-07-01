@@ -28,8 +28,8 @@
             <Grid Grid.Column="1" Background="Transparent" Margin="5">
                 <StackPanel Orientation="Vertical" >
                     <!--<ToggleButton Content="Pokaż usunięte" Margin="5" IsChecked="{Binding ShowDeleted}" />
-                    <Button Content="Dodaj Transakcję" Margin="5" Command="{Binding AddTransactionCommand}" />
-                    <Button Content="Odśwież Transakcje" Margin="5" Command="{Binding RefreshCommand}" />-->
+                    <Button Content="Dodaj Transakcję" Margin="5" Command="{Binding AddTransactionCommand}" />-->
+                    <Button Content="Odśwież Transakcje" Margin="5" Command="{Binding RefreshCommand}" />
                 </StackPanel>
             </Grid>
         </Border>
@@ -42,9 +42,69 @@
 
             <StackPanel Grid.Row="0" Orientation="Horizontal">
                 <Label Content="Data od:" FontSize="14"/>
-                <DatePicker VerticalContentAlignment="Center" />
+                <DatePicker VerticalContentAlignment="Center" Margin="0,5" SelectedDate="{Binding DateFrom, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
                 <Label Content="Data do:" FontSize="14"/>
-                <DatePicker VerticalContentAlignment="Center" />
+                <DatePicker VerticalContentAlignment="Center" Margin="0,5" SelectedDate="{Binding DateTo, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+                <Label Content="Kantor:" FontSize="14"/>
+                <ComboBox MinWidth="120" Margin="0,5" ItemsSource="{Binding KantorsList, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}">
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="ComboBoxItem">
+                            <Setter Property="IsEnabled" Value="True"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ComboBoxItem">
+                                        <ContentPresenter/>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding Selected}" Content="{Binding .}" FontSize="16" Margin="3" VerticalContentAlignment="Center" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <Label Content="Kasjer:" FontSize="14"/>
+                    <ComboBox MinWidth="120" Margin="0,5" ItemsSource="{Binding UsersList, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" IsEditable="False" SelectedItem="{x:Null}">
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="ComboBoxItem">
+                            <Setter Property="IsEnabled" Value="True"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ComboBoxItem">
+                                        <ContentPresenter/>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding Selected}" Content="{Binding .}" FontSize="16" Margin="3" VerticalContentAlignment="Center"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <Label Content="Waluta:" FontSize="14"/>
+                    <ComboBox MinWidth="120" Margin="0,5" ItemsSource="{Binding CurrenciesList, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"  IsEditable="False" SelectedItem="{x:Null}">
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="ComboBoxItem">
+                            <Setter Property="IsEnabled" Value="True"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ComboBoxItem">
+                                        <ContentPresenter/>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding Selected}" Content="{Binding .}" FontSize="16" Margin="3" VerticalContentAlignment="Center"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
             </StackPanel>
 
             <DataGrid Grid.Row="1" ItemsSource="{Binding Transactions}" HorizontalAlignment="Stretch" SelectedItem="{Binding SelectedTransaction}" 
@@ -88,20 +148,20 @@
                     </Style>
                 </DataGrid.RowStyle>
                 <DataGrid.ContextMenu>
-                    <ContextMenu Visibility="{Binding DataContext.ContextOpened,RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolVisibilityConverter}}">
+                    <ContextMenu>
                         <ContextMenu.Style>
                             <Style TargetType="ContextMenu">
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="ContextMenu">
-                                            <Border Background="Gray" CornerRadius="15">
+                                            <Border Background="Gray" CornerRadius="15" Visibility="{Binding SelectedTransaction.Parent, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay, Converter={StaticResource NullVisibilityConverter}}">
                                                 <StackPanel Orientation="Horizontal">
                                                     <Label Content="Kurs:" />
-                                                    <Label Content="4.25"/>
+                                                    <Label Content="{Binding ParentTransaction.Rate}"/>
                                                     <Label Content="Ilość:" />
-                                                    <Label Content="2137"/>
+                                                    <Label Content="{Binding ParentTransaction.Quantity}"/>
                                                     <Label Content="Kwota wymiany:" />
-                                                    <Label Content="19233"/>
+                                                    <Label Content="{Binding ParentTransaction.FinalValue}"/>
                                                 </StackPanel>
                                             </Border>
                                         </ControlTemplate>

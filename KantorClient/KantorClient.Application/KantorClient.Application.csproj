@@ -22,10 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="KantorServer.Model">
       <HintPath>..\..\Bin\KantorServer.Model.dll</HintPath>
     </Reference>

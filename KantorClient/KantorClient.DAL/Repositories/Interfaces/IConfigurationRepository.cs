@@ -3,5 +3,6 @@
     public interface IConfigurationRepository
     {
         string ServiceAddress { get; }
+        string Kantor { get; }
     }
 }

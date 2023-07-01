@@ -24,5 +24,10 @@ namespace KantorClient.Application.Views.Reports
         {
             InitializeComponent();
         }
+
+        private void ComboBoxItem_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }
     }
 }

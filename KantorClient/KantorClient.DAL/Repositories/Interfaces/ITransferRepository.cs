@@ -9,7 +9,7 @@ namespace KantorClient.DAL.Repositories.Interfaces
 {
     public interface ITransferRepository
     {
-        Task<IEnumerable<Transfer>> GetLocalTransfers();
+        Task<IEnumerable<Transfer>> GetLocalTransfers(UserSession userSession);
         Task<Transfer> AddTransfer(Transfer transfer);
         Task<Transfer> DeleteTransfer(Transfer transfer);
         Task<Transfer> EditTransfer(Transfer transfer);

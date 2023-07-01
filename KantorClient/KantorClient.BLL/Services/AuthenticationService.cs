@@ -20,9 +20,9 @@ namespace KantorClient.BLL.Services
             _userRepository = userRepository;
         }
 
-        public async Task<LoginResponseArgs> LogIn(string username, string password, bool offlineMode)
+        public async Task<LoginResponseArgs> LogIn(string username, string password, string kantorSymbol, bool offlineMode)
         {
-            var response = await _userRepository.UserLogin(username, password);
+            var response = await _userRepository.UserLogin(username, password, kantorSymbol);
             UserSession = response.LoggedSession;
             SetOnlineMode(response.LoggedSession != null);
             return response;

@@ -5,6 +5,7 @@ using KantorServer.DAL;
 using KantorServer.Model;
 using KantorServer.Model.Dtos;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace KantorServer.Application.Services
 {
@@ -161,6 +162,13 @@ namespace KantorServer.Application.Services
                 }
 
                 var transactions = await transactionsQuery.ToListAsync();
+
+                var editedIds = transactions.Where(x => x.Parent.HasValue).Select(x => x.Parent.Value);
+                if (editedIds.Any())
+                {
+                    var editedIdsNotInResult = editedIds.Where(x => !transactions.Select(y => y.Id).ToList().Contains(x));
+                    transactions.AddRange(DataContext.Transactions.Where(x => editedIdsNotInResult.Contains(x.Id)));
+                }
 
                 return TransactionDto.Map(transactions);
             }

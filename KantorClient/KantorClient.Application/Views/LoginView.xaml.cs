@@ -1,5 +1,6 @@
 ﻿using KantorClient.Application.ViewModels.Interfaces;
 using KantorClient.BLL.Services.Interfaces;
+using KantorClient.DAL.Repositories.Interfaces;
 using System;
 using System.Windows;
 using System.Windows.Input;
@@ -13,14 +14,17 @@ namespace KantorClient.Application.Views
     {
         public readonly IMainWindowViewModel _mainWindowVM;
         private readonly IAuthenticationService _authenticationService;
+        private readonly IConfigurationRepository _configurationRepository;
 
         private bool _loginMode;
 
-        public LoginView(IMainWindowViewModel mwVM, IAuthenticationService authenticationService, bool loginMode)
+        public LoginView(IMainWindowViewModel mwVM, IAuthenticationService authenticationService, IConfigurationRepository configurationRepository, bool loginMode)
         {
             InitializeComponent();
             _mainWindowVM = mwVM;
             _authenticationService = authenticationService;
+            _configurationRepository = configurationRepository;
+            KantorTxt.Text = _configurationRepository.Kantor;
             _loginMode = loginMode;
         }
 
@@ -34,7 +38,7 @@ namespace KantorClient.Application.Views
             try
             {
                 LoginButton.IsEnabled = false;
-                var loggedResponseArgs = await _authenticationService.LogIn(LoginTxt.Text, PasswordTxt.Password, false);
+                var loggedResponseArgs = await _authenticationService.LogIn(LoginTxt.Text, PasswordTxt.Password, KantorTxt.Text, false);
                 if (loggedResponseArgs.Error)
                 {
                     MessageBox.Show(loggedResponseArgs.ErrorMessage);
