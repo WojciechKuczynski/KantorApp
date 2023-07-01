@@ -55,5 +55,18 @@ namespace KantorServer.Application.Services
                 return null;
             }
         }
+
+        public async Task<List<KantorDto>> GetKantors()
+        {
+            try
+            {
+                var kantors = await DataContext.Kantors.ToListAsync();
+                return KantorDto.Map(kantors);
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 }

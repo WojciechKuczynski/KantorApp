@@ -2,6 +2,7 @@
 using KantorClient.Common.Exceptions;
 using KantorClient.DAL.Repositories.Interfaces;
 using KantorClient.Model;
+using System.Windows;
 using SQLitePCL;
 
 namespace KantorClient.BLL.Services
@@ -44,8 +45,10 @@ namespace KantorClient.BLL.Services
         public async Task GetNBPRates()
         {
             var nbpRates = await _settingsRepository.GetNBPRates();
+            Console.WriteLine("GetNbpRates");
             foreach (var rate in nbpRates)
             {
+                Console.WriteLine("GetNbpRates + rate = " + rate.Currency.Name);
                 var curr = Currencies.FirstOrDefault(x => x.Symbol == rate.Currency.Symbol);
                 if (curr != null)
                 {

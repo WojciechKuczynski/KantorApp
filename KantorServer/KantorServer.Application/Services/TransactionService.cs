@@ -1,13 +1,10 @@
-﻿using KantorServer.Application.Services.Interfaces;
+﻿using KantorServer.Application.Requests.Transactions;
+using KantorServer.Application.Responses.Transactions;
+using KantorServer.Application.Services.Interfaces;
 using KantorServer.DAL;
 using KantorServer.Model;
 using KantorServer.Model.Dtos;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KantorServer.Application.Services
 {
@@ -31,7 +28,7 @@ namespace KantorServer.Application.Services
                 var addedTransactions = TransactionDto.Map(transactionsForDb);
                 return addedTransactions;
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 return null;
             }
@@ -54,7 +51,7 @@ namespace KantorServer.Application.Services
                                     .Include(x => x.Kantor)
                                     .Include(x => x.User)
                                     .FirstOrDefaultAsync(x => x.SynchronizationKey == notificationKey);
-                if (userSession == null) 
+                if (userSession == null)
                 {
                     return null;
                 }
@@ -85,7 +82,7 @@ namespace KantorServer.Application.Services
             }
         }
 
-        private async Task<TransactionDto> EditTransaction(TransactionDto transaction,Transaction transactionInDb, string notificationKey)
+        private async Task<TransactionDto> EditTransaction(TransactionDto transaction, Transaction transactionInDb, string notificationKey)
         {
             try
             {
@@ -126,6 +123,46 @@ namespace KantorServer.Application.Services
 
                 await DataContext.SaveChangesAsync();
                 return new TransactionDto(transactionInDb);
+            }
+            catch (Exception ex) { }
+            return null;
+        }
+
+        public async Task<List<TransactionDto>> GetTransactions(GetTransactionsRequest request)
+        {
+            try
+            {
+                var transactionsQuery = DataContext.Transactions.AsQueryable();
+                transactionsQuery = transactionsQuery.Include(x => x.Kantor).Include(x => x.User).Include(x => x.Currency);
+
+                if (request.Users.Any())
+                {
+                    transactionsQuery = transactionsQuery.Where(x => request.Users.Contains(x.User.Id));
+                }
+
+                if (request.Kantors.Any())
+                {
+                    transactionsQuery = transactionsQuery.Where(x => request.Kantors.Contains(x.Kantor.Id));
+                }
+
+                if (request.Currencies.Any())
+                {
+                    transactionsQuery = transactionsQuery.Where(x => request.Currencies.Contains(x.Currency.Symbol));
+                }
+
+                if (request.DateFrom.HasValue)
+                {
+                    transactionsQuery = transactionsQuery.Where(x => x.TransactionDate >= request.DateFrom.Value);
+                }
+
+                if (request.DateTo.HasValue)
+                {
+                    transactionsQuery = transactionsQuery.Where(x => x.TransactionDate >= request.DateTo.Value);
+                }
+
+                var transactions = await transactionsQuery.ToListAsync();
+
+                return TransactionDto.Map(transactions);
             }
             catch (Exception ex) { }
             return null;

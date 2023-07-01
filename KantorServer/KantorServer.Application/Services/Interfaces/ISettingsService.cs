@@ -12,5 +12,6 @@ namespace KantorServer.Application.Services.Interfaces
     {
         Task<bool> AddKantor(KantorDto kantor, CancellationToken token);
         Task<List<CurrencyDto>> GetCurrencies();
+        Task<List<KantorDto>> GetKantors();
     }
 }

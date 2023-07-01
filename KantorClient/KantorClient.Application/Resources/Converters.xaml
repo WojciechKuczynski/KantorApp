@@ -10,4 +10,7 @@
     <utils:BoolInverseConverter x:Key="BoolInverseConverter" />
     <utils:TransactionTypeFriendlyNameConverter x:Key="TransactionTypeFriendlyNameConverter" />
     <utils:PasswordEqualConverter x:Key="PasswordEqualConverter" />
+    <utils:PermissionToBoolConverter x:Key="PermissionToBoolConverter" />
+    <utils:PermissionToVisibilityConverter x:Key="PermissionToVisibilityConverter" />
+    <utils:NullValueConverter x:Key="NullValueConverter" />
 </ResourceDictionary>

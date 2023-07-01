@@ -1,0 +1,117 @@
+﻿<UserControl x:Class="KantorClient.Application.Views.Reports.ReportsMainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:KantorClient.Application.Views.Reports"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.8*" />
+            <ColumnDefinition Width="0.2*" />
+        </Grid.ColumnDefinitions>
+
+        <!--<Grid x:Name="GrayOut" Background="Gray" Opacity="0.8" Grid.ColumnSpan="2" Grid.Column="0" Panel.ZIndex="1"
+              Visibility="{Binding AddEditVisible,Converter={StaticResource BoolVisibilityConverter}}">
+        </Grid>
+        <Grid x:Name="Loading" Background="Gray" Opacity="0.8" Grid.ColumnSpan="2" Grid.Column="0" Panel.ZIndex="1"
+              Visibility="{Binding Loading,Converter={StaticResource BoolVisibilityConverter}}">
+            <Label Content="ODŚWIEŻANIE..." HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Black" />
+        </Grid>
+        <Grid x:Name="AddEditView" Background="Transparent" Margin="30" Panel.ZIndex="2"
+              Visibility="{Binding AddEditVisible,Converter={StaticResource BoolVisibilityConverter}}">
+            <local:TransactionsAddEditView DataContext="{Binding AddEditVM}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+        </Grid>-->
+
+        <Border Grid.Column="1" CornerRadius="15,0,0,15"  Background="#11FFFFFF">
+            <Grid Grid.Column="1" Background="Transparent" Margin="5">
+                <StackPanel Orientation="Vertical" >
+                    <!--<ToggleButton Content="Pokaż usunięte" Margin="5" IsChecked="{Binding ShowDeleted}" />
+                    <Button Content="Dodaj Transakcję" Margin="5" Command="{Binding AddTransactionCommand}" />
+                    <Button Content="Odśwież Transakcje" Margin="5" Command="{Binding RefreshCommand}" />-->
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                <Label Content="Data od:" FontSize="14"/>
+                <DatePicker VerticalContentAlignment="Center" />
+                <Label Content="Data do:" FontSize="14"/>
+                <DatePicker VerticalContentAlignment="Center" />
+            </StackPanel>
+
+            <DataGrid Grid.Row="1" ItemsSource="{Binding Transactions}" HorizontalAlignment="Stretch" SelectedItem="{Binding SelectedTransaction}" 
+                  BorderBrush="Transparent" AutoGenerateColumns="False" IsReadOnly="True" FontSize="18" Margin="10,10,10,0">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Typ Transakcji" Binding="{Binding TransactionType, Converter={StaticResource TransactionTypeFriendlyNameConverter}}" />
+                    <DataGridTextColumn Header="Waluta" Binding="{Binding Currency.Symbol}" />
+                    <DataGridTextColumn Header="Kurs wymiany" Binding="{Binding Rate, StringFormat=0.00}" />
+                    <DataGridTextColumn Header="Ilość" Binding="{Binding Quantity, StringFormat=0.00}" />
+                    <DataGridTextColumn Header="Kwota wymiany" Binding="{Binding FinalValue, StringFormat=0.00}" />
+                    <DataGridTextColumn Header="Data transakcji" Binding="{Binding TransactionDate}" />
+                    <DataGridTextColumn Header="Kantor" Binding="{Binding KantorName}" />
+                    <DataGridTextColumn Header="Kasjer" Binding="{Binding UserName}" />
+                    <DataGridTextColumn Header="Edytowany" Binding="{Binding Parent,Converter={StaticResource NullValueConverter},ConverterParameter=Edytowany}" />
+                    <!--<DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Edytuj" Margin="3,0"  Padding="0"
+                                    Command="{Binding DataContext.EditTransactionCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                    CommandParameter="{Binding .}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Usuń" Margin="3,0" 
+                                    Command="{Binding DataContext.DeleteTransactionCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                    CommandParameter="{Binding .}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>-->
+                </DataGrid.Columns>
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Valid}" Value="false">
+                                <Setter Property="Background" Value="OrangeRed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
+                <DataGrid.ContextMenu>
+                    <ContextMenu Visibility="{Binding DataContext.ContextOpened,RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolVisibilityConverter}}">
+                        <ContextMenu.Style>
+                            <Style TargetType="ContextMenu">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ContextMenu">
+                                            <Border Background="Gray" CornerRadius="15">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Label Content="Kurs:" />
+                                                    <Label Content="4.25"/>
+                                                    <Label Content="Ilość:" />
+                                                    <Label Content="2137"/>
+                                                    <Label Content="Kwota wymiany:" />
+                                                    <Label Content="19233"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ContextMenu.Style>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+            </DataGrid>
+        </Grid>
+    </Grid>
+</UserControl>

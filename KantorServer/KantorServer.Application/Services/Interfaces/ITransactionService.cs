@@ -1,9 +1,5 @@
-﻿using KantorServer.Model.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using KantorServer.Application.Requests.Transactions;
+using KantorServer.Model.Dtos;
 
 namespace KantorServer.Application.Services.Interfaces
 {
@@ -11,5 +7,7 @@ namespace KantorServer.Application.Services.Interfaces
     {
         Task<List<TransactionDto>> AddTransactions(List<TransactionDto> transactions);
         Task<TransactionDto> SynchronizeTransaction(TransactionDto transaction, string notificationKey);
+
+        Task<List<TransactionDto>> GetTransactions(GetTransactionsRequest request);
     }
 }

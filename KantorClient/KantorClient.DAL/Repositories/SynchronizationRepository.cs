@@ -14,6 +14,13 @@ namespace KantorClient.DAL.Repositories
 {
     public class SynchronizationRepository : ISynchronizationRepository
     {
+        private readonly IConfigurationRepository _configurationRepository;
+        public SynchronizationRepository(IConfigurationRepository configurationRepository)
+        {
+
+            _configurationRepository = configurationRepository;
+
+        }
         public async Task SynchronizeRate(string synchronizationToken)
         {
             using (var dataContext = new DataContext())
@@ -185,7 +192,7 @@ namespace KantorClient.DAL.Repositories
 
         private async Task<SynchronizeTransactionResponse> SendTransactionRequest(SynchronizeTransactionRequest request)
         {
-            var requestContext = new RequestContext("https://localhost:7254/transactions/synchronize", RestSharp.Method.Post);
+            var requestContext = new RequestContext($"{_configurationRepository.ServiceAddress}/transactions/synchronize", RestSharp.Method.Post);
             var response = await ServerConnectionHandler.ExecuteFunction<SynchronizeTransactionRequest, SynchronizeTransactionResponse>(requestContext, request);
             if (response == null)
             {
@@ -196,7 +203,7 @@ namespace KantorClient.DAL.Repositories
 
         private async Task<SynchronizeTransferResponse> SendTransferRequest(SynchronizeTransferRequest request)
         {
-            var requestContext = new RequestContext("https://localhost:7254/transfers/synchronize", RestSharp.Method.Post);
+            var requestContext = new RequestContext($"{_configurationRepository.ServiceAddress}/transfers/synchronize", RestSharp.Method.Post);
             var response = await ServerConnectionHandler.ExecuteFunction<SynchronizeTransferRequest, SynchronizeTransferResponse>(requestContext, request);
             if (response == null)
             {
@@ -207,7 +214,7 @@ namespace KantorClient.DAL.Repositories
 
         private async Task<AddEditRateResponse> SendRateRequest(AddEditRateRequest request)
         {
-            var requestContext = new RequestContext("https://localhost:7254/rates/addRate", RestSharp.Method.Post);
+            var requestContext = new RequestContext($"{_configurationRepository.ServiceAddress}/rates/addRate", RestSharp.Method.Post);
             var response = await ServerConnectionHandler.ExecuteFunction<AddEditRateRequest, AddEditRateResponse>(requestContext, request);
             if (response == null)
             {

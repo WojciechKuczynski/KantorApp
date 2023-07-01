@@ -7,5 +7,6 @@
         Users = 3,
         Transfers = 4,
         CashRegistry = 5,
+        Reports = 6
     }
 }

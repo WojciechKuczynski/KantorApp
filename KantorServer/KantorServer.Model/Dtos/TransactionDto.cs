@@ -38,6 +38,9 @@ namespace KantorServer.Model.Dtos
             ExternalId = transaction.ExternalId;
             Parent = transaction.Parent;
             Edited = transaction.Edited;
+            Valid = transaction.Valid;
+            TransactionDate = transaction.TransactionDate;
+            DeletionDate = transaction.DeletionDate;
         }
 
         public static List<TransactionDto> Map(IEnumerable<Transaction> transactions) => transactions.Select(x => new TransactionDto(x)).ToList();

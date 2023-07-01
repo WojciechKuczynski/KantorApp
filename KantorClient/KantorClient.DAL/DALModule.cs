@@ -1,7 +1,6 @@
 ﻿using KantorClient.Common;
 using KantorClient.DAL.Repositories;
 using KantorClient.DAL.Repositories.Interfaces;
-using Microsoft.Extensions.Configuration;
 using SimpleInjector;
 
 namespace KantorClient.DAL
@@ -17,6 +16,9 @@ namespace KantorClient.DAL
             container.RegisterSingleton<ITransactionsRepository, TransactionsRepository>();
             container.RegisterSingleton<ITransferRepository, TransferRepository>();
             container.RegisterSingleton<ICashRegistryRepository, CashRegistryRepository>();
+
+            container.RegisterSingleton<IConfigurationRepository, ConfigurationRepository>();
+            container.RegisterSingleton<IReportsRepository, ReportsRepository>();
         }
     }
 }

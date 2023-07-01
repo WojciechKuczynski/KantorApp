@@ -248,6 +248,9 @@ namespace KantorClient.DAL.Migrations
                     b.Property<long>("UserId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("UserPermission")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
                     b.ToTable("UserSessions");

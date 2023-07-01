@@ -2,6 +2,7 @@
 using KantorClient.Application.ViewModels.Interfaces;
 using KantorClient.Application.ViewModels.Interfaces.CashRegistry;
 using KantorClient.Application.ViewModels.Interfaces.Rates;
+using KantorClient.Application.ViewModels.Interfaces.Reports;
 using KantorClient.Application.ViewModels.Interfaces.Transactions;
 using KantorClient.Application.ViewModels.Interfaces.Transfers;
 using KantorClient.Application.ViewModels.Interfaces.Users;
@@ -35,11 +36,14 @@ namespace KantorClient.Application.ViewModels
         public ITransfersMainViewModel TransfersMainVM { get; private set; }
 
         public ICashRegistryMainViewModel CashRegistryMainVM { get; private set; }
+
+        public IReportsMainViewModel ReportsMainVM { get; private set; }
         #endregion
 
         public MainWindowViewModel(ISettingsService settingsService, IAuthenticationService authenticationService, IRatesMainViewModel ratesMainVM,
                                    ITransactionsMainViewModel transactionsMainVM, IUsersMainViewModel usersMainViewModel,
-                                   ITransfersMainViewModel transfersMainViewModel, ICashRegistryMainViewModel cashRegistryMainViewModel)
+                                   ITransfersMainViewModel transfersMainViewModel, ICashRegistryMainViewModel cashRegistryMainViewModel,
+                                   IReportsMainViewModel reportsMainViewModel)
         {
             _settingService = settingsService;
             _authenticationService = authenticationService;
@@ -61,11 +65,15 @@ namespace KantorClient.Application.ViewModels
             CashRegistryMainVM = cashRegistryMainViewModel;
             CashRegistryMainVM.Parent = this;
 
+            ReportsMainVM = reportsMainViewModel;
+            ReportsMainVM.Parent = this;
+
             RatesMainViewCommand = new DelegateCommand(RatesMainView);
             TransactionsMainViewCommand = new DelegateCommand(TransactionsMainView);
             UsersMainViewCommand = new DelegateCommand(UsersMainView);
             TransfersMainViewCommand = new DelegateCommand(TransfersMainView);
             CashRegistryMainViewCommand = new DelegateCommand(CashRegistryMainView);
+            ReportsMainViewCommand = new DelegateCommand(ReportsMainView);
             LoginCommand = new DelegateCommand(Login);
 
             _authenticationService.CashUpdated += _authenticationService_CashUpdated;
@@ -144,6 +152,13 @@ namespace KantorClient.Application.ViewModels
         {
             FormType = MainWindowView.CashRegistry;
             CashRegistryMainVM.OnShow();
+        }
+
+        public ICommand ReportsMainViewCommand { get; private set; }
+        private void ReportsMainView()
+        {
+            FormType = MainWindowView.Reports;
+            ReportsMainVM.OnShow();
         }
 
         public ICommand LoginCommand { get; private set; }
