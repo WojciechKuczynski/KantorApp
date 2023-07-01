@@ -17,6 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="KantorServer.Application">
+      <HintPath>..\..\Bin\KantorServer.Application.dll</HintPath>
+    </Reference>
     <Reference Include="KantorServer.Model">
       <HintPath>..\..\Bin\KantorServer.Model.dll</HintPath>
     </Reference>

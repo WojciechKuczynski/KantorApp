@@ -10,12 +10,14 @@ namespace KantorClient.BLL.Services
         private readonly ITransactionsRepository _transactionsRepository;
         private readonly IAuthenticationService _authenticationService;
         private readonly ICashRegistryService _cashRegistryService;
+        private readonly IConfigurationRepository _configurationRepository;
 
-        public TransactionsService(ITransactionsRepository transactionsRepository, IAuthenticationService authenticationService, ICashRegistryService cashRegistryService)
+        public TransactionsService(ITransactionsRepository transactionsRepository, IAuthenticationService authenticationService, ICashRegistryService cashRegistryService, IConfigurationRepository configurationRepository)
         {
             _transactionsRepository = transactionsRepository;
             _authenticationService = authenticationService;
             _cashRegistryService = cashRegistryService;
+            _configurationRepository = configurationRepository;
         }
 
         public async Task<TransactionModel> AddTransaction(TransactionModel transaction, UserSession userSession)
@@ -87,7 +89,7 @@ namespace KantorClient.BLL.Services
             if (trans == null)
                 return;
 
-            switch(trans.TransactionType)
+            switch (trans.TransactionType)
             {
                 case Model.Consts.TransactionType.Buy:
                     await _authenticationService.AddPln((-1) * trans.FinalValue);

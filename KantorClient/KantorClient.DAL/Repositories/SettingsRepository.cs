@@ -1,24 +1,23 @@
-﻿using KantorClient.DAL.Repositories.Interfaces;
+﻿using KantorClient.Common.Exceptions;
+using KantorClient.DAL.Repositories.Interfaces;
 using KantorClient.DAL.RequestArgs;
 using KantorClient.DAL.ResponseArgs;
 using KantorClient.DAL.ServerCommunication;
 using KantorClient.Model;
 using KantorServer.Application.Requests.Currencies;
 using KantorServer.Application.Requests.Rates;
-using KantorServer.Application.Responses;
 using KantorServer.Application.Responses.Currencies;
 using KantorServer.Application.Responses.Rates;
 using Microsoft.EntityFrameworkCore;
-using KantorClient.Common.Exceptions;
-using System.ComponentModel.DataAnnotations;
-using System.Runtime.Serialization;
 
 namespace KantorClient.DAL.Repositories
 {
-    internal class SettingsRepository : ISettingsRepository
+    public class SettingsRepository : ISettingsRepository
     {
-        public SettingsRepository()
+        private readonly IConfigurationRepository _configurationRepository;
+        public SettingsRepository(IConfigurationRepository configurationRepository)
         {
+            _configurationRepository = configurationRepository;
         }
 
         public async Task<bool> AddCurrencies(IEnumerable<Currency> currencies)
@@ -87,7 +86,7 @@ namespace KantorClient.DAL.Repositories
             {
                 SynchronizationKey = synchronizationKey
             };
-            var requestContext = new RequestContext("https://localhost:7254/currencies/all", RestSharp.Method.Post);
+            var requestContext = new RequestContext($"{_configurationRepository.ServiceAddress}/currencies/all", RestSharp.Method.Post);
             var response = await ServerConnectionHandler.ExecuteFunction<GetAllCurrenciesRequest, GetAllCurrenciesResponse>(requestContext, request);
             if (response == null)
             {
@@ -111,7 +110,7 @@ namespace KantorClient.DAL.Repositories
                     DefaultBuyRate = x.mid
                 }).ToList();
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return new List<Rate>();
             }
@@ -123,7 +122,8 @@ namespace KantorClient.DAL.Repositories
             {
                 SynchronizationKey = synchronizationKey
             };
-            var requestContext = new RequestContext("https://localhost:7254/rates/all", RestSharp.Method.Post);
+
+            var requestContext = new RequestContext($"{_configurationRepository.ServiceAddress}/rates/all", RestSharp.Method.Post);
             var response = await ServerConnectionHandler.ExecuteFunction<GetAllRatesRequest, GetAllRatesResponse>(requestContext, request);
             if (response == null)
             {

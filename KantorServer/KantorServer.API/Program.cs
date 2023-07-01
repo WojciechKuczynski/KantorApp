@@ -1,10 +1,7 @@
 using KantorServer.Application.Services;
 using KantorServer.Application.Services.Interfaces;
 using KantorServer.DAL;
-using Microsoft.AspNetCore.Authentication.Certificate;
 using Microsoft.EntityFrameworkCore;
-using System.Net;
-using System.Security.Cryptography.X509Certificates;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +19,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 });
 builder.Services.AddScoped<ISettingsService, SettingsService>();
 builder.Services.AddScoped<IRateService, RateService>();
-builder.Services.AddScoped<ITransactionService,TransactionService>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<ISessionService, SessionService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITransferService, TransferService>();

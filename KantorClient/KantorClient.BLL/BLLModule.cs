@@ -22,6 +22,7 @@ namespace KantorClient.BLL
             container.RegisterSingleton<IUsersService, UsersService>();
             container.RegisterSingleton<ITransfersService, TransfersService>();
             container.RegisterSingleton<ICashRegistryService, CashRegistryService>();
+            container.RegisterSingleton<IReportsService, ReportsService>();
         }
     }
 }

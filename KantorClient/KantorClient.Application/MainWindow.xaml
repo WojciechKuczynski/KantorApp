@@ -8,7 +8,9 @@
         xmlns:transactions="clr-namespace:KantorClient.Application.Views.Transactions"
         xmlns:users="clr-namespace:KantorClient.Application.Views.Users"
         xmlns:transfers="clr-namespace:KantorClient.Application.Views.Transfers"
+        xmlns:consts="clr-namespace:KantorClient.Model.Consts;assembly=KantorClient.Model"
         xmlns:registry="clr-namespace:KantorClient.Application.Views.CashRegistry"
+        xmlns:reports="clr-namespace:KantorClient.Application.Views.Reports"
         mc:Ignorable="d" Background="{StaticResource BackgroundColor}"
         Title="Kantor" MinHeight="450" MinWidth="800" Name="MainWindowName">
     <Grid>
@@ -30,15 +32,17 @@
                 </Border>
                 <StackPanel Orientation="Vertical" Grid.Row="1" VerticalAlignment="Stretch">
                     <Button Content="Kursy" Style="{StaticResource MenuButton}" Margin="10"
-                            Command="{Binding RatesMainViewCommand}" />
+                            Command="{Binding RatesMainViewCommand}" IsEnabled="{Binding Session.UserPermission,Converter={StaticResource PermissionToBoolConverter}, ConverterParameter={x:Static consts:UserPermission.Manager}}" />
                     <Button Content="Transakcje" Style="{StaticResource MenuButton}"
                             Margin="10" Command="{Binding TransactionsMainViewCommand}" />
                     <Button Content="Użytkownicy" Style="{StaticResource MenuButton}" Margin="10"
-                            Command="{Binding UsersMainViewCommand}" />
+                            Command="{Binding UsersMainViewCommand}" IsEnabled="{Binding Session.UserPermission,Converter={StaticResource PermissionToBoolConverter}, ConverterParameter={x:Static consts:UserPermission.Admin}}"/>
                     <Button Content="Transfery" Style="{StaticResource MenuButton}" Margin="10"
                             Command="{Binding TransfersMainViewCommand}" />
                     <Button Content="Stan gotówki" Style="{StaticResource MenuButton}" Margin="10"
                             Command="{Binding CashRegistryMainViewCommand}" />
+                    <Button Content="Raporty" Style="{StaticResource MenuButton}" Margin="10" Command="{Binding ReportsMainViewCommand}"
+                            IsEnabled="{Binding Session.UserPermission,Converter={StaticResource PermissionToBoolConverter}, ConverterParameter={x:Static consts:UserPermission.Admin}}" />
                 </StackPanel>
             </Grid>
         </Border>
@@ -121,6 +125,11 @@
                 Visibility="{Binding FormType,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource WindowViewToVisibilityConverter},ConverterParameter=5}"
                 VerticalAlignment="Stretch" >
                     <registry:CashRegistryMainView DataContext="{Binding CashRegistryMainVM}" VerticalAlignment="Stretch"/>
+                </Grid>
+                <Grid
+                Visibility="{Binding FormType,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource WindowViewToVisibilityConverter},ConverterParameter=6}"
+                VerticalAlignment="Stretch" >
+                    <reports:ReportsMainView DataContext="{Binding ReportsMainVM}" VerticalAlignment="Stretch"/>
                 </Grid>
             </StackPanel>
             </Grid>

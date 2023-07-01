@@ -34,6 +34,10 @@
                                 <Setter Property="Background" Value="LightGray" />
                                 <Setter Property="Foreground" Value="{StaticResource Color2}" />
                             </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="LightGray" />
+                                <Setter Property="Foreground" Value="Gray" />
+                            </Trigger>
                         </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

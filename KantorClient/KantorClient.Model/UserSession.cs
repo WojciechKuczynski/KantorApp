@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KantorClient.Model.Consts;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -16,5 +17,6 @@ namespace KantorClient.Model
         public DateTime? LastAction { get; set; }
         public string SynchronizationKey { get; set; }
         public decimal Cash { get; set; }
+        public UserPermission UserPermission { get; set; }
     }
 }

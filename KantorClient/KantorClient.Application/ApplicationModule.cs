@@ -3,10 +3,12 @@ using KantorClient.Application.ViewModels.CashRegistry;
 using KantorClient.Application.ViewModels.Interfaces;
 using KantorClient.Application.ViewModels.Interfaces.CashRegistry;
 using KantorClient.Application.ViewModels.Interfaces.Rates;
+using KantorClient.Application.ViewModels.Interfaces.Reports;
 using KantorClient.Application.ViewModels.Interfaces.Transactions;
 using KantorClient.Application.ViewModels.Interfaces.Transfers;
 using KantorClient.Application.ViewModels.Interfaces.Users;
 using KantorClient.Application.ViewModels.Rates;
+using KantorClient.Application.ViewModels.Reports;
 using KantorClient.Application.ViewModels.Transactions;
 using KantorClient.Application.ViewModels.Transfers;
 using KantorClient.Application.ViewModels.Users;
@@ -32,6 +34,8 @@ namespace KantorClient.Application
             container.RegisterSingleton<ITransfersMainViewModel, TransfersMainViewModel>();
 
             container.RegisterSingleton<ICashRegistryMainViewModel, CashRegistryMainViewModel>();
+
+            container.RegisterSingleton<IReportsMainViewModel, ReportsMainViewModel>();
 
         }
     }
