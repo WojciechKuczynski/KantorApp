@@ -241,6 +241,11 @@ namespace KantorClient.Application.ViewModels.Transactions
                     MessageBox.Show("Ilość musi być większa od zera!");
                     return;
                 }
+                if (Amount > CurrencyAmount)
+                {
+                    MessageBox.Show("Wprowadzona ilość jest większa niż na stanie");
+                    return;
+                }
                 if (SelectedRate != null)
                 {
                     if (SelectedType == TransactionType.Sell && ChangeRate < SelectedRate.MinimalSellRate)

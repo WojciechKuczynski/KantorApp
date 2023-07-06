@@ -13,8 +13,9 @@
     <Style x:Key="MenuButton" TargetType="Button">
         <Style.Setters>
             <Setter Property="Background" Value="LightGray" />
-            <Setter Property="Foreground" Value="{StaticResource Color1}" />
+            <Setter Property="Foreground" Value="Black" />
             <Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="Margin" Value="0,25" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="Template">
             <Setter.Value>
@@ -23,7 +24,7 @@
                             Height="{StaticResource StandardButtonHeight}" Width="{StaticResource StandardButtonWidth}" 
                             Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
                             CornerRadius="15,0,15,0" Padding="0"> 
-                            <Label Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" FontSize="18" HorizontalAlignment="Center" FontWeight="Bold" Margin="0" />
+                            <Label Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" FontSize="22" HorizontalAlignment="Center" FontWeight="Bold" Margin="0" />
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">

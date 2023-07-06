@@ -1,9 +1,7 @@
 ﻿using KantorClient.BLL.Models;
 using KantorClient.BLL.Services.Interfaces;
-using KantorClient.DAL.Repositories;
 using KantorClient.DAL.Repositories.Interfaces;
 using KantorClient.Model;
-using System.Runtime.CompilerServices;
 
 namespace KantorClient.BLL.Services
 {
@@ -11,10 +9,13 @@ namespace KantorClient.BLL.Services
     {
         private readonly ITransferRepository _transferRepository;
         private readonly IAuthenticationService _authenticationService;
-        public TransfersService(ITransferRepository transferRepository, IAuthenticationService authenticationService)
+        private readonly ICashRegistryService _cashRegistryService;
+        public TransfersService(ITransferRepository transferRepository, IAuthenticationService authenticationService, ICashRegistryService cashRegistryService)
         {
             _transferRepository = transferRepository;
             _authenticationService = authenticationService;
+            _cashRegistryService = cashRegistryService;
+
         }
 
         public async Task<TransferModel> AddTransfer(TransferModel transfer, UserSession userSession)
@@ -24,6 +25,7 @@ namespace KantorClient.BLL.Services
                 var trans = transfer.Map();
                 trans.User = userSession;
                 var addedTrans = await _transferRepository.AddTransfer(trans);
+                await HandleCashRegistry(addedTrans);
                 return new TransferModel(addedTrans);
             }
             catch { }
@@ -35,8 +37,9 @@ namespace KantorClient.BLL.Services
             try
             {
                 var trans = transfer.Map();
-                var addedTrans = await _transferRepository.DeleteTransfer(trans);
-                return addedTrans != null;
+                var deletedTrans = await _transferRepository.DeleteTransfer(trans);
+                await HandleCashRegistry(deletedTrans);
+                return deletedTrans != null;
             }
             catch { }
             return false;
@@ -51,6 +54,7 @@ namespace KantorClient.BLL.Services
                 var editedTrans = await _transferRepository.EditTransfer(trans);
                 if (editedTrans == null)
                     return null;
+                await HandleCashRegistry(editedTrans);
                 return new TransferModel(editedTrans);
             }
             catch { }
@@ -78,6 +82,22 @@ namespace KantorClient.BLL.Services
                 //TODO: logging
             }
             return new List<TransferModel>();
+        }
+
+        private async Task HandleCashRegistry(Transfer trans)
+        {
+            if (trans == null)
+                return;
+
+            switch (trans.Type)
+            {
+                case Model.Consts.TransferType.TransferIn:
+                    await _cashRegistryService.AddCurrency(trans.TransferCurrency, trans.TransferValue);
+                    break;
+                case Model.Consts.TransferType.TransferOut:
+                    await _cashRegistryService.AddCurrency(trans.TransferCurrency, (-1) * trans.TransferValue);
+                    break;
+            }
         }
     }
 }

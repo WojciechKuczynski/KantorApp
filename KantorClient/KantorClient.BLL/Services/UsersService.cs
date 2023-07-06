@@ -2,13 +2,8 @@
 using KantorClient.BLL.Services.Interfaces;
 using KantorClient.DAL.Repositories.Interfaces;
 using KantorServer.Model.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace KantorClient.BLL.Services
 {
@@ -30,7 +25,7 @@ namespace KantorClient.BLL.Services
                 Login = model.Login,
                 Name = model.Name,
                 Password = CreateMD5(model.Password),
-                Permission = (KantorServer.Model.Consts.UserPermission) model.Permission,
+                Permission = (KantorServer.Model.Consts.UserPermission)model.Permission,
                 Valid = true
             };
             var addedUser = await _userRepository.AddUser(dto, _authenticationService.UserSession.SynchronizationKey);
@@ -56,7 +51,7 @@ namespace KantorClient.BLL.Services
 
         public async Task<List<UserModel>> GetUsers()
         {
-           var users = await _userRepository.GetUsers(_authenticationService.UserSession.SynchronizationKey);
+            var users = await _userRepository.GetUsers(_authenticationService.UserSession.SynchronizationKey);
 
             return users.Select(x => new UserModel(x)).ToList();
         }

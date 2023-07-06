@@ -141,6 +141,11 @@ namespace KantorClient.Application.ViewModels.Transactions
         public ICommand DeleteTransactionCommand { get; private set; }
         private async void DeleteTransaction(TransactionModel model)
         {
+            if (!model.Valid)
+            {
+                return;
+            }
+
             var transaction = await _transactionsService.DeleteTransaction(model);
             if (transaction)
             {

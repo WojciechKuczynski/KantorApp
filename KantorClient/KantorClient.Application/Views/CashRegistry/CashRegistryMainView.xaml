@@ -60,6 +60,9 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <Border x:Name="SectionBorder" Grid.Column="0" BorderThickness="3" BorderBrush="{TemplateBinding Background}" CornerRadius="10">
+                                        <Border.InputBindings>
+                                            <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding DataContext.EditRegistryCommand,RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                        </Border.InputBindings>
                                         <Grid Grid.Column="0">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="*"/>

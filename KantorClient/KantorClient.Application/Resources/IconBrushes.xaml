@@ -1,4 +1,120 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    
+
+
+    <DrawingBrush x:Key="FloppyDiskIconBrush">
+        <DrawingBrush.Drawing>
+            <DrawingGroup xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                <DrawingGroup x:Name="DrawingLayer">
+                    <DrawingGroup.ClipGeometry>
+                        <RectangleGeometry Rect="0,0,64,64" />
+                    </DrawingGroup.ClipGeometry>
+                    <DrawingGroup x:Name="Floppy_disk">
+                        <GeometryDrawing Brush="Black">
+                            <GeometryDrawing.Geometry>
+                                <PathGeometry FillRule="Nonzero" Figures="M35.2673988,6.0411L27.2674007,6.0411 27.2674007,16.0411 35.2673988,16.0411 35.2673988,6.0411z M33.3697014,14.1434002L29.1651001,14.1434002 29.1651001,7.9387999 33.3697014,7.9387999 33.3697014,14.1434002z" />
+                            </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                        <GeometryDrawing Brush="Black">
+                            <GeometryDrawing.Geometry>
+                                <PathGeometry FillRule="Nonzero" Figures="M41,47.0410995L21,47.0410995C20.4472008,47.0410995 20,47.4883003 20,48.0410995 20,48.5937995 20.4472008,49.0410995 21,49.0410995L41,49.0410995C41.5527,49.0410995 42,48.5937995 42,48.0410995 42,47.4883003 41.5527,47.0410995 41,47.0410995z" />
+                            </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                        <GeometryDrawing Brush="Black">
+                            <GeometryDrawing.Geometry>
+                                <PathGeometry FillRule="Nonzero" Figures="M41,39.0410995L21,39.0410995C20.4472008,39.0410995 20,39.4883003 20,40.0410995 20,40.5937995 20.4472008,41.0410995 21,41.0410995L41,41.0410995C41.5527,41.0410995 42,40.5937995 42,40.0410995 42,39.4883003 41.5527,39.0410995 41,39.0410995z" />
+                            </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                        <GeometryDrawing Brush="Black">
+                            <GeometryDrawing.Geometry>
+                                <PathGeometry FillRule="Nonzero" Figures="M12,56.0410995L50,56.0410995 50,30.0410995 12,30.0410995 12,56.0410995z M14,32.0410995L48,32.0410995 48,54.0410995 14,54.0410995 14,32.0410995z" />
+                            </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                        <GeometryDrawing Brush="Black">
+                            <GeometryDrawing.Geometry>
+                                <PathGeometry FillRule="Nonzero" Figures="M49.3811989,0.0411L49.3610992,0 7,0C4.7908001,0,3,1.7909,3,4L3,60C3,62.2092018,4.7908001,64,7,64L57,64C59.2090988,64,61,62.2092018,61,60L61,11.6962996 49.3811989,0.0411z M39.9604988,2.0804999L39.9604988,20.0016005 14.0394001,20.0016005 14.0394001,2.0804999 39.9604988,2.0804999z M59,60C59,61.1027985,58.1027985,62,57,62L7,62C5.8972001,62,5,61.1027985,5,60L5,4C5,2.8972001,5.8972001,2,7,2L12,2 12,22.0410995 42,22.0410995 42,2 48.5099983,2 59,12.5228996 59,60z" />
+                            </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                    </DrawingGroup>
+                </DrawingGroup>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
+
+    <DrawingBrush x:Key="FloppyDiskHoverIconBrush">
+        <DrawingBrush.Drawing>
+            <DrawingGroup xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                <DrawingGroup >
+                    <DrawingGroup.ClipGeometry>
+                        <RectangleGeometry Rect="0,0,64,64" />
+                    </DrawingGroup.ClipGeometry>
+                    <DrawingGroup>
+                        <GeometryDrawing Brush="{StaticResource Color2}">
+                            <GeometryDrawing.Geometry>
+                                <PathGeometry FillRule="Nonzero" Figures="M35.2673988,6.0411L27.2674007,6.0411 27.2674007,16.0411 35.2673988,16.0411 35.2673988,6.0411z M33.3697014,14.1434002L29.1651001,14.1434002 29.1651001,7.9387999 33.3697014,7.9387999 33.3697014,14.1434002z" />
+                            </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                        <GeometryDrawing Brush="{StaticResource Color2}">
+                            <GeometryDrawing.Geometry>
+                                <PathGeometry FillRule="Nonzero" Figures="M41,47.0410995L21,47.0410995C20.4472008,47.0410995 20,47.4883003 20,48.0410995 20,48.5937995 20.4472008,49.0410995 21,49.0410995L41,49.0410995C41.5527,49.0410995 42,48.5937995 42,48.0410995 42,47.4883003 41.5527,47.0410995 41,47.0410995z" />
+                            </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                        <GeometryDrawing Brush="{StaticResource Color2}">
+                            <GeometryDrawing.Geometry>
+                                <PathGeometry FillRule="Nonzero" Figures="M41,39.0410995L21,39.0410995C20.4472008,39.0410995 20,39.4883003 20,40.0410995 20,40.5937995 20.4472008,41.0410995 21,41.0410995L41,41.0410995C41.5527,41.0410995 42,40.5937995 42,40.0410995 42,39.4883003 41.5527,39.0410995 41,39.0410995z" />
+                            </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                        <GeometryDrawing Brush="{StaticResource Color2}">
+                            <GeometryDrawing.Geometry>
+                                <PathGeometry FillRule="Nonzero" Figures="M12,56.0410995L50,56.0410995 50,30.0410995 12,30.0410995 12,56.0410995z M14,32.0410995L48,32.0410995 48,54.0410995 14,54.0410995 14,32.0410995z" />
+                            </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                        <GeometryDrawing Brush="{StaticResource Color2}">
+                            <GeometryDrawing.Geometry>
+                                <PathGeometry FillRule="Nonzero" Figures="M49.3811989,0.0411L49.3610992,0 7,0C4.7908001,0,3,1.7909,3,4L3,60C3,62.2092018,4.7908001,64,7,64L57,64C59.2090988,64,61,62.2092018,61,60L61,11.6962996 49.3811989,0.0411z M39.9604988,2.0804999L39.9604988,20.0016005 14.0394001,20.0016005 14.0394001,2.0804999 39.9604988,2.0804999z M59,60C59,61.1027985,58.1027985,62,57,62L7,62C5.8972001,62,5,61.1027985,5,60L5,4C5,2.8972001,5.8972001,2,7,2L12,2 12,22.0410995 42,22.0410995 42,2 48.5099983,2 59,12.5228996 59,60z" />
+                            </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                    </DrawingGroup>
+                </DrawingGroup>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
+
+    <DrawingBrush x:Key="EditPensilIconBrush">
+        <DrawingBrush.Drawing>
+            <DrawingGroup xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                <DrawingGroup>
+                    <DrawingGroup.ClipGeometry>
+                        <RectangleGeometry Rect="0,0,528.899,528.899" />
+                    </DrawingGroup.ClipGeometry>
+                    <DrawingGroup>
+                        <GeometryDrawing Brush="Black">
+                            <GeometryDrawing.Geometry>
+                                <PathGeometry FillRule="Nonzero" Figures="M328.883,89.125L436.473,196.714 164.133,469.054 56.604,361.465 328.883,89.125z M518.113,63.177L470.132,15.196C451.589,-3.347,421.479,-3.347,402.873,15.196L356.912,61.157 464.502,168.747 518.113,115.136C532.495,100.753,532.495,77.559,518.113,63.177z M0.3,512.69C-1.658,521.502,6.298,529.398,15.111,527.255L135.002,498.186 27.473,390.597 0.3,512.69z" />
+                            </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                    </DrawingGroup>
+                </DrawingGroup>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
+
+    <DrawingBrush x:Key="EditPensilHoverIconBrush">
+        <DrawingBrush.Drawing>
+            <DrawingGroup xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                <DrawingGroup>
+                    <DrawingGroup.ClipGeometry>
+                        <RectangleGeometry Rect="0,0,528.899,528.899" />
+                    </DrawingGroup.ClipGeometry>
+                    <DrawingGroup>
+                        <GeometryDrawing Brush="{StaticResource Color2}">
+                            <GeometryDrawing.Geometry>
+                                <PathGeometry FillRule="Nonzero" Figures="M328.883,89.125L436.473,196.714 164.133,469.054 56.604,361.465 328.883,89.125z M518.113,63.177L470.132,15.196C451.589,-3.347,421.479,-3.347,402.873,15.196L356.912,61.157 464.502,168.747 518.113,115.136C532.495,100.753,532.495,77.559,518.113,63.177z M0.3,512.69C-1.658,521.502,6.298,529.398,15.111,527.255L135.002,498.186 27.473,390.597 0.3,512.69z" />
+                            </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                    </DrawingGroup>
+                </DrawingGroup>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
 </ResourceDictionary>

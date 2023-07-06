@@ -98,5 +98,10 @@ namespace KantorServer.Application.Services
             }
             catch (Exception ex) { return null; }
         }
+
+        public Task<UserDto> DeleteUser(UserDto user)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
