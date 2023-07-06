@@ -3,20 +3,20 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
 
-    <SolidColorBrush x:Key="Color1" Color="#A8512C" />
-    <SolidColorBrush x:Key="Color2" Color="#F56D33" />
+    <SolidColorBrush x:Key="Color1" Color="DarkGoldenrod" />
+    <SolidColorBrush x:Key="Color2" Color="Goldenrod" />
     <!--<SolidColorBrush x:Key="BackgroundColor" Color="#FFFFFF" />-->
-        <LinearGradientBrush x:Key="BackgroundColor">
-        <LinearGradientBrush.GradientStops>
+        <LinearGradientBrush x:Key="BackgroundColor" StartPoint="1,0">
+            <LinearGradientBrush.GradientStops>
                 <GradientStop Color="#DDDDDD" Offset="0.0" />
-            <GradientStop Color="#AAAAAA" Offset="0.3" />
-            <GradientStop Color="#777777" Offset="0.7" />
-            <GradientStop Color="#444444" Offset="1" />
+                <GradientStop Color="#AAAAAA" Offset="0.3" />
+                <GradientStop Color="#777777" Offset="0.75" />
+                <GradientStop Color="DarkGoldenrod" Offset="1" />
             </LinearGradientBrush.GradientStops>
         </LinearGradientBrush>
 
     <sys:Double x:Key="StandardButtonHeight">40</sys:Double>
-    <sys:Double x:Key="StandardButtonWidth">140</sys:Double>
+    <sys:Double x:Key="StandardButtonWidth">180</sys:Double>
     <sys:Double x:Key="SmallIconHeight">20</sys:Double>
     <sys:Double x:Key="SmallIconWidth">20</sys:Double>
 
@@ -42,15 +42,17 @@
             <Setter Property="Margin" Value="5" />
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="Background" Value="LightGray" />
+            <Setter Property="Foreground" Value="Black" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border CornerRadius="5" BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" Margin="{TemplateBinding Margin}">
-                            <Label HorizontalAlignment="Center" Content="{TemplateBinding Content}" FontSize="{TemplateBinding FontSize}" FontWeight="{TemplateBinding FontWeight}" Padding="0" Margin="0" />
+                            <Label HorizontalAlignment="Center" Content="{TemplateBinding Content}" FontSize="{TemplateBinding FontSize}" FontWeight="{TemplateBinding FontWeight}" Foreground="{TemplateBinding Foreground}" Padding="0" Margin="0" />
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="DarkGray" />
+                                <Setter Property="Background" Value="White" />
+                                <Setter Property="Foreground" Value="{StaticResource Color2}" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -66,16 +68,18 @@
             <Setter Property="Margin" Value="5" />
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="Background" Value="LightGray" />
+            <Setter Property="Foreground" Value="Black" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ToggleButton">
                         <Border CornerRadius="5" BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" Margin="{TemplateBinding Margin}"
                                 Height="{TemplateBinding Height}" Width="{TemplateBinding Width}">
-                            <Label HorizontalAlignment="Center" Content="{TemplateBinding Content}" FontSize="{TemplateBinding FontSize}" FontWeight="{TemplateBinding FontWeight}" Padding="0" />
+                            <Label HorizontalAlignment="Center" Content="{TemplateBinding Content}" FontSize="{TemplateBinding FontSize}" Foreground="{TemplateBinding Foreground}"  FontWeight="{TemplateBinding FontWeight}" Padding="0" />
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked" Value="True">
-                                <Setter Property="Background" Value="Gray" />
+                                <Setter Property="Background" Value="White" />
+                                <Setter Property="Foreground" Value="{StaticResource Color2}" />
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background" Value="LightGray" />

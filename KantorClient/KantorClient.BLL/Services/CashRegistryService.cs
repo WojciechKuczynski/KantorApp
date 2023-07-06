@@ -70,7 +70,7 @@ namespace KantorClient.BLL.Services
             {
                 var entity = currency.Map();
                 var registry = await _cashRegistryRepository.GetRegistryForCurrency(entity);
-                return registry.Quantity;
+                return registry?.Quantity ?? 0;
             }
             catch { }
             return 0;

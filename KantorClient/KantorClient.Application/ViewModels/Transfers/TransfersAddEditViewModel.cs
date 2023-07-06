@@ -16,9 +16,12 @@ namespace KantorClient.Application.ViewModels.Transfers
     {
 
         private TransferType _selectedType;
+        private CurrencyModel _selectedCurrency;
         private readonly ISettingsService _settingsService;
+        private readonly ICashRegistryService _cashRegistryService;
+
         public ITransfersMainViewParent Parent { get; set; }
-        
+
         public TransferModel Model { get; set; }
         public string TransferText { get; set; }
         public TransferType SelectedType
@@ -33,15 +36,25 @@ namespace KantorClient.Application.ViewModels.Transfers
         public string AcceptTitle => NewTransaction ? "DODAJ" : "EDYTUJ";
         public bool NewTransaction { get; set; }
         public decimal Amount { get; set; }
+        public decimal CurrencyAmount { get; set; }
         public bool Loading { get; set; }
         public ObservableCollection<CurrencyModel> Currencies { get; set; }
-        public CurrencyModel SelectedCurrency { get; set; }
+        public CurrencyModel SelectedCurrency
+        {
+            get { return _selectedCurrency; }
+            set
+            {
+                _selectedCurrency = value;
+                Task.Run(async () => { CurrencyAmount = await _cashRegistryService.GetAmountForCurrency(value); });
+            }
+        }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public TransfersAddEditViewModel(ISettingsService settingsService)
+        public TransfersAddEditViewModel(ISettingsService settingsService, ICashRegistryService cashRegistryService)
         {
             _settingsService = settingsService;
+            _cashRegistryService = cashRegistryService;
 
             AddCommand = new DelegateCommand(Add);
             CancelCommand = new DelegateCommand(Cancel);
@@ -74,7 +87,7 @@ namespace KantorClient.Application.ViewModels.Transfers
         public ICommand SelectTypeCommand { get; private set; }
         private void SelectType(TransferType? type)
         {
-            if(type.HasValue)
+            if (type.HasValue)
             {
                 SelectedType = type.Value;
             }
@@ -97,12 +110,17 @@ namespace KantorClient.Application.ViewModels.Transfers
                     return;
                 }
 
-                if (Model.TransferValue < 0)
+                if (Model.TransferValue <= 0)
                 {
                     MessageBox.Show("Wartość transferu nie może być mniejsza od zera!");
                     return;
                 }
 
+                if (Model.TransferValue > CurrencyAmount && Model.Type == TransferType.TransferOut)
+                {
+                    MessageBox.Show("Na stanie nie ma tyle waluty!");
+                    return;
+                }
                 // if TransferValue < CurrencyBalance ( for type == Out )
 
                 Model.TransferCurrency = SelectedCurrency;

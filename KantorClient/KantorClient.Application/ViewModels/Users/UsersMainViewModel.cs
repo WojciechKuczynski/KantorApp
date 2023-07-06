@@ -4,11 +4,9 @@ using KantorClient.BLL.Models;
 using KantorClient.BLL.Services.Interfaces;
 using Prism.Commands.Ex;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -29,6 +27,7 @@ namespace KantorClient.Application.ViewModels.Users
             AddUserCommand = new DelegateCommand(AddUser);
             RefreshCommand = new DelegateCommand(Refresh);
             EditUserCommand = new DelegateCommand(EditUser);
+            RemoveUserCommand = new DelegateCommand<UserModel>(RemoveUser);
         }
         public IMainWindowContainer Parent { get; set; }
         public bool AddEnabled => !FormOpened;
@@ -79,7 +78,7 @@ namespace KantorClient.Application.ViewModels.Users
                     FormOpened = false;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }
@@ -120,6 +119,31 @@ namespace KantorClient.Application.ViewModels.Users
             finally
             {
                 Loading = false;
+            }
+        }
+
+        public ICommand RemoveUserCommand { get; private set; }
+        private async void RemoveUser(UserModel model)
+        {
+            try
+            {
+                if (model != null && model.Valid == true)
+                {
+                    model.Valid = false;
+                    var edited = await _usersService.EditUser(model);
+                    if (edited == null)
+                    {
+                        return;
+                    }
+                    var old = Users.FirstOrDefault(x => x == model);
+                    old = edited;
+                    FormOpened = false;
+                    Refresh();
+                }
+            }
+            catch (Exception ex)
+            {
+
             }
         }
 

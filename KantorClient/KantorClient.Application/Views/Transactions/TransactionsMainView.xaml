@@ -29,7 +29,7 @@
         <Border Grid.Column="1" CornerRadius="15,0,0,15"  Background="#11FFFFFF">
             <Grid Grid.Column="1" Background="Transparent" Margin="5">
                 <StackPanel Orientation="Vertical" >
-                    <ToggleButton Content="Pokaż usunięte" Margin="5" IsChecked="{Binding ShowDeleted}" />
+                    <ToggleButton Content="Pokaż anulowane" Margin="5" IsChecked="{Binding ShowDeleted}" />
                     <Button Content="Dodaj Transakcję" Margin="5" Command="{Binding AddTransactionCommand}" />
                     <Button Content="Odśwież Transakcje" Margin="5" Command="{Binding RefreshCommand}" />
                 </StackPanel>
@@ -57,7 +57,7 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Usuń" Margin="3,0" 
+                            <Button Content="Anuluj" Margin="3,0" 
                                     Command="{Binding DataContext.DeleteTransactionCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
                                     CommandParameter="{Binding .}" />
                         </DataTemplate>

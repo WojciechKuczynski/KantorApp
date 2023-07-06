@@ -77,6 +77,8 @@ namespace KantorClient.Application.ViewModels
             CashRegistryMainViewCommand = new DelegateCommand(CashRegistryMainView);
             ReportsMainViewCommand = new DelegateCommand(ReportsMainView);
             LoginCommand = new DelegateCommand(Login);
+            LogoutCommand = new DelegateCommand(Logout);
+            ClosingCommand = new DelegateCommand<CancelEventArgs>(Closing);
 
             _authenticationService.CashUpdated += _authenticationService_CashUpdated;
         }
@@ -169,6 +171,38 @@ namespace KantorClient.Application.ViewModels
         {
             var login = new LoginView(null, _authenticationService, _configurationRepository, false);
             login.ShowDialog();
+        }
+
+        public ICommand LogoutCommand { get; private set; }
+        private void Logout()
+        {
+            this.LoggedOut = true;
+            _authenticationService.SetOnlineMode(false);
+            Parent.Close();
+        }
+
+        public ICommand EditPlnCommand { get; private set; }
+        private void EditPln()
+        {
+            ReportsMainVM.
+        }
+
+        public ICommand ClosingCommand { get; private set; }
+        private void Closing(CancelEventArgs e)
+        {
+            if (this.LoggedOut)
+                return;
+            var closingWindow = new ClosingWindow();
+            closingWindow.ShowDialog();
+            if (closingWindow.Action == 1)
+            {
+                this.LoggedOut = true;
+                _authenticationService.SetOnlineMode(false);
+            }
+            else if (closingWindow.Action == 0)
+            {
+                e.Cancel = true;
+            }
         }
         #endregion
     }

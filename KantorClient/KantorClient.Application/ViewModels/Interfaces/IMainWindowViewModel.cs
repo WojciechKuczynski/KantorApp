@@ -11,7 +11,7 @@ namespace KantorClient.Application.ViewModels.Interfaces
     public interface IMainWindowViewModel : IMainWindowContainer
     {
         Window Parent { get; set; }
-        bool LoggedOut { get; }
+        bool LoggedOut { get; set; }
         Task Load();
         //UserSession LoggedUser { get; set; }
 

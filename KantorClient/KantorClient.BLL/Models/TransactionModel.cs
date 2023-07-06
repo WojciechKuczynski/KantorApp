@@ -12,6 +12,7 @@ namespace KantorClient.BLL.Models
         public decimal FinalValue { get; set; }
         public decimal Rate { get; set; }
         public long UserId { get; set; }
+        public string UserName { get; set; }
         public long? Parent { get; set; }
         public long? ExternalId { get; set; }
         public bool Edited { get; set; }
@@ -30,6 +31,7 @@ namespace KantorClient.BLL.Models
             Parent = transaction.Parent;
             ExternalId = transaction.ExternalId;
             UserId = transaction.User.UserId;
+            UserName = transaction.User.Name;
             TransactionDate = transaction.TransactionDate;
             Valid = transaction.Valid;  
             DeletionDate = transaction.DeletionDate;

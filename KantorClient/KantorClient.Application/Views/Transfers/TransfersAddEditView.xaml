@@ -62,15 +62,15 @@
             <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center"
                    Text="{Binding TransferText}" FontSize="28" FontWeight="Black" Margin="5" />
 
-            <Button Grid.Row="1" Grid.Column="2" Margin="5" FontSize="{StaticResource StandardFontSize}" Content="TRANSFER IN" Command="{Binding SelectTypeCommand}" CommandParameter="{x:Static const:TransferType.TransferIn}" />
-            <Button Grid.Row="1" Grid.Column="1" Margin="5" FontSize="{StaticResource StandardFontSize}" Content="TRANSFER OUT" Command="{Binding SelectTypeCommand}" CommandParameter="{x:Static const:TransferType.TransferOut}" />
+            <Button Grid.Row="1" Grid.Column="2" Margin="5" FontSize="{StaticResource StandardFontSize}" Content="WPŁATA" Command="{Binding SelectTypeCommand}" CommandParameter="{x:Static const:TransferType.TransferIn}" />
+            <Button Grid.Row="1" Grid.Column="1" Margin="5" FontSize="{StaticResource StandardFontSize}" Content="WYPŁATA" Command="{Binding SelectTypeCommand}" CommandParameter="{x:Static const:TransferType.TransferOut}" />
 
             <Label Grid.Row="2" Grid.Column="0" Content="Waluta" />
             <ComboBox Grid.Row="2" Grid.Column="1" Margin="10" VerticalContentAlignment="Center" ItemsSource="{Binding Currencies}" SelectedItem="{Binding SelectedCurrency}" FontSize="20" />
 
             <Label Grid.Row="3" Grid.Column="0" Content="Ilość" />
             <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Model.TransferValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <TextBox Grid.Row="3" Grid.Column="2" IsReadOnly="True" Text="Ilość na stanie" />
+            <TextBox Grid.Row="3" Grid.Column="2" IsReadOnly="True" Text="{Binding CurrencyAmount}" />
 
             <Button Grid.Row="4" Grid.Column="2" Content="{Binding AcceptTitle}" Margin="10" FontSize="24" FontWeight="Black"
                     Command="{Binding AddCommand}" IsEnabled="{Binding Loading, Converter={StaticResource BoolInverseConverter}}" />

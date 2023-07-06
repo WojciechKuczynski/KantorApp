@@ -50,15 +50,20 @@ namespace KantorClient.BLL.Services
 
         private void TransferSynchronization_DoWork(object? sender, DoWorkEventArgs e)
         {
-            int arg = (int)e.Argument;
+            double arg = (int)e.Argument;
             var synchroKey = _authenticationService.UserSession.SynchronizationKey;
+            var timeStamp = DateTime.Now;
             while (_transferSynchro)
             {
                 try
                 {
-                    _synchronizationRepository.SynchronizeTransfers(synchroKey).GetAwaiter();
-                    _settingsService.LoadRates().GetAwaiter();
-                    Thread.Sleep(arg);
+                    if (timeStamp.AddMinutes(arg) > DateTime.Now)
+                    {
+                        _synchronizationRepository.SynchronizeTransfers(synchroKey).GetAwaiter();
+                        _settingsService.LoadRates().GetAwaiter();
+                        timeStamp = DateTime.Now;
+                    }
+                    Thread.Sleep(1000 * 5);
                 }
                 catch (ServerNotReachedException ex)
                 {
@@ -69,19 +74,25 @@ namespace KantorClient.BLL.Services
 
                 }
             }
+            _transactionSynchronization.Dispose();
         }
 
         private void TransactionSynchronization_DoWork(object? sender, DoWorkEventArgs e)
         {
-            int arg = (int)e.Argument;
+            double arg = (int)e.Argument;
             // wysyłanie transakcji
             var synchroKey = _authenticationService.UserSession.SynchronizationKey;
+            var timeStamp = DateTime.Now;
             while (_transactionSynchro)
             {
                 try
                 {
-                    _synchronizationRepository.SynchronizeTransactions(synchroKey).GetAwaiter();
-                    Thread.Sleep(arg);
+                    if (timeStamp.AddMinutes(arg) > DateTime.Now)
+                    {
+                        _synchronizationRepository.SynchronizeTransactions(synchroKey).GetAwaiter();
+                        timeStamp = DateTime.Now;
+                    }
+                    Thread.Sleep(1000*5);
                 }
                 catch (ServerNotReachedException ex)
                 {
@@ -92,22 +103,28 @@ namespace KantorClient.BLL.Services
 
                 }
             }
+            _transactionSynchronization.Dispose();
         }
 
         private void RateSynchronization_DoWork(object? sender, DoWorkEventArgs e)
         {
-            int arg = (int)e.Argument;
+            double arg = (int)e.Argument;
             var synchroKey = _authenticationService.UserSession.SynchronizationKey;
             // pobieranie i wysyłanie Ratów
+            var timeStamp = DateTime.Now;
             while (_rateSynchro)
             {
                 try
                 {
-                    // wysyłanie ratów
-                    _synchronizationRepository.SynchronizeRate(synchroKey).GetAwaiter();
-                    // pobieranie ratów
-                    _settingsService.LoadRates();
-                    Thread.Sleep(arg);
+                    if (timeStamp.AddMinutes(arg) > DateTime.Now)
+                    {
+                        // wysyłanie ratów
+                        _synchronizationRepository.SynchronizeRate(synchroKey).GetAwaiter();
+                        // pobieranie ratów
+                        _settingsService.LoadRates();
+                        timeStamp = DateTime.Now;
+                    }
+                    Thread.Sleep(1000*5);
                 }
                 catch (ServerNotReachedException ex)
                 {
@@ -118,6 +135,7 @@ namespace KantorClient.BLL.Services
 
                 }
             }
+            _rateSynchronization.Dispose();
         }
 
         public void StartSynchronization()
@@ -130,19 +148,19 @@ namespace KantorClient.BLL.Services
             if (!_transferSynchro)
             {
                 _transactionSynchro = true;
-                _transactionSynchronization.RunWorkerAsync(1 * 60 * 1000); // co 1 minut.
+                _transactionSynchronization.RunWorkerAsync(1); // co 1 minut.
             }
 
             if (!_transferSynchro)
             {
                 _transferSynchro = true;
-                _transferSynchronization.RunWorkerAsync(1 * 60 * 1000); // co 1 minut.
+                _transferSynchronization.RunWorkerAsync(1); // co 1 minut.
             }
 
             if (!_rateSynchro)
             {
                 _rateSynchro = true;
-                _rateSynchronization.RunWorkerAsync(5 * 60 * 1000);
+                _rateSynchronization.RunWorkerAsync(5);
             }
         }
 

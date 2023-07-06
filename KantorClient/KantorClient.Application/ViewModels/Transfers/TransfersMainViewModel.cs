@@ -1,8 +1,10 @@
 ﻿using KantorClient.Application.ViewModels.Interfaces;
 using KantorClient.Application.ViewModels.Interfaces.Transfers;
 using KantorClient.BLL.Models;
+using KantorClient.BLL.Services;
 using KantorClient.BLL.Services.Interfaces;
 using Prism.Commands;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -32,17 +34,18 @@ namespace KantorClient.Application.ViewModels.Transfers
         public ObservableCollection<TransferModel> Transfers { get; set; }
         public TransferModel SelectedTransfer { get; set; }
 
-        public TransfersMainViewModel(ITransfersService transfersService, ISettingsService settingsService, IAuthenticationService authenticationService)
+        public TransfersMainViewModel(ITransfersService transfersService, ISettingsService settingsService, IAuthenticationService authenticationService, ICashRegistryService cashRegistryService)
         {
             _transfersService = transfersService;
             _authenticationService = authenticationService;
 
-            AddEditVM = new TransfersAddEditViewModel(settingsService);
+            AddEditVM = new TransfersAddEditViewModel(settingsService, cashRegistryService);
             AddEditVM.Parent = this;
 
             AddTransferCommand = new DelegateCommand(AddTransfer);
             RefreshCommand = new DelegateCommand(Refresh);
             EditTransferCommand = new DelegateCommand(EditTransfer);
+            RemoveTransferCommand = new DelegateCommand<TransferModel>(RemoveTransfer);
 
         }
         public async Task<bool> AddTransfer(TransferModel model)
@@ -116,6 +119,30 @@ namespace KantorClient.Application.ViewModels.Transfers
             finally
             {
                 Loading = false;
+            }
+        }
+
+        public ICommand RemoveTransferCommand { get; private set; }
+        private async void RemoveTransfer(TransferModel model)
+        {
+            try
+            {
+                if (!model.Valid)
+                {
+                    return;
+                }
+
+                var deleted = await _transfersService.DeleteTransfer(model);
+                if (deleted)
+                {
+                    model.Valid = false;
+                    model.DeletionDate = DateTime.Now;
+                    Refresh();
+                }
+            }
+            catch
+            {
+
             }
         }
 

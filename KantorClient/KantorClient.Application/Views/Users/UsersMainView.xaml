@@ -39,6 +39,9 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <Border x:Name="SectionBorder" Grid.Column="0" BorderThickness="2" BorderBrush="{TemplateBinding Background}" CornerRadius="10">
+                                        <Border.InputBindings>
+                                            <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding DataContext.EditUserCommand,RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                        </Border.InputBindings>
                                         <Grid Grid.Column="0">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="*"/>

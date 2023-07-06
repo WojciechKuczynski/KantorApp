@@ -64,6 +64,7 @@ namespace KantorClient.Application.ViewModels.CashRegistry
         public void CancelAddEditWindow()
         {
             FormOpened = false;
+            SetPlnVisible = false;
         }
 
         public async Task EditRegistry(CashRegistryModel model)
@@ -121,6 +122,7 @@ namespace KantorClient.Application.ViewModels.CashRegistry
         private void RemoveRegistry(CashRegistryModel model)
         {
             _cashRegistryService.DeleteRegistry(model);
+            Refresh();
         }
 
         public ICommand RefreshCommand { get; private set; }

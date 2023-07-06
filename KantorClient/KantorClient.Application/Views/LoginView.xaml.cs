@@ -52,11 +52,16 @@ namespace KantorClient.Application.Views
                     _mainWindowVM.Parent = mainWindow;
                     await _mainWindowVM.Load();
                     mainWindow.DataContext = _mainWindowVM;
-                    mainWindow.Show();
+                    _mainWindowVM.LoggedOut = false;
+                    this.Hide();
+                    mainWindow.ShowDialog();
+                }
+                else
+                {
+                    this.Hide();
                 }
                 LoginTxt.Text = string.Empty;
                 PasswordTxt.Password = string.Empty;
-                this.Hide();
             }
             catch (Exception ex)
             {

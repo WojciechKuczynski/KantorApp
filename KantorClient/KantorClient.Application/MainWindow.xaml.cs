@@ -24,5 +24,10 @@ namespace KantorClient.Application
         {
             InitializeComponent();
         }
+
+        private void MainWindowName_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            //e.Cancel = true;
+        }
     }
 }

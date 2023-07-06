@@ -2,6 +2,7 @@
 using KantorClient.Application.ViewModels.Interfaces;
 using KantorClient.Application.ViewModels.Interfaces.Reports;
 using KantorClient.BLL.Models;
+using KantorClient.BLL.Printing;
 using KantorClient.BLL.Services.Interfaces;
 using KantorClient.DAL.RequestArgs;
 using Prism.Commands;
@@ -27,6 +28,7 @@ namespace KantorClient.Application.ViewModels.Reports
             _settingsSerivce = settingsService;
 
             RefreshCommand = new DelegateCommand(Refresh);
+            PrintCommand = new DelegateCommand(Print);
         }
         public IMainWindowContainer Parent { get; set; }
 
@@ -51,7 +53,7 @@ namespace KantorClient.Application.ViewModels.Reports
                 ContextOpened = value?.Parent != null;
             }
         }
-        
+
         private List<TransactionReportModel> TransactionList { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -95,13 +97,28 @@ namespace KantorClient.Application.ViewModels.Reports
                 if (trans != null)
                 {
                     TransactionList = trans;
-                    Transactions = new ObservableCollection<TransactionReportModel>(TransactionList.Where(x =>x .Edited == false));
+                    Transactions = new ObservableCollection<TransactionReportModel>(TransactionList.Where(x => x.Edited == false));
                 }
             }
             catch
             {
 
             }
+        }
+
+        public ICommand PrintCommand { get; private set; }
+        private async void Print()
+        {
+            //var saveFileDialog1 = new SaveFileDialog();
+            //saveFileDialog1.Filter = "excel files|*.xlsx";
+            //saveFileDialog1.Title = "Choose file to save";
+            //saveFileDialog1.ShowDialog();
+
+            //if (saveFileDialog1.FileName != "")
+            //{
+            //    PrintingModule.ExportToExcel(Transactions.ToList(), saveFileDialog1.FileName);
+            //}
+            PrintingModule.PrintTest();
         }
     }
 }
