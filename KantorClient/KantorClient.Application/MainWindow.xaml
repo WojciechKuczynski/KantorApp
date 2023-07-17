@@ -26,16 +26,16 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Border Grid.Column="0" BorderThickness="0,0,2,0" BorderBrush="{StaticResource Color2}">
+        <Border Grid.Column="0" BorderThickness="0,0,0,0" BorderBrush="{StaticResource Color2}">
 
             <Grid Grid.Column="0" >
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="80" />
+                    <RowDefinition Height="95" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
 
-                <Border Background="{StaticResource Color1}" Grid.Row="0" Height="80">
+                <Border Background="{StaticResource Color1}" Grid.Row="0" Height="95">
                     <Label Content="PLAC NOWY" FontSize="26" FontWeight="Black" HorizontalAlignment="Center"/>
                 </Border>
                 <StackPanel Orientation="Vertical" Grid.Row="1" VerticalAlignment="Stretch">
@@ -62,7 +62,7 @@
                     <RowDefinition Height="50" />
                 </Grid.RowDefinitions>
 
-            <Border Grid.Row="0" BorderBrush="Black" BorderThickness="0,0,0,3">
+            <Border Grid.Row="0" BorderBrush="{StaticResource Color1}" BorderThickness="0,0,0,3">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
@@ -99,7 +99,7 @@
 
                     <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
                         <Label Content="Ostatnie odświeżenie danych:" FontSize="16" Margin="0" />
-                        <Label Content="31.05.2023 12:13:35" FontSize="16" Margin="0" />
+                        <Label Content="{Binding LastUpdated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="16" Margin="0" />
                     </StackPanel>
 
                     <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
@@ -129,8 +129,7 @@
                 </Grid>
             </Border>
 
-            <StackPanel Grid.Row="1" >
-                    <!--Height="{Binding ElementName=MainWindowName, Path=ActualHeight, UpdateSourceTrigger=PropertyChanged}"-->
+            <Grid Grid.Row="1" VerticalAlignment="Stretch">
                     <Grid Visibility="{Binding FormType,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource WindowViewToVisibilityConverter},ConverterParameter=2}" VerticalAlignment="Stretch">
                         <rates:RatesMainView DataContext="{Binding RatesMainVM}" VerticalAlignment="Stretch" />
                     </Grid>
@@ -159,7 +158,7 @@
                 VerticalAlignment="Stretch" >
                     <reports:ReportsMainView DataContext="{Binding ReportsMainVM}" VerticalAlignment="Stretch"/>
                 </Grid>
-            </StackPanel>
             </Grid>
+         </Grid>
     </Grid>
 </Window>

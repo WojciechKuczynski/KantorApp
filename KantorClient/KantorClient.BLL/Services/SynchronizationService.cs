@@ -1,4 +1,5 @@
 ﻿using KantorClient.BLL.Services.Interfaces;
+using KantorClient.Common.Events;
 using KantorClient.Common.Exceptions;
 using KantorClient.DAL.Repositories.Interfaces;
 using System.ComponentModel;
@@ -121,7 +122,7 @@ namespace KantorClient.BLL.Services
                         // wysyłanie ratów
                         _synchronizationRepository.SynchronizeRate(synchroKey).GetAwaiter();
                         // pobieranie ratów
-                        _settingsService.LoadRates();
+                        _settingsService.LoadRates().GetAwaiter();
                         timeStamp = DateTime.Now;
                     }
                     Thread.Sleep(1000*5);

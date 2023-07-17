@@ -1,4 +1,5 @@
-﻿using KantorClient.Application.ViewModels.Interfaces;
+﻿using KantorClient.Application.CustomControls;
+using KantorClient.Application.ViewModels.Interfaces;
 using KantorClient.Application.ViewModels.Interfaces.Rates;
 using KantorClient.BLL.Models;
 using KantorClient.BLL.Services.Interfaces;
@@ -76,7 +77,7 @@ namespace KantorClient.Application.ViewModels.Rates
                 var success = await _settingsService.RemoveRate(RateModel.Map(model));
                 if (!success)
                 {
-                    MessageBox.Show("Nie udało się usunąć Kursu");
+                    new UserMessageBox("Nie udało się usunąć kursu", MessageBoxButton.OK, MessageBoxImage.Error).ShowDialog();
                 }
                 else
                 {

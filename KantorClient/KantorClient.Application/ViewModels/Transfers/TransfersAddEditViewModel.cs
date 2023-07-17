@@ -45,7 +45,10 @@ namespace KantorClient.Application.ViewModels.Transfers
             set
             {
                 _selectedCurrency = value;
-                Task.Run(async () => { CurrencyAmount = await _cashRegistryService.GetAmountForCurrency(value); });
+                if (value != null)
+                {
+                    Task.Run(async () => { CurrencyAmount = await _cashRegistryService.GetAmountForCurrency(value); });
+                }
             }
         }
 

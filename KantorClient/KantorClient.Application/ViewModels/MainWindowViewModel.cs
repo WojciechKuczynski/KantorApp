@@ -8,9 +8,11 @@ using KantorClient.Application.ViewModels.Interfaces.Transfers;
 using KantorClient.Application.ViewModels.Interfaces.Users;
 using KantorClient.Application.Views;
 using KantorClient.BLL.Services.Interfaces;
+using KantorClient.DAL.Repositories;
 using KantorClient.DAL.Repositories.Interfaces;
 using KantorClient.Model;
 using Prism.Commands;
+using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
@@ -42,13 +44,14 @@ namespace KantorClient.Application.ViewModels
         public IReportsMainViewModel ReportsMainVM { get; private set; }
         #endregion
 
-        public MainWindowViewModel(ISettingsService settingsService, IAuthenticationService authenticationService, IRatesMainViewModel ratesMainVM,
+        public MainWindowViewModel(ISettingsService settingsService, IAuthenticationService authenticationService, IConfigurationRepository configurationRepository, IRatesMainViewModel ratesMainVM,
                                    ITransactionsMainViewModel transactionsMainVM, IUsersMainViewModel usersMainViewModel,
                                    ITransfersMainViewModel transfersMainViewModel, ICashRegistryMainViewModel cashRegistryMainViewModel,
                                    IReportsMainViewModel reportsMainViewModel)
         {
             _settingService = settingsService;
             _authenticationService = authenticationService;
+            _configurationRepository = configurationRepository;
 
             _authenticationService.OnlineModeChanged += AuthenticationService_OnlineModeChanged;
 
@@ -79,8 +82,18 @@ namespace KantorClient.Application.ViewModels
             LoginCommand = new DelegateCommand(Login);
             LogoutCommand = new DelegateCommand(Logout);
             ClosingCommand = new DelegateCommand<CancelEventArgs>(Closing);
+            EditPlnCommand = new DelegateCommand(EditPln);
 
             _authenticationService.CashUpdated += _authenticationService_CashUpdated;
+            _settingService.DataUpdated += _settingService_DataUpdated;
+        }
+
+        private void _settingService_DataUpdated(object sender, DateTime? newValue)
+        {
+            if (newValue != null)
+            {
+                LastUpdated = newValue.Value;
+            }
         }
 
         private void AuthenticationService_OnlineModeChanged(object sender, bool newValue)
@@ -98,6 +111,8 @@ namespace KantorClient.Application.ViewModels
         public bool LoggedOut { get; set; }
 
         public decimal Cash { get; set; }
+
+        public DateTime LastUpdated { get; set; } 
 
         public string OnlineText => OnlineMode == false ? "Offline" : "Online";
         public bool OnlineMode { get; set; }
@@ -184,7 +199,8 @@ namespace KantorClient.Application.ViewModels
         public ICommand EditPlnCommand { get; private set; }
         private void EditPln()
         {
-            ReportsMainVM.
+            CashRegistryMainView();
+            CashRegistryMainVM.SetPLN();
         }
 
         public ICommand ClosingCommand { get; private set; }

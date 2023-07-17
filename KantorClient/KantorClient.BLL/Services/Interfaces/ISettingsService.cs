@@ -1,4 +1,5 @@
-﻿using KantorClient.Model;
+﻿using KantorClient.Common.Events;
+using KantorClient.Model;
 
 namespace KantorClient.BLL.Services.Interfaces
 {
@@ -15,5 +16,7 @@ namespace KantorClient.BLL.Services.Interfaces
         public Task LoadRates();
 
         public Task GetNBPRates();
+
+        public event DataUpdated DataUpdated;
     }
 }

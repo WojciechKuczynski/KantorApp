@@ -7,190 +7,25 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.8*" />
-            <ColumnDefinition Width="0.2*" />
-        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="80"/>
+        </Grid.RowDefinitions>
 
-        <!--<Grid x:Name="GrayOut" Background="Gray" Opacity="0.8" Grid.ColumnSpan="2" Grid.Column="0" Panel.ZIndex="1"
-              Visibility="{Binding AddEditVisible,Converter={StaticResource BoolVisibilityConverter}}">
-        </Grid>
-        <Grid x:Name="Loading" Background="Gray" Opacity="0.8" Grid.ColumnSpan="2" Grid.Column="0" Panel.ZIndex="1"
-              Visibility="{Binding Loading,Converter={StaticResource BoolVisibilityConverter}}">
-            <Label Content="ODŚWIEŻANIE..." HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Black" />
-        </Grid>
-        <Grid x:Name="AddEditView" Background="Transparent" Margin="30" Panel.ZIndex="2"
-              Visibility="{Binding AddEditVisible,Converter={StaticResource BoolVisibilityConverter}}">
-            <local:TransactionsAddEditView DataContext="{Binding AddEditVM}" VerticalAlignment="Center" HorizontalAlignment="Center" />
-        </Grid>-->
-
-        <Border Grid.Column="1" CornerRadius="15,0,0,15"  Background="#11FFFFFF">
-            <Grid Grid.Column="1" Background="Transparent" Margin="5">
-                <StackPanel Orientation="Vertical" >
-                    <!--<ToggleButton Content="Pokaż usunięte" Margin="5" IsChecked="{Binding ShowDeleted}" />
-                    <Button Content="Dodaj Transakcję" Margin="5" Command="{Binding AddTransactionCommand}" />-->
-                    <Button Content="Odśwież Transakcje" Margin="5" Command="{Binding RefreshCommand}" />
-                </StackPanel>
+        <StackPanel Grid.Row="0">
+            <Grid Visibility="{Binding TransactionsVisible, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource BoolVisibilityConverter}}" >
+                <local:ReportsTransactionsView DataContext="{Binding TransactionsVM}"
+                                               VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
             </Grid>
-        </Border>
+            <Grid Visibility="{Binding UsersVisible, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource BoolVisibilityConverter}}" >
+                <local:ReportsUsersView DataContext="{Binding UsersVM}" 
+                                    VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+            </Grid>
+        </StackPanel>
 
-        <Grid Grid.Column="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
-            <StackPanel Grid.Row="0" Orientation="Horizontal">
-                <Label Content="Data od:" FontSize="14"/>
-                <DatePicker VerticalContentAlignment="Center" Margin="0,5" SelectedDate="{Binding DateFrom, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
-                <Label Content="Data do:" FontSize="14"/>
-                <DatePicker VerticalContentAlignment="Center" Margin="0,5" SelectedDate="{Binding DateTo, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
-                <Label Content="Kantor:" FontSize="14"/>
-                <ComboBox MinWidth="120" Margin="0,5" ItemsSource="{Binding KantorsList, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}">
-                    <ComboBox.ItemContainerStyle>
-                        <Style TargetType="ComboBoxItem">
-                            <Setter Property="IsEnabled" Value="True"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="ComboBoxItem">
-                                        <ContentPresenter/>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </ComboBox.ItemContainerStyle>
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <CheckBox IsChecked="{Binding Selected}" Content="{Binding .}" FontSize="16" Margin="3" VerticalContentAlignment="Center" />
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
-                <Label Content="Kasjer:" FontSize="14"/>
-                    <ComboBox MinWidth="120" Margin="0,5" ItemsSource="{Binding UsersList, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" IsEditable="False" SelectedItem="{x:Null}">
-                    <ComboBox.ItemContainerStyle>
-                        <Style TargetType="ComboBoxItem">
-                            <Setter Property="IsEnabled" Value="True"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="ComboBoxItem">
-                                        <ContentPresenter/>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </ComboBox.ItemContainerStyle>
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <CheckBox IsChecked="{Binding Selected}" Content="{Binding .}" FontSize="16" Margin="3" VerticalContentAlignment="Center"/>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
-                <Label Content="Waluta:" FontSize="14"/>
-                    <ComboBox MinWidth="120" Margin="0,5" ItemsSource="{Binding CurrenciesList, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"  IsEditable="False" SelectedItem="{x:Null}">
-                    <ComboBox.ItemContainerStyle>
-                        <Style TargetType="ComboBoxItem">
-                            <Setter Property="IsEnabled" Value="True"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="ComboBoxItem">
-                                        <ContentPresenter/>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </ComboBox.ItemContainerStyle>
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <CheckBox IsChecked="{Binding Selected}" Content="{Binding .}" FontSize="16" Margin="3" VerticalContentAlignment="Center"/>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
-                <Button Width="40" Height="40" Margin="15,0" Command="{Binding PrintCommand}">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Background" Value="{StaticResource FloppyDiskIconBrush}" />
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate>
-                                        <Rectangle Fill="{TemplateBinding Background}" />
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter Property="Background" Value="{StaticResource FloppyDiskHoverIconBrush}" />
-                                            </Trigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </Button.Style>
-                </Button>
-            </StackPanel>
-
-            <DataGrid Grid.Row="1" ItemsSource="{Binding Transactions}" HorizontalAlignment="Stretch" SelectedItem="{Binding SelectedTransaction}" 
-                  BorderBrush="Transparent" AutoGenerateColumns="False" IsReadOnly="True" FontSize="18" Margin="10,10,10,0">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Typ Transakcji" Binding="{Binding TransactionType, Converter={StaticResource TransactionTypeFriendlyNameConverter}}" />
-                    <DataGridTextColumn Header="Waluta" Binding="{Binding Currency.Symbol}" />
-                    <DataGridTextColumn Header="Kurs wymiany" Binding="{Binding Rate, StringFormat=0.00}" />
-                    <DataGridTextColumn Header="Ilość" Binding="{Binding Quantity, StringFormat=0.00}" />
-                    <DataGridTextColumn Header="Kwota wymiany" Binding="{Binding FinalValue, StringFormat=0.00}" />
-                    <DataGridTextColumn Header="Data transakcji" Binding="{Binding TransactionDate}" />
-                    <DataGridTextColumn Header="Kantor" Binding="{Binding KantorName}" />
-                    <DataGridTextColumn Header="Kasjer" Binding="{Binding UserName}" />
-                    <DataGridTextColumn Header="Edytowany" Binding="{Binding Parent,Converter={StaticResource NullValueConverter},ConverterParameter=Edytowany}" />
-                    <!--<DataGridTemplateColumn>
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Content="Edytuj" Margin="3,0"  Padding="0"
-                                    Command="{Binding DataContext.EditTransactionCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
-                                    CommandParameter="{Binding .}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTemplateColumn>
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Content="Usuń" Margin="3,0" 
-                                    Command="{Binding DataContext.DeleteTransactionCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
-                                    CommandParameter="{Binding .}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>-->
-                </DataGrid.Columns>
-                <DataGrid.RowStyle>
-                    <Style TargetType="DataGridRow">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Valid}" Value="false">
-                                <Setter Property="Background" Value="OrangeRed" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </DataGrid.RowStyle>
-                <DataGrid.ContextMenu>
-                    <ContextMenu>
-                        <ContextMenu.Style>
-                            <Style TargetType="ContextMenu">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="ContextMenu">
-                                            <Border Background="Gray" CornerRadius="15" Visibility="{Binding SelectedTransaction.Parent, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay, Converter={StaticResource NullVisibilityConverter}}">
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Label Content="Kurs:" />
-                                                    <Label Content="{Binding ParentTransaction.Rate}"/>
-                                                    <Label Content="Ilość:" />
-                                                    <Label Content="{Binding ParentTransaction.Quantity}"/>
-                                                    <Label Content="Kwota wymiany:" />
-                                                    <Label Content="{Binding ParentTransaction.FinalValue}"/>
-                                                </StackPanel>
-                                            </Border>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ContextMenu.Style>
-                    </ContextMenu>
-                </DataGrid.ContextMenu>
-            </DataGrid>
-        </Grid>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" VerticalAlignment="Bottom">
+            <Button Content="T" Command="{Binding SetTransactionCommand}" Margin="5,10" Width="50" />
+            <Button Content="U" Command="{Binding SetUsersCommand}" Margin="5,10" Width="50" />
+        </StackPanel>
     </Grid>
 </UserControl>

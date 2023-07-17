@@ -1,0 +1,96 @@
+﻿<UserControl x:Class="KantorClient.Application.CustomControls.DateTimePicker"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:KantorClient.Application.CustomControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="AUTO" />
+        </Grid.ColumnDefinitions>
+        <TextBox HorizontalAlignment="Stretch"
+                 IsReadOnly="True"
+                 Text="{Binding Path=SelectedDateTime,
+                                ElementName=dtp,
+                                Converter={StaticResource NullDateTimeConverter},
+                                StringFormat={}{0:MM/dd/yyyy HH:mm},
+                                UpdateSourceTrigger=PropertyChanged}" />
+        <Button Grid.Row="0"
+                Grid.Column="1"
+                Width="50"
+                BorderBrush="Orange"
+                BorderThickness="1"
+                Command="{Binding ChangePopupStatusCommand}"
+                Style="{DynamicResource SquareButtonStyle}">
+            <Rectangle Width="20"
+                       Height="20"
+                       Fill="{Binding RelativeSource={RelativeSource AncestorType=Button},
+                                      Path=Foreground}">
+                <Rectangle.OpacityMask>
+                    <VisualBrush Stretch="Fill" />
+                </Rectangle.OpacityMask>
+            </Rectangle>
+        </Button>
+
+        <Popup Grid.Row="1"
+               Grid.Column="0"
+               Width="400"
+               IsOpen="{Binding IsPopupOpen}"
+               PopupAnimation="Slide">
+            <DockPanel LastChildFill="True">
+                <Grid DockPanel.Dock="Top">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="2*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <RepeatButton Command="{Binding ChangeTimeCommand}"
+                                  CommandParameter="addHour"
+                                  Content="+" />
+                    <RepeatButton Grid.Column="1"
+                                  Command="{Binding ChangeTimeCommand}"
+                                  CommandParameter="addMinute"
+                                  Content="+" />
+                    <TextBox
+                             Grid.Row="1"
+                             Grid.ColumnSpan="2"
+                             HorizontalContentAlignment="Center"
+                             VerticalContentAlignment="Center">
+                        <TextBox.Text>
+                            <MultiBinding StringFormat=" {0:D2}:{1:D2}">
+                                <Binding Mode="OneWay" Path="SelectedDateTime.Hour" />
+                                <Binding Mode="OneWay" Path="SelectedDateTime.Minute" />
+                            </MultiBinding>
+                        </TextBox.Text>
+                    </TextBox>
+                    <RepeatButton Grid.Row="2"
+                                  Command="{Binding ChangeTimeCommand}"
+                                  CommandParameter="subHour"
+                                  Content="-" />
+                    <!--  Click="SubHours_Click"  -->
+                    <RepeatButton Grid.Row="2"
+                                  Grid.Column="1"
+                                  Command="{Binding ChangeTimeCommand}"
+                                  CommandParameter="subMinute"
+                                  Content="-" />
+                </Grid>
+                <Calendar DockPanel.Dock="Bottom"
+                          SelectedDate="{Binding SelectedDateTime,
+                                                 ElementName=dtp,
+                                                 Converter={StaticResource NullDateTimeConverter}}"
+                           />
+            </DockPanel>
+        </Popup>
+    </Grid>
+</UserControl>

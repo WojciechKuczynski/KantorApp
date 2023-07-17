@@ -36,7 +36,7 @@
             </Grid>
         </Border>
 
-        <DataGrid Grid.Row="0" Grid.Column="0" ItemsSource="{Binding Transactions}" HorizontalAlignment="Stretch"
+        <DataGrid Grid.Row="0" Grid.Column="0" ItemsSource="{Binding Transactions}" HorizontalAlignment="Stretch" CanUserDeleteRows="False" CanUserAddRows="False" CanUserResizeRows="False"
                   BorderBrush="Transparent" AutoGenerateColumns="False" IsReadOnly="True" FontSize="18" Margin="10,10,10,0">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Typ Transakcji" Binding="{Binding TransactionType, Converter={StaticResource TransactionTypeFriendlyNameConverter}}" />
@@ -63,6 +63,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Synchronizacja" Binding="{Binding Synchronized, Converter={StaticResource BoolStringConverter}, ConverterParameter=OK}"  />
             </DataGrid.Columns>
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow">

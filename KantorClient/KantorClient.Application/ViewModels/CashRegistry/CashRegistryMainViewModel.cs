@@ -141,7 +141,7 @@ namespace KantorClient.Application.ViewModels.CashRegistry
         }
 
         public ICommand SetPLNCommand { get; private set; }
-        private void SetPLN()
+        public void SetPLN()
         {
             SetPlnVisible = true;
             SetPlnVM.LoadForm();

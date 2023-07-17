@@ -1,9 +1,8 @@
 ﻿using KantorClient.BLL.Services.Interfaces;
+using KantorClient.Common.Events;
 using KantorClient.Common.Exceptions;
 using KantorClient.DAL.Repositories.Interfaces;
 using KantorClient.Model;
-using System.Windows;
-using SQLitePCL;
 
 namespace KantorClient.BLL.Services
 {
@@ -12,13 +11,14 @@ namespace KantorClient.BLL.Services
         private readonly IAuthenticationService _authenticationService;
         private readonly ISettingsRepository _settingsRepository;
 
+        public event DataUpdated DataUpdated;
+
         public SettingsService(IAuthenticationService authenticationService, ISettingsRepository settingsRepository)
         {
             _authenticationService = authenticationService;
             _settingsRepository = settingsRepository;
 
             _authenticationService.OnlineModeChanged += _authenticationService_OnlineModeChanged;
-
         }
 
         private void _authenticationService_OnlineModeChanged(object sender, bool newValue)
@@ -44,9 +44,9 @@ namespace KantorClient.BLL.Services
 
         public async Task GetNBPRates()
         {
-            var nbpRates = await _settingsRepository.GetNBPRates();
+            NbpRates = await _settingsRepository.GetNBPRates();
             Console.WriteLine("GetNbpRates");
-            foreach (var rate in nbpRates)
+            foreach (var rate in NbpRates)
             {
                 Console.WriteLine("GetNbpRates + rate = " + rate.Currency.Name);
                 var curr = Currencies.FirstOrDefault(x => x.Symbol == rate.Currency.Symbol);
@@ -89,7 +89,7 @@ namespace KantorClient.BLL.Services
 
                 return currencyList;
             }
-            catch(ServerNotReachedException)
+            catch (ServerNotReachedException)
             {
                 _authenticationService.SetOnlineMode(false);
             }
@@ -107,6 +107,7 @@ namespace KantorClient.BLL.Services
 
                 var rates = await _settingsRepository.GetRates(_authenticationService.UserSession.SynchronizationKey);
                 Rates = await _settingsRepository.AddRates(rates); // Co z tym?
+                DataUpdated?.Invoke(this, DateTime.Now);
             }
             catch (ServerNotReachedException)
             {

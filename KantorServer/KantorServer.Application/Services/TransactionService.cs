@@ -158,7 +158,7 @@ namespace KantorServer.Application.Services
 
                 if (request.DateTo.HasValue)
                 {
-                    transactionsQuery = transactionsQuery.Where(x => x.TransactionDate >= request.DateTo.Value);
+                    transactionsQuery = transactionsQuery.Where(x => x.TransactionDate <= request.DateTo.Value);
                 }
 
                 var transactions = await transactionsQuery.ToListAsync();
