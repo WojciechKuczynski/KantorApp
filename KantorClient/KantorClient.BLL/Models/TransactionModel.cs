@@ -17,6 +17,7 @@ namespace KantorClient.BLL.Models
         public long? ExternalId { get; set; }
         public bool Edited { get; set; }
         public DateTime TransactionDate { get; set; }
+        public bool Synchronized { get; set; }
         public bool Valid { get; set; }
         public DateTime? DeletionDate { get; set; }
 
@@ -36,6 +37,7 @@ namespace KantorClient.BLL.Models
             Valid = transaction.Valid;  
             DeletionDate = transaction.DeletionDate;
             Edited = transaction.Edited;
+            Synchronized = transaction.Synchronized;
         }
 
         public TransactionModel()

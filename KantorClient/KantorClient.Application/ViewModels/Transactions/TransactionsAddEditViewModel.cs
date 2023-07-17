@@ -1,4 +1,5 @@
-﻿using KantorClient.Application.ViewModels.Interfaces.Transactions;
+﻿using KantorClient.Application.CustomControls;
+using KantorClient.Application.ViewModels.Interfaces.Transactions;
 using KantorClient.BLL.Models;
 using KantorClient.BLL.Services.Interfaces;
 using KantorClient.Model.Consts;
@@ -211,7 +212,7 @@ namespace KantorClient.Application.ViewModels.Transactions
 
             if (rate == null)
             {
-                MessageBox.Show("Nie ma Kursów dla tej waluty");
+                new UserMessageBox("Nie ma kursów dla tej waluty", MessageBoxButton.OK, MessageBoxImage.Warning).ShowDialog();
                 return;
             }
             CurrencyAmount = await _cashRegistryService.GetAmountForCurrency(currency);
@@ -233,12 +234,12 @@ namespace KantorClient.Application.ViewModels.Transactions
                 Loading = true;
                 if (SelectedCurrency == null)
                 {
-                    MessageBox.Show("Wybierz walutę!");
+                    new UserMessageBox("Wybierz walutę", MessageBoxButton.OK, MessageBoxImage.Warning).ShowDialog();
                     return;
                 }
                 if (Amount < 1)
                 {
-                    MessageBox.Show("Ilość musi być większa od zera!");
+                    new UserMessageBox("Ilość musi być większa od zera", MessageBoxButton.OK, MessageBoxImage.Error).ShowDialog();
                     return;
                 }
                 if (Amount > CurrencyAmount)

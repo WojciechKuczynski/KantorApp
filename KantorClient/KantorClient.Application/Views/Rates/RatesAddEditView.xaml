@@ -38,7 +38,7 @@
 
         <Label Grid.Row="1" Grid.Column="0" Content="Waluta" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />
         <ComboBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" Margin="10" FontSize="20" VerticalContentAlignment="Center"
-                  ItemsSource="{Binding Currencies}" SelectedItem="{Binding RateModel.Currency,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
+                  ItemsSource="{Binding Currencies}" SelectedItem="{Binding SelectedCurrency,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
         <Label Grid.Row="1" Grid.Column="2" Content="Kurs NBP" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />
         <TextBox Grid.Row="1" Grid.Column="3" IsReadOnly="true" Margin="10" HorizontalAlignment="Stretch" FontSize="20" VerticalContentAlignment="Center" 
                  />

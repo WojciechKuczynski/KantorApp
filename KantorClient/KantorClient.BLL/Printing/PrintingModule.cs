@@ -1,8 +1,6 @@
 ﻿using KantorClient.BLL.Models;
-using PdfSharp;
-using PdfSharp.Pdf;
+using SelectPdf;
 using System.Data;
-using TheArtOfDev.HtmlRenderer.PdfSharp;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace KantorClient.BLL.Printing
@@ -60,8 +58,6 @@ namespace KantorClient.BLL.Printing
             }
             catch { }
             excelApp.Visible = true;
-            //excelWorkBook.Close();
-            //excelApp.Quit();
         }
 
         //public static PdfDocument PrintTransactions(List<TransactionReportModel> models)
@@ -161,34 +157,31 @@ namespace KantorClient.BLL.Printing
         public static void PrintTest()
         {
 
-            //var html = @"
-            //<h1>HI..! Welcome to the PDF Tutorial!</h1>
-            //<p> This is 1st Page </p>
-            //<div style = 'page-break-after: always;' ></div>
-            //<h2> This is 2nd Page after page break!</h2>
-            //<div style = 'page-break-after: always;' ></div>
-            //<p> This is 3rd Page</p>
-            //<div style = 'page-break-after: always;' ></div>
-            //<link href=""https://fonts.googleapis.com/css?family=Libre Barcode 128""rel = ""stylesheet"" ><p style = ""font-family: 'Libre Barcode 128', serif; font-size:30px;""> Hello Google Fonts</p>";
+            var html = @"
+            <h1>HI..! Welcome to the PDF Tutorial!</h1>
+            <p> This is 1st Page </p>
+            <div style = 'page-break-after: always;' ></div>
+            <h2> This is 2nd Page after page break!</h2>
+            <div style = 'page-break-after: always;' ></div>
+            <p> This is 3rd Page</p>
+            <div style = 'page-break-after: always;' ></div>
+            <link href=""https://fonts.googleapis.com/css?family=Libre Barcode 128""rel = ""stylesheet"" ><p style = ""font-family: 'Libre Barcode 128', serif; font-size:30px;""> Hello Google Fonts</p>";
 
-            //PdfDocument pdf = PdfGenerator.GeneratePdf(html, PageSize.A4);
-            //pdf.Save("document.pdf");
+            // Create a PDF converter
+            HtmlToPdf converter = new HtmlToPdf();
+
+            // Set converter options (optional)
+            converter.Options.MarginTop = 10;
+            converter.Options.MarginBottom = 10;
+
+            // Convert HTML to PDF
+            PdfDocument pdf = converter.ConvertHtmlString(html);
+
+            // Save the PDF document to a file
+            pdf.Save("output.pdf");
+
+            // Close the PDF document
+            pdf.Close();
         }
-        //static void table_BeginRowLayout(object sender, BeginRowLayoutEventArgs args)
-        //{
-        //    if (args.RowIndex < 0)
-        //    {
-        //        //header
-        //        return;
-        //    }
-        //    if (args.RowIndex % 3 == 0)
-        //    {
-        //        args.CellStyle.BackgroundBrush = PdfBrushes.LightYellow;
-        //    }
-        //    else
-        //    {
-        //        args.CellStyle.BackgroundBrush = PdfBrushes.SkyBlue;
-        //    }
-        //}
     }
 }

@@ -33,6 +33,12 @@ namespace KantorClient.DAL
                 RequestFormat = DataFormat.Json,
                 Method = reqContext.Method,
             };
+            if(restRequest.Method == Method.Get)
+            {
+                restRequest.AddHeader("Content-Length", "0");
+                restRequest.AddHeader("User-Agent", "PostmanRuntime/7.32.3");
+                restRequest.RequestFormat = DataFormat.None;
+            }
             var serializeOptions = new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,

@@ -19,10 +19,21 @@ namespace KantorClient.Application.ViewModels.Rates
     {
         private readonly ISettingsService _settingsService;
 
+        private CurrencyModel _selectedCurrency;
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public RateModel RateModel { get; set; }
         public List<CurrencyModel> Currencies { get; set; }
+        public CurrencyModel SelectedCurrency
+        {
+            get { return _selectedCurrency; }
+            set
+            {
+                _selectedCurrency = value;
+                RateModel.Currency = value;
+            }
+        }
 
         public RatesAddEditViewModel(ISettingsService settingsService)
         {

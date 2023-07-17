@@ -1,4 +1,5 @@
-﻿using KantorClient.Application.ViewModels.Interfaces.CashRegistry;
+﻿using KantorClient.Application.CustomControls;
+using KantorClient.Application.ViewModels.Interfaces.CashRegistry;
 using KantorClient.BLL.Models;
 using KantorClient.BLL.Services.Interfaces;
 using Prism.Commands;
@@ -73,7 +74,7 @@ namespace KantorClient.Application.ViewModels.CashRegistry
                 }
                 if (SelectedCurrency == null)
                 {
-                    MessageBox.Show("Nie wybrano żadnej waluty");
+                    new UserMessageBox("Nie wybrano żadnej waluty", MessageBoxButton.OK, MessageBoxImage.Warning).ShowDialog();
                 }
                 else
                 {

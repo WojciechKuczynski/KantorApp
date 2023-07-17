@@ -14,4 +14,8 @@
     <utils:PermissionToVisibilityConverter x:Key="PermissionToVisibilityConverter" />
     <utils:NullValueConverter x:Key="NullValueConverter" />
     <utils:NullVisibilityConverter x:Key="NullVisibilityConverter" />
+    <utils:ReportModelToSumConverter x:Key="ReportModelToSumConverter" />
+    <utils:SelectedItemsVisibilityConverter x:Key="SelectedItemsVisibilityConverter" />
+    <utils:NullDateTimeConverter x:Key="NullDateTimeConverter" />
+    <utils:BoolStringConverter x:Key="BoolStringConverter" />
 </ResourceDictionary>

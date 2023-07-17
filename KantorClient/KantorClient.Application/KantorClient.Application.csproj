@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -26,6 +27,10 @@
     <Reference Include="KantorServer.Model">
       <HintPath>..\..\Bin\KantorServer.Model.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ReportModels\" />
   </ItemGroup>
 
 </Project>

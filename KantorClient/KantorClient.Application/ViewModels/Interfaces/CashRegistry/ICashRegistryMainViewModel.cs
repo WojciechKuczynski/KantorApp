@@ -8,5 +8,6 @@ namespace KantorClient.Application.ViewModels.Interfaces.CashRegistry
 {
     public interface ICashRegistryMainViewModel : ICashRegistryMainViewParent, IMainWindowChild
     {
+        void SetPLN();
     }
 }
