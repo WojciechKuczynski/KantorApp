@@ -8,12 +8,19 @@ namespace KantorClient.Application.CustomControls
     /// </summary>
     public partial class UserMessageBox : Window
     {
+        public bool Yes { get; set; }
         public UserMessageBox(string message, MessageBoxButton buttonOption, MessageBoxImage warrningType)
         {
             InitializeComponent();
             TextBlock.Text = message;
             SetButtonOption(buttonOption);
             SetWarrningType(warrningType);
+        }
+
+        public bool ShowMessage()
+        {
+            this.ShowDialog();
+            return Yes;
         }
 
         private void SetButtonOption(MessageBoxButton option)
@@ -44,6 +51,23 @@ namespace KantorClient.Application.CustomControls
                     WarningBrush.Color = System.Windows.Media.Color.FromRgb(255, 0, 0);
                     break;
             }
+        }
+
+        private void NoBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Yes = false;
+            this.Close();
+        }
+
+        private void OkBtn_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void YesBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Yes = true;
+            this.Close();
         }
     }
 }

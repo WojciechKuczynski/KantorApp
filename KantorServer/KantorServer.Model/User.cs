@@ -1,11 +1,4 @@
-﻿using KantorServer.Model.Consts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace KantorServer.Model
+﻿namespace KantorServer.Model
 {
     public class User : BaseModel
     {
@@ -17,7 +10,7 @@ namespace KantorServer.Model
 
         public User()
         {
-            
+
         }
         public User(string login, string password, string name)
         {

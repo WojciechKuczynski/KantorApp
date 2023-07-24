@@ -14,7 +14,7 @@ namespace KantorServer.Application.Responses
         public string SynchronizationKey { get; set; }
         public long UserId { get; set; }
         public string Name { get; set; }
-        public UserPermission Permission { get; set; }
+        public UserPermissionDto Permission { get; set; }
         public KantorDto Kantor { get; set; }
         public LoginResponse() : base(false) { }
         public LoginResponse(bool isCorrect, string successMsg, string failMsg) : base(isCorrect, successMsg, failMsg)

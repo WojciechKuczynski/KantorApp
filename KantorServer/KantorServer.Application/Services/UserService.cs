@@ -65,7 +65,7 @@ namespace KantorServer.Application.Services
 
             await DataContext.UserSessions.AddAsync(userSession);
             await DataContext.SaveChangesAsync();
-            return new LoginResponse(true, "Poprawnie zalogowano!", "") { SynchronizationKey = synchronizationKey, UserId = userSession.User.Id, Name = userSession.User.Name, Permission = userSession.User.Permission, Kantor = new KantorDto(kantorInDb) };
+            return new LoginResponse(true, "Poprawnie zalogowano!", "") { SynchronizationKey = synchronizationKey, UserId = userSession.User.Id, Name = userSession.User.Name, Permission = new UserPermissionDto(userSession.User.Permission) , Kantor = new KantorDto(kantorInDb) };
         }
 
         private async Task<User?> CheckUserLogin(UserDto user)
@@ -75,7 +75,7 @@ namespace KantorServer.Application.Services
                 return null;
             }
             var password = CreateMD5(user.Password);
-            return await DataContext.Users.FirstOrDefaultAsync(x => x.Login == user.Login && x.Password == password && x.Valid);
+            return await DataContext.Users.Include(x => x.Permission).ThenInclude(x => x.Permissions).FirstOrDefaultAsync(x => x.Login == user.Login && x.Password == password && x.Valid);
         }
 
         private string CreateMD5(string input)

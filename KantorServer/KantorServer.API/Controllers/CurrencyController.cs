@@ -1,7 +1,7 @@
 ﻿using KantorServer.Application.Requests.Currencies;
-using KantorServer.Application.Responses;
 using KantorServer.Application.Responses.Currencies;
 using KantorServer.Application.Services.Interfaces;
+using KantorServer.Model.Consts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KantorServer.API.Controllers
@@ -12,7 +12,7 @@ namespace KantorServer.API.Controllers
     {
         private readonly ISettingsService _settingsService;
 
-        public CurrencyController(ISessionService sessionService, ISettingsService settingsService) : base(sessionService)
+        public CurrencyController(ISessionService sessionService, ISettingsService settingsService, IUserPermissionService userPermissionService) : base(sessionService, userPermissionService)
         {
             _settingsService = settingsService;
         }

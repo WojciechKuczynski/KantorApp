@@ -1,7 +1,6 @@
 ﻿using KantorServer.Application.Requests;
 using KantorServer.Application.Responses;
 using KantorServer.Application.Services.Interfaces;
-using KantorServer.Model.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KantorServer.API.Controllers
@@ -11,7 +10,7 @@ namespace KantorServer.API.Controllers
     public class SessionController : BaseController
     {
         private readonly IUserService _userService;
-        public SessionController(ISessionService sessionService, IUserService userService) : base(sessionService)
+        public SessionController(ISessionService sessionService, IUserService userService, IUserPermissionService userPermissionService) : base(sessionService, userPermissionService)
         {
             _userService = userService;
         }

@@ -1,10 +1,8 @@
-﻿using KantorServer.Application.Requests;
-using KantorServer.Application.Requests.Rates;
-using KantorServer.Application.Requests.Users;
+﻿using KantorServer.Application.Requests.Rates;
 using KantorServer.Application.Responses;
 using KantorServer.Application.Responses.Rates;
-using KantorServer.Application.Responses.Users;
 using KantorServer.Application.Services.Interfaces;
+using KantorServer.Model.Consts;
 using KantorServer.Model.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,7 +14,7 @@ namespace KantorServer.API.Controllers
     {
         private readonly IRateService _rateService;
 
-        public RateController(ISessionService sessionService, IRateService rateService) : base(sessionService)
+        public RateController(ISessionService sessionService, IRateService rateService, IUserPermissionService userPermissionService) : base(sessionService, userPermissionService)
         {
             _rateService = rateService;
         }
@@ -30,7 +28,7 @@ namespace KantorServer.API.Controllers
         [HttpPost("addRate")]
         public async Task<AddEditRateResponse> AddEditRate(AddEditRateRequest request)
         {
-            var checkRes = await CheckRequestArgs<AddEditRateResponse>(request);
+            var checkRes = await CheckRequestArgs<AddEditRateResponse>(request, new[] { PermissionKeys.Rate.AddRate });
             if (checkRes != null) { return checkRes; }
 
             var res = await _rateService.AddEditRate(request.Rate);
@@ -43,7 +41,7 @@ namespace KantorServer.API.Controllers
         [HttpPost("editRate")]
         public async Task<AddEditRateResponse> EditRate(AddEditRateRequest request)
         {
-            var checkRes = await CheckRequestArgs<AddEditRateResponse>(request);
+            var checkRes = await CheckRequestArgs<AddEditRateResponse>(request, new[] { PermissionKeys.Rate.EditRate });
             if (checkRes != null) { return checkRes; }
 
             var res = await _rateService.AddEditRate(request.Rate);
@@ -53,7 +51,7 @@ namespace KantorServer.API.Controllers
         [HttpPost("removeRate")]
         public async Task<BaseServerResponse> RemoveRate(AddEditRateRequest request)
         {
-            var checkRes = await CheckRequestArgs<BaseServerResponse>(request);
+            var checkRes = await CheckRequestArgs<BaseServerResponse>(request, new[] { PermissionKeys.Rate.DeleteRate });
             if (checkRes != null) { return checkRes; }
 
             var res = await _rateService.RemoveRate(request.Rate);

@@ -125,7 +125,7 @@ namespace KantorClient.DAL.Repositories
 
             var requestContext = new RequestContext($"{_configurationRepository.ServiceAddress}/rates/all", RestSharp.Method.Post);
             var response = await ServerConnectionHandler.ExecuteFunction<GetAllRatesRequest, GetAllRatesResponse>(requestContext, request);
-            if (response == null)
+            if (response?.Rates == null)
             {
                 throw new ServerNotReachedException();
             }

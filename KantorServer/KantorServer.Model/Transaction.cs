@@ -1,9 +1,4 @@
 ﻿using KantorServer.Model.Consts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KantorServer.Model
 {
@@ -26,7 +21,7 @@ namespace KantorServer.Model
 
         public Transaction()
         {
-            
+
         }
         public Transaction(TransactionType transactionType, Currency currency, decimal quantity, decimal finalValue, decimal rate, Kantor kantor, User user)
         {

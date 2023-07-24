@@ -1,4 +1,5 @@
-﻿using KantorClient.Application.ViewModels.Users;
+﻿using KantorClient.Application.CustomControls;
+using KantorClient.Application.ViewModels.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,13 +44,13 @@ namespace KantorClient.Application.Views.Users
 
             if (PassBox.Password.Length  < 5)
             {
-                MessageBox.Show("Hasło jest za krótkie");
+                new UserMessageBox("Hasło jest za krótkie", MessageBoxButton.OK, MessageBoxImage.Warning).ShowMessage();
                 return;
             }
 
             if (PassBox.Password != PassBox2.Password)
             {
-                MessageBox.Show("Hasła do siebie nie pasują");
+                new UserMessageBox("Hasła do siebie nie pasują", MessageBoxButton.OK, MessageBoxImage.Warning).ShowMessage();
                 return;
             }
 

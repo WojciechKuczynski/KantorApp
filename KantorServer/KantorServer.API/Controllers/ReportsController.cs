@@ -2,6 +2,7 @@
 using KantorServer.Application.Requests.Reports;
 using KantorServer.Application.Responses.Reports;
 using KantorServer.Application.Services.Interfaces;
+using KantorServer.Model.Consts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KantorServer.API.Controllers
@@ -12,7 +13,7 @@ namespace KantorServer.API.Controllers
     {
         private readonly ISettingsService _settingsService;
         private readonly IUserService _userService;
-        public ReportsController(ISessionService sessionService, ISettingsService settingsService, IUserService userService) : base(sessionService)
+        public ReportsController(ISessionService sessionService, ISettingsService settingsService, IUserService userService, IUserPermissionService userPermissionService) : base(sessionService, userPermissionService)
         {
             _settingsService = settingsService;
             _userService = userService;
@@ -21,7 +22,7 @@ namespace KantorServer.API.Controllers
         [HttpPost("settings")]
         public async Task<ReportsSettingsResponse> GetReportsInformation(ReportsSettingsRequest request)
         {
-            var checkRes = await CheckRequestArgs<ReportsSettingsResponse>(request);
+            var checkRes = await CheckRequestArgs<ReportsSettingsResponse>(request, new[] { PermissionKeys.Report.ListReport });
             if (checkRes != null) { return checkRes; }
 
             var kantors = await _settingsService.GetKantors();

@@ -1,11 +1,7 @@
 ﻿using KantorServer.Application.Services.Interfaces;
 using KantorServer.DAL;
+using KantorServer.Model;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KantorServer.Application.Services
 {
@@ -17,10 +13,10 @@ namespace KantorServer.Application.Services
         {
             DataContext = dataContext;
         }
-        public async Task<bool> CheckSessionToken(string sessionToken)
+        public async Task<UserSession> CheckSessionToken(string sessionToken)
         {
-            var session = await DataContext.UserSessions.FirstOrDefaultAsync(x => x.SynchronizationKey == sessionToken);
-            return session != null;
+            var session = await DataContext.UserSessions.Include(x => x.User).FirstOrDefaultAsync(x => x.SynchronizationKey == sessionToken);
+            return session;
         }
     }
 }

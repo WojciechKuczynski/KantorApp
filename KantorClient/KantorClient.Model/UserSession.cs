@@ -1,12 +1,4 @@
-﻿using KantorClient.Model.Consts;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace KantorClient.Model
+﻿namespace KantorClient.Model
 {
     public class UserSession : BaseModel
     {
@@ -17,7 +9,7 @@ namespace KantorClient.Model
         public DateTime? LastAction { get; set; }
         public string SynchronizationKey { get; set; }
         public decimal Cash { get; set; }
-        public UserPermission UserPermission { get; set; }
+        public string UserPermission { get; set; }
         public long KantorId { get; set; }
     }
 }

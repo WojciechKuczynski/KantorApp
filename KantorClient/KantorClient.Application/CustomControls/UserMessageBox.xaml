@@ -27,8 +27,8 @@
 
         <TextBlock x:Name="TextBlock" Text="JAKIŚ TEKST INFORMACYJNY" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" />
 
-        <Button x:Name="NoBtn" Content="NIE" Grid.Row="1"/>
-        <Button x:Name="OkBtn" Content="OK" Grid.Row="1" Grid.Column="1"/>
-        <Button x:Name="YesBtn" Content="TAK" Grid.Row="1" Grid.Column="2"/>
+        <Button x:Name="NoBtn" Content="NIE" Grid.Row="1" Visibility="Hidden" Click="NoBtn_Click"/>
+        <Button x:Name="OkBtn" Content="OK" Grid.Row="1" Grid.Column="1" Visibility="Hidden" Click="OkBtn_Click"/>
+        <Button x:Name="YesBtn" Content="TAK" Grid.Row="1" Grid.Column="2" Visibility="Hidden" Click="YesBtn_Click"/>
     </Grid>
 </Window>

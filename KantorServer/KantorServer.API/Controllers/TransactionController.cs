@@ -1,6 +1,7 @@
 ﻿using KantorServer.Application.Requests.Transactions;
 using KantorServer.Application.Responses.Transactions;
 using KantorServer.Application.Services.Interfaces;
+using KantorServer.Model.Consts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KantorServer.API.Controllers
@@ -11,7 +12,7 @@ namespace KantorServer.API.Controllers
     {
         private readonly ITransactionService _transactionService;
 
-        public TransactionController(ISessionService sessionService, ITransactionService transactionService) : base(sessionService)
+        public TransactionController(ISessionService sessionService, ITransactionService transactionService, IUserPermissionService userPermissionService) : base(sessionService, userPermissionService)
         {
             _transactionService = transactionService;
         }
@@ -28,11 +29,11 @@ namespace KantorServer.API.Controllers
                 Transaction = res
             };
         }
-
+        
         [HttpPost("get")]
         public async Task<GetTransactionsResponse> GetTransactions(GetTransactionsRequest request)
         {
-            var checkRes = await CheckRequestArgs<GetTransactionsResponse>(request);
+            var checkRes = await CheckRequestArgs<GetTransactionsResponse>(request, new[] { PermissionKeys.Transaction.ListTransaction });
             if (checkRes != null) { return checkRes; }
 
             var res = await _transactionService.GetTransactions(request);

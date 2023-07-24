@@ -1,11 +1,4 @@
-﻿using KantorServer.Model.Consts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace KantorServer.Model.Dtos
+﻿namespace KantorServer.Model.Dtos
 {
     [Serializable]
     public class UserDto
@@ -14,7 +7,7 @@ namespace KantorServer.Model.Dtos
         public string Login { get; set; }
         public string Password { get; set; }
         public string Name { get; set; }
-        public UserPermission Permission { get; set; }
+        public UserPermissionDto Permission { get; set; }
         public bool Valid { get; set; }
 
         public UserDto()
@@ -25,13 +18,13 @@ namespace KantorServer.Model.Dtos
             Name = string.Empty;
         }
 
-        public UserDto(User user) 
+        public UserDto(User user)
         {
             Id = user.Id;
             Login = user.Login;
             Password = user.Password;
             Name = user.Name;
-            Permission = user.Permission;
+            Permission = new UserPermissionDto(user.Permission);
             Valid = user.Valid;
         }
 
@@ -45,7 +38,7 @@ namespace KantorServer.Model.Dtos
             user.Login = Login;
             user.Password = Password;
             user.Name = Name;
-            user.Permission = Permission;
+            user.Permission = Permission.ConvertToEntity();
             user.Valid = Valid;
             return user;
         }

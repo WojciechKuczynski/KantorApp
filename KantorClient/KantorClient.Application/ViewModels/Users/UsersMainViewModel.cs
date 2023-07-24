@@ -1,9 +1,11 @@
-﻿using KantorClient.Application.ViewModels.Interfaces;
+﻿using KantorClient.Application.CustomControls;
+using KantorClient.Application.ViewModels.Interfaces;
 using KantorClient.Application.ViewModels.Interfaces.Users;
 using KantorClient.BLL.Models;
 using KantorClient.BLL.Services.Interfaces;
 using Prism.Commands.Ex;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -31,11 +33,28 @@ namespace KantorClient.Application.ViewModels.Users
         }
         public IMainWindowContainer Parent { get; set; }
         public bool AddEnabled => !FormOpened;
+        private bool _showDeleted;
         public bool EditEnabled => SelectedUser != null && !FormOpened;
         public bool FormOpened { get; set; }
         public bool Loading { get; set; }
+        public bool ShowDeleted
+        {
+            get { return _showDeleted; }
+            set
+            {
+                _showDeleted = value;
+                RefreshUsersList();
+            }
+        }
+
+        private void RefreshUsersList()
+        {
+            Users = new ObservableCollection<UserModel>(UserCollection.Where(x => x.Valid || ShowDeleted));
+        }
+
         public IUsersAddEditViewModel AddEditVM { get; set; }
         public ObservableCollection<UserModel> Users { get; set; }
+        private List<UserModel> UserCollection { get; set; }
         public UserModel SelectedUser { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -52,7 +71,7 @@ namespace KantorClient.Application.ViewModels.Users
                 }
                 else
                 {
-                    MessageBox.Show("Nie udało się dodać pracownika");
+                    new UserMessageBox("Nie udało się dodać pracownika", MessageBoxButton.OK, MessageBoxImage.Error).ShowMessage();
                 }
             }
         }
@@ -114,7 +133,8 @@ namespace KantorClient.Application.ViewModels.Users
             {
                 Loading = true;
                 var users = await _usersService.GetUsers();
-                Users = new ObservableCollection<UserModel>(users);
+                UserCollection = new List<UserModel>(users);
+                RefreshUsersList();
             }
             finally
             {

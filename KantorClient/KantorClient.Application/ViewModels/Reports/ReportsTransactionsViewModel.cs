@@ -52,7 +52,7 @@ namespace KantorClient.Application.ViewModels.Reports
         public async Task Load(bool loaded = false)
         {
             var settings = await _reportsService.GetReportsSettings();
-            if (settings != null)
+            if (settings.Users != null && settings?.Kantors != null)
             {
                 Users = settings.Users.Select(x => new UserModelLight { Id = x.Id, Name = x.Name }).ToList();
                 Kantors = settings.Kantors.Select(x => new KantorModel { Id = x.Id, Name = x.Name }).ToList();

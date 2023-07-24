@@ -1,5 +1,4 @@
-﻿using KantorClient.Model.Consts;
-using System;
+﻿using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
@@ -10,9 +9,9 @@ namespace KantorClient.Application.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is UserPermission v1 && parameter is UserPermission v2)
+            if (value is string v1 && parameter is string v2)
             {
-                return v1 >= v2 ? Visibility.Visible : Visibility.Collapsed;
+                return v1.Contains(v2) ? Visibility.Visible : Visibility.Collapsed;
             }
 
             return Visibility.Collapsed;

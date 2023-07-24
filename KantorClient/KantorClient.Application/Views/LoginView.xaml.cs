@@ -1,4 +1,5 @@
-﻿using KantorClient.Application.ViewModels.Interfaces;
+﻿using KantorClient.Application.CustomControls;
+using KantorClient.Application.ViewModels.Interfaces;
 using KantorClient.BLL.Services.Interfaces;
 using KantorClient.DAL.Repositories.Interfaces;
 using System;
@@ -41,7 +42,7 @@ namespace KantorClient.Application.Views
                 var loggedResponseArgs = await _authenticationService.LogIn(LoginTxt.Text, PasswordTxt.Password, KantorTxt.Text, false);
                 if (loggedResponseArgs.Error)
                 {
-                    MessageBox.Show(loggedResponseArgs.ErrorMessage);
+                    new UserMessageBox(loggedResponseArgs.ErrorMessage, MessageBoxButton.OK, MessageBoxImage.Error).ShowMessage();
                     LoginButton.IsEnabled = true;
                     return;
                 }
@@ -65,7 +66,7 @@ namespace KantorClient.Application.Views
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Wystąpił błąd podczas logowania!" + "\n" + ex.GetBaseException());
+                new UserMessageBox("Wystąpił błąd podczas logowania!" + "\n" + ex.GetBaseException(), MessageBoxButton.OK, MessageBoxImage.Error).ShowMessage();
             }
             LoginButton.IsEnabled = true;
         }

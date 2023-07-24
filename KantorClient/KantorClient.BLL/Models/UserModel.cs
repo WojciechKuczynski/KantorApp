@@ -1,10 +1,4 @@
-﻿using KantorClient.Model.Consts;
-using KantorServer.Model.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using KantorServer.Model.Dtos;
 
 namespace KantorClient.BLL.Models
 {
@@ -14,12 +8,13 @@ namespace KantorClient.BLL.Models
         public string Name { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
-        public UserPermission Permission { get; set; }
+        public long UserPermissionId { get; set; }
+        public string Permission { get; set; }
         public bool Valid { get; set; }
 
         public UserModel()
         {
-            
+
         }
         public UserModel(UserDto user)
         {
@@ -31,7 +26,7 @@ namespace KantorClient.BLL.Models
             Name = user.Name;
             Login = user.Login;
             Password = user.Password;
-            Permission = (UserPermission) user.Permission;
+            Permission = string.Join(';', user.Permission.Permissions.Select(x => x.Key));
             Valid = user.Valid;
         }
     }

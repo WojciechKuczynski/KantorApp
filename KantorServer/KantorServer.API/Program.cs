@@ -23,6 +23,7 @@ builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<ISessionService, SessionService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITransferService, TransferService>();
+builder.Services.AddScoped<IUserPermissionService, UserPermissionService>();
 
 
 //builder.Services.AddCertificateForwarding(options =>
@@ -45,7 +46,8 @@ builder.Services.AddScoped<ITransferService, TransferService>();
 var app = builder.Build();
 await using var scope = app.Services.CreateAsyncScope();
 var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
-dbContext.Database.Migrate();
+await dbContext.Database.MigrateAsync();
+await Seed.SeedDataAsync(dbContext);
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

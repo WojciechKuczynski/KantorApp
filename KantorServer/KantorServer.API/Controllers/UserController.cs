@@ -1,10 +1,7 @@
-﻿using KantorServer.Application.Requests.Rates;
-using KantorServer.Application.Requests.Users;
-using KantorServer.Application.Responses.Rates;
+﻿using KantorServer.Application.Requests.Users;
 using KantorServer.Application.Responses.Users;
-using KantorServer.Application.Services;
 using KantorServer.Application.Services.Interfaces;
-using KantorServer.Model.Dtos;
+using KantorServer.Model.Consts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KantorServer.API.Controllers
@@ -14,7 +11,7 @@ namespace KantorServer.API.Controllers
     public class UserController : BaseController
     {
         private readonly IUserService _userService;
-        public UserController(ISessionService sessionService, IUserService userService) : base(sessionService)
+        public UserController(ISessionService sessionService, IUserService userService, IUserPermissionService userPermissionService) : base(sessionService, userPermissionService)
         {
             _userService = userService;
         }
@@ -22,7 +19,7 @@ namespace KantorServer.API.Controllers
         [HttpPost("add")]
         public async Task<AddEditUserResponse> AddEditUser(AddEditUserRequest request)
         {
-            var checkRes = await CheckRequestArgs<AddEditUserResponse>(request);
+            var checkRes = await CheckRequestArgs<AddEditUserResponse>(request, new[] { PermissionKeys.User.AddUser });
             if (checkRes != null) { return checkRes; }
 
             var res = await _userService.AddEditUser(request.User);
@@ -35,7 +32,7 @@ namespace KantorServer.API.Controllers
         [HttpPost("list")]
         public async Task<GetAllUsersResponse> GetUserList(GetAllUsersRequest request)
         {
-            var checkRes = await CheckRequestArgs<GetAllUsersResponse>(request);
+            var checkRes = await CheckRequestArgs<GetAllUsersResponse>(request, new[] { PermissionKeys.User.ListUser });
             if (checkRes != null) { return checkRes; }
 
             var res = await _userService.GetUsers();

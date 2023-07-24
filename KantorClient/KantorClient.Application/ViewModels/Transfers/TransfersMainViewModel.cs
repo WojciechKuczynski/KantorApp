@@ -1,7 +1,6 @@
 ﻿using KantorClient.Application.ViewModels.Interfaces;
 using KantorClient.Application.ViewModels.Interfaces.Transfers;
 using KantorClient.BLL.Models;
-using KantorClient.BLL.Services;
 using KantorClient.BLL.Services.Interfaces;
 using Prism.Commands;
 using System;
@@ -10,9 +9,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace KantorClient.Application.ViewModels.Transfers
 {
@@ -23,13 +20,25 @@ namespace KantorClient.Application.ViewModels.Transfers
         public event PropertyChangedEventHandler? PropertyChanged;
 
         private List<TransferModel> TransfersCollection { get; set; }
-        
+
+        private bool _showDeleted;
+
         public IMainWindowContainer Parent { get; set; }
         public ITransfersAddEditViewModel AddEditVM { get; set; }
         public bool AddEnabled => !FormOpened;
         public bool EditEnabled => SelectedTransfer != null && !FormOpened;
         public bool FormOpened { get; set; }
         public bool Loading { get; set; }
+        public bool ShowDeleted
+        {
+            get { return _showDeleted; }
+            set
+            {
+                _showDeleted = value;
+                RefreshTransferList();
+            }
+        }
+
 
         public ObservableCollection<TransferModel> Transfers { get; set; }
         public TransferModel SelectedTransfer { get; set; }
@@ -51,7 +60,7 @@ namespace KantorClient.Application.ViewModels.Transfers
         public async Task<bool> AddTransfer(TransferModel model)
         {
             var added = await _transfersService.AddTransfer(model, _authenticationService.UserSession);
-            if (added != null) 
+            if (added != null)
             {
                 Transfers.Add(added);
                 return true;
@@ -68,7 +77,7 @@ namespace KantorClient.Application.ViewModels.Transfers
         public async Task<bool> EditTransfer(TransferModel model)
         {
             var edited = await _transfersService.EditTransfer(model, _authenticationService.UserSession);
-            
+
             if (edited != null)
             {
                 var transfer = Transfers.FirstOrDefault(x => x.Id == edited.Id);
@@ -114,7 +123,7 @@ namespace KantorClient.Application.ViewModels.Transfers
             {
                 Loading = true;
                 TransfersCollection = await _transfersService.GetLocalTransfers();
-                Transfers = new ObservableCollection<TransferModel>(TransfersCollection);
+                RefreshTransferList();
             }
             finally
             {
@@ -151,5 +160,11 @@ namespace KantorClient.Application.ViewModels.Transfers
             Refresh();
             return Task.CompletedTask;
         }
+
+        private void RefreshTransferList()
+        {
+            Transfers = new ObservableCollection<TransferModel>(TransfersCollection.Where(x => (x.Valid || ShowDeleted) && !x.Edited));
+        }
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using KantorClient.Application.ViewModels.Interfaces.Transfers;
+﻿using KantorClient.Application.CustomControls;
+using KantorClient.Application.ViewModels.Interfaces.Transfers;
 using KantorClient.BLL.Models;
 using KantorClient.BLL.Services.Interfaces;
 using KantorClient.Model.Consts;
@@ -109,19 +110,19 @@ namespace KantorClient.Application.ViewModels.Transfers
 
                 if (SelectedCurrency == null)
                 {
-                    MessageBox.Show("Wybierz walutę!");
+                    new UserMessageBox("Wybierz walutę!", MessageBoxButton.OK, MessageBoxImage.Warning).ShowMessage();
                     return;
                 }
 
                 if (Model.TransferValue <= 0)
                 {
-                    MessageBox.Show("Wartość transferu nie może być mniejsza od zera!");
+                    new UserMessageBox("Wartość transferu nie może być mniejsza od zera!", MessageBoxButton.OK, MessageBoxImage.Warning).ShowMessage();
                     return;
                 }
 
                 if (Model.TransferValue > CurrencyAmount && Model.Type == TransferType.TransferOut)
                 {
-                    MessageBox.Show("Na stanie nie ma tyle waluty!");
+                    new UserMessageBox("Na stanie nie ma tyle waluty!", MessageBoxButton.OK, MessageBoxImage.Warning).ShowMessage();
                     return;
                 }
                 // if TransferValue < CurrencyBalance ( for type == Out )
@@ -145,7 +146,7 @@ namespace KantorClient.Application.ViewModels.Transfers
                 }
                 else
                 {
-                    MessageBox.Show(string.Format("Nie udało się {0} transferu", NewTransaction ? "dodać" : "edytować"));
+                    new UserMessageBox(string.Format("Nie udało się {0} transferu", NewTransaction ? "dodać" : "edytować"), MessageBoxButton.OK, MessageBoxImage.Error).ShowMessage();
                 }
             }
             finally

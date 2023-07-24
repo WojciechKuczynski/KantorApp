@@ -1,11 +1,7 @@
-﻿using KantorServer.Application.Requests.Transactions;
-using KantorServer.Application.Requests.Transfers;
-using KantorServer.Application.Responses;
-using KantorServer.Application.Responses.Transactions;
+﻿using KantorServer.Application.Requests.Transfers;
 using KantorServer.Application.Responses.Transfers;
-using KantorServer.Application.Services;
 using KantorServer.Application.Services.Interfaces;
-using KantorServer.Model.Dtos;
+using KantorServer.Model.Consts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KantorServer.API.Controllers
@@ -15,7 +11,7 @@ namespace KantorServer.API.Controllers
     public class TransferController : BaseController
     {
         private readonly ITransferService _transferService;
-        public TransferController(ISessionService sessionService, ITransferService transferService) : base(sessionService)
+        public TransferController(ISessionService sessionService, ITransferService transferService, IUserPermissionService userPermissionService) : base(sessionService, userPermissionService)
         {
             _transferService = transferService;
         }
@@ -23,7 +19,7 @@ namespace KantorServer.API.Controllers
         [HttpPost("/all")]
         public async Task<GetAllTransfersResponse> GetAllTransfers(GetAllTransfersRequest request)
         {
-            var checkRes = await CheckRequestArgs<GetAllTransfersResponse>(request);
+            var checkRes = await CheckRequestArgs<GetAllTransfersResponse>(request, new[] { PermissionKeys.Transfer.ListTransfer });
             if (checkRes != null) { return checkRes; }
 
             var transfers = await _transferService.GetAllTransfers();

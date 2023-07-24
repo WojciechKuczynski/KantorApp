@@ -17,7 +17,7 @@ namespace KantorServer.DAL.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.4")
+                .HasAnnotation("ProductVersion", "7.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -68,6 +68,38 @@ namespace KantorServer.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Kantors");
+                });
+
+            modelBuilder.Entity("KantorServer.Model.Permission", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("LastUpdate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Module")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Permissions");
                 });
 
             modelBuilder.Entity("KantorServer.Model.Rate", b =>
@@ -254,15 +286,37 @@ namespace KantorServer.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Permission")
-                        .HasColumnType("int");
+                    b.Property<long>("PermissionId")
+                        .HasColumnType("bigint");
 
                     b.Property<bool>("Valid")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("PermissionId");
+
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("KantorServer.Model.UserPermission", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime?>("LastUpdate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserPermissions");
                 });
 
             modelBuilder.Entity("KantorServer.Model.UserSession", b =>
@@ -296,6 +350,21 @@ namespace KantorServer.DAL.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserSessions");
+                });
+
+            modelBuilder.Entity("PermissionUserPermission", b =>
+                {
+                    b.Property<long>("PermissionsId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UserPermissionsId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("PermissionsId", "UserPermissionsId");
+
+                    b.HasIndex("UserPermissionsId");
+
+                    b.ToTable("PermissionUserPermission");
                 });
 
             modelBuilder.Entity("KantorServer.Model.Rate", b =>
@@ -363,6 +432,17 @@ namespace KantorServer.DAL.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("KantorServer.Model.User", b =>
+                {
+                    b.HasOne("KantorServer.Model.UserPermission", "Permission")
+                        .WithMany()
+                        .HasForeignKey("PermissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Permission");
+                });
+
             modelBuilder.Entity("KantorServer.Model.UserSession", b =>
                 {
                     b.HasOne("KantorServer.Model.Kantor", "Kantor")
@@ -380,6 +460,21 @@ namespace KantorServer.DAL.Migrations
                     b.Navigation("Kantor");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("PermissionUserPermission", b =>
+                {
+                    b.HasOne("KantorServer.Model.Permission", null)
+                        .WithMany()
+                        .HasForeignKey("PermissionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("KantorServer.Model.UserPermission", null)
+                        .WithMany()
+                        .HasForeignKey("UserPermissionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

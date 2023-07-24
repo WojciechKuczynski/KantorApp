@@ -68,8 +68,8 @@ namespace KantorClient.Application.ViewModels.Rates
         {
             if (model != null)
             {
-                var option = MessageBox.Show("Czy chcesz usunąć ten Kurs?", "Pytanie", MessageBoxButton.YesNo);
-                if (option == MessageBoxResult.No)
+                var option = new UserMessageBox("Czy chcesz usunąć ten Kurs?",  MessageBoxButton.YesNo,MessageBoxImage.Question).ShowMessage();
+                if (!option)
                 {
                     return;
                 }

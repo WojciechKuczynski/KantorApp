@@ -79,7 +79,7 @@ namespace KantorClient.DAL.Repositories
             var request = new LoginRequest()
             {
                 Kantor = new KantorDto { IdentificationKey = kantor },
-                User = new UserDto { Login = username, Password = password }
+                User = new UserDto { Login = username, Password = password, Permission = new UserPermissionDto() }
             };
             var requestContext = new RequestContext($"{_configurationRepository.ServiceAddress}/session/login", RestSharp.Method.Post);
 
@@ -104,7 +104,7 @@ namespace KantorClient.DAL.Repositories
 
             var session = new Model.UserSession() { LastAction = DateTime.Now, StartDate = DateTime.Now, 
                                                     SynchronizationKey = response.SynchronizationKey, UserId = response.UserId, 
-                                                    Name = response.Name, UserPermission = (UserPermission) response.Permission,
+                                                    Name = response.Name, UserPermission = string.Join(';',response.Permission.Permissions.Select(x => x.Key)),
                                                     KantorId = response.Kantor.Id};
             using (var context = new DataContext())
             {

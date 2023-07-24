@@ -11,7 +11,7 @@ namespace KantorServer.API.Controllers
     {
         private readonly ISettingsService _settingsService;
 
-        public SettingsController(ISettingsService settingsService, ISessionService sessionService) : base(sessionService)
+        public SettingsController(ISettingsService settingsService, ISessionService sessionService, IUserPermissionService userPermissionService) : base(sessionService, userPermissionService)
         {
             _settingsService = settingsService;
         }
@@ -20,7 +20,8 @@ namespace KantorServer.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<BaseServerResponse> AddKantor(AddEditKantorRequest request)
         {
-            if (!await CheckSession(request.SynchronizationKey))
+
+            if (await CheckSession(request.SynchronizationKey) == null)
             {
                 return await Task.FromResult(new BaseServerResponse(false, "", "Podano niepoprawny hash. Proszę przelogować aplikację!"));
             }

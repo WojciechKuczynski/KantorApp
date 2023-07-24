@@ -15,6 +15,8 @@ namespace KantorServer.DAL
         public DbSet<User> Users { get; set; }
         public DbSet<UserSession> UserSessions { get; set; }
         public DbSet<Transfer> Transfers { get; set; }
+        public DbSet<UserPermission> UserPermissions { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
 
         public override int SaveChanges()
         {

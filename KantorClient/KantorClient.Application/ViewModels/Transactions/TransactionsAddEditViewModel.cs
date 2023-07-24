@@ -234,29 +234,29 @@ namespace KantorClient.Application.ViewModels.Transactions
                 Loading = true;
                 if (SelectedCurrency == null)
                 {
-                    new UserMessageBox("Wybierz walutę", MessageBoxButton.OK, MessageBoxImage.Warning).ShowDialog();
+                    new UserMessageBox("Wybierz walutę", MessageBoxButton.OK, MessageBoxImage.Warning).ShowMessage();
                     return;
                 }
                 if (Amount < 1)
                 {
-                    new UserMessageBox("Ilość musi być większa od zera", MessageBoxButton.OK, MessageBoxImage.Error).ShowDialog();
+                    new UserMessageBox("Ilość musi być większa od zera", MessageBoxButton.OK, MessageBoxImage.Warning).ShowMessage();
                     return;
                 }
                 if (Amount > CurrencyAmount)
                 {
-                    MessageBox.Show("Wprowadzona ilość jest większa niż na stanie");
+                    new UserMessageBox("Wprowadzona ilość jest większa niż na stanie", MessageBoxButton.OK, MessageBoxImage.Warning).ShowMessage();
                     return;
                 }
                 if (SelectedRate != null)
                 {
                     if (SelectedType == TransactionType.Sell && ChangeRate < SelectedRate.MinimalSellRate)
                     {
-                        MessageBox.Show("Kurs nie może być mniejszy od minimalnego ustalonego kursu sprzedaży!");
+                        new UserMessageBox("Kurs nie może być mniejszy od minimalnego ustalonego kursu sprzedaży!", MessageBoxButton.OK, MessageBoxImage.Warning).ShowMessage();
                         return;
                     }
                     if (SelectedType == TransactionType.Buy && ChangeRate > SelectedRate.MaximumBuyRate)
                     {
-                        MessageBox.Show("Kurs nie może być większy od maksymalnego ustalonego kursu kupna!");
+                        new UserMessageBox("Kurs nie może być większy od maksymalnego ustalonego kursu kupna!", MessageBoxButton.OK, MessageBoxImage.Warning).ShowMessage();
                         return;
                     }
                 }
@@ -264,11 +264,11 @@ namespace KantorClient.Application.ViewModels.Transactions
                 {
                     if (ChangeRate < 0)
                     {
-                        MessageBox.Show("Kurs nie może być mniejszy od zera!");
+                        new UserMessageBox("Kurs nie może być mniejszy od zera!", MessageBoxButton.OK, MessageBoxImage.Warning).ShowMessage();
                         return;
                     }
 
-                    MessageBox.Show("Nie posiadasz ustalonego kursu dla tej waluty, wymieniasz na własne ryzyko!");
+                    new UserMessageBox("Nie posiadasz ustalonego kursu dla tej waluty, wymieniasz na własne ryzyko!", MessageBoxButton.OK, MessageBoxImage.Warning).ShowMessage();
                 }
 
                 Transaction ??= new TransactionModel();
@@ -295,7 +295,7 @@ namespace KantorClient.Application.ViewModels.Transactions
                 }
                 else
                 {
-                    MessageBox.Show(string.Format("Nie udało się {0} transakcji", NewTransaction ? "dodać" : "edytować"));
+                    new UserMessageBox(string.Format("Nie udało się {0} transakcji", NewTransaction ? "dodać" : "edytować"), MessageBoxButton.OK, MessageBoxImage.Error).ShowMessage();
                 }
             }
             finally

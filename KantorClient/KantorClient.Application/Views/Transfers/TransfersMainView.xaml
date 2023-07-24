@@ -135,6 +135,7 @@
         <Border Grid.Column="1" CornerRadius="15,0,0,15"  Background="#11FFFFFF">
             <Grid>
                 <StackPanel Orientation="Vertical" >
+                    <ToggleButton Content="Pokaż anulowane" Margin="5" IsChecked="{Binding ShowDeleted}" />
                     <Button Content="Dodaj Transfer" Margin="5" Command="{Binding AddTransferCommand}" IsEnabled="{Binding AddEnabled}" />
                     <Button Content="Edytuj Transfer" Margin="5" Command="{Binding EditTransferCommand}" IsEnabled="{Binding EditEnabled}" />
                     <Button Content="Odśwież Dane" Margin="5" Command="{Binding RefreshCommand}" />
