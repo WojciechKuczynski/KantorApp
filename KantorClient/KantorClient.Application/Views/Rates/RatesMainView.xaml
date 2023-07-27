@@ -99,7 +99,7 @@
                                                 <Label Content="Koniec:" FontSize="16"/>
                                                 <Label Content="{Binding EndDate}" FontSize="16"/>
                                             </StackPanel>
-                                            <Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="3" 
+                                            <Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="3" IsEnabled="{Binding DataContext.CanDelete, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                     >
                                                 <Button.Style>
                                                     <Style TargetType="Button">

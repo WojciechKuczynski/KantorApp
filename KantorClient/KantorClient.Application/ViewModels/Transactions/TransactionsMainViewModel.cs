@@ -2,17 +2,17 @@
 using KantorClient.Application.ViewModels.Interfaces.Transactions;
 using KantorClient.BLL.Models;
 using KantorClient.BLL.Services.Interfaces;
-using KantorClient.Model;
+using KantorClient.Common.Extentions;
+using KantorServer.Model.Consts;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
+
 
 namespace KantorClient.Application.ViewModels.Transactions
 {
@@ -32,12 +32,12 @@ namespace KantorClient.Application.ViewModels.Transactions
         #region Properties
 
         public IMainWindowContainer Parent { get; set; }
-        
+
         public ITransactionsAddEditViewModel AddEditVM { get; set; }
-        
+
         public bool AddEditVisible { get; set; }
         public bool Loading { get; set; }
-        
+
         public ObservableCollection<TransactionModel> Transactions { get; set; }
 
         public List<TransactionModel> TransactionsCollection { get; set; }
@@ -52,9 +52,14 @@ namespace KantorClient.Application.ViewModels.Transactions
             }
         }
 
+        // Permissions
+        public bool CanAdd { get; set; }
+        public bool CanEdit { get; set; }
+        public bool CanDelete { get; private set; }
+
         #endregion
 
-        public TransactionsMainViewModel(ITransactionsService transactionsService,IAuthenticationService authenticationService, ITransactionsAddEditViewModel addEditVM)
+        public TransactionsMainViewModel(ITransactionsService transactionsService, IAuthenticationService authenticationService, ITransactionsAddEditViewModel addEditVM)
         {
             _authenticationService = authenticationService;
             _transactionsService = transactionsService;
@@ -75,6 +80,10 @@ namespace KantorClient.Application.ViewModels.Transactions
             {
                 await AddEditVM.Load();
             }
+
+            CanAdd = _authenticationService.UserSession.HasUserPermission(PermissionKeys.Transaction.AddTransaction);
+            CanEdit = _authenticationService.UserSession.HasUserPermission(PermissionKeys.Transaction.EditTransaction);
+            CanDelete = _authenticationService.UserSession.HasUserPermission(PermissionKeys.Transaction.DeleteTransaction);
         }
 
         private async Task RefreshTransactions()

@@ -2,6 +2,8 @@
 using KantorClient.Application.ViewModels.Interfaces.Transfers;
 using KantorClient.BLL.Models;
 using KantorClient.BLL.Services.Interfaces;
+using KantorClient.Common.Extentions;
+using KantorServer.Model.Consts;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -25,8 +27,8 @@ namespace KantorClient.Application.ViewModels.Transfers
 
         public IMainWindowContainer Parent { get; set; }
         public ITransfersAddEditViewModel AddEditVM { get; set; }
-        public bool AddEnabled => !FormOpened;
-        public bool EditEnabled => SelectedTransfer != null && !FormOpened;
+        public bool AddEnabled => CanAdd && !FormOpened;
+        public bool EditEnabled => CanEdit && SelectedTransfer != null && !FormOpened;
         public bool FormOpened { get; set; }
         public bool Loading { get; set; }
         public bool ShowDeleted
@@ -38,6 +40,11 @@ namespace KantorClient.Application.ViewModels.Transfers
                 RefreshTransferList();
             }
         }
+
+        // Permissions
+        private bool CanAdd { get; set; }
+        private bool CanEdit { get; set; }
+        public bool CanDelete { get; private set; }
 
 
         public ObservableCollection<TransferModel> Transfers { get; set; }
@@ -99,9 +106,24 @@ namespace KantorClient.Application.ViewModels.Transfers
                 TransfersCollection = await _transfersService.GetLocalTransfers();
                 Transfers = new ObservableCollection<TransferModel>(TransfersCollection);
                 await AddEditVM.Load();
+                CanAdd = _authenticationService.UserSession.HasUserPermission(PermissionKeys.Transfer.AddTransfer);
+                CanEdit = _authenticationService.UserSession.HasUserPermission(PermissionKeys.Transfer.EditTransfer);
+                CanDelete = _authenticationService.UserSession.HasUserPermission(PermissionKeys.Transfer.DeleteTransfer);
             }
         }
 
+        public Task OnShow()
+        {
+            Refresh();
+            return Task.CompletedTask;
+        }
+
+        private void RefreshTransferList()
+        {
+            Transfers = new ObservableCollection<TransferModel>(TransfersCollection.Where(x => (x.Valid || ShowDeleted) && !x.Edited));
+        }
+
+        #region Commands
         public ICommand AddTransferCommand { get; private set; }
         private void AddTransfer()
         {
@@ -154,17 +176,6 @@ namespace KantorClient.Application.ViewModels.Transfers
 
             }
         }
-
-        public Task OnShow()
-        {
-            Refresh();
-            return Task.CompletedTask;
-        }
-
-        private void RefreshTransferList()
-        {
-            Transfers = new ObservableCollection<TransferModel>(TransfersCollection.Where(x => (x.Valid || ShowDeleted) && !x.Edited));
-        }
-
+        #endregion
     }
 }

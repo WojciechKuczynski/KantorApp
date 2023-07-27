@@ -14,7 +14,7 @@
             <ControlTemplate.Triggers>
                 <Trigger Property="IsSelected" Value="True">
                     <Setter TargetName="SectionBorder" Property="Background" Value="LightBlue"  />
-                    <Setter TargetName="SectionBorder" Property="BorderBrush" Value="DarkMagenta"  />
+                    <Setter TargetName="SectionBorder" Property="BorderBrush" Value="{StaticResource Color2}"  />
                 </Trigger>
                 <Trigger Property="IsMouseOver" Value="True">
                     <!--<Setter TargetName="SectionBorder" Property="BorderBrush" Value="Blue"  />-->
@@ -121,12 +121,12 @@
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsSelected" Value="True">
                                         <Setter TargetName="SectionBorder" Property="Background" Value="LightBlue"  />
-                                        <Setter TargetName="SectionBorder" Property="BorderBrush" Value="DarkMagenta"  />
+                                        <Setter TargetName="SectionBorder" Property="BorderBrush" Value="{StaticResource Color2}"  />
                                     </Trigger>
                                     <Trigger Property="IsMouseOver" Value="True">
                                         <!--<Setter TargetName="SectionBorder" Property="Background" Value="Blue"  />-->
                                         <!--<Setter TargetName="SectionBorder" Property="BorderThickness" Value="3" />-->
-                                        <Setter TargetName="SectionBorder" Property="BorderBrush" Value="Blue" />
+                                        <Setter TargetName="SectionBorder" Property="BorderBrush" Value="{StaticResource Color2}" />
                                     </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>

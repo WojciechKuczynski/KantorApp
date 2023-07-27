@@ -8,9 +8,11 @@ using KantorClient.Application.ViewModels.Interfaces.Transfers;
 using KantorClient.Application.ViewModels.Interfaces.Users;
 using KantorClient.Application.Views;
 using KantorClient.BLL.Services.Interfaces;
+using KantorClient.Common.Extentions;
 using KantorClient.DAL.Repositories;
 using KantorClient.DAL.Repositories.Interfaces;
 using KantorClient.Model;
+using KantorServer.Model.Consts;
 using Prism.Commands;
 using System;
 using System.ComponentModel;
@@ -106,6 +108,7 @@ namespace KantorClient.Application.ViewModels
             Cash = newValue;
         }
 
+        #region Properties
         public Window Parent { get; set; }
 
         public bool LoggedOut { get; set; }
@@ -119,6 +122,15 @@ namespace KantorClient.Application.ViewModels
 
         public UserSession Session { get; set; }
 
+        // Permissions
+        public bool CanUseRate { get; private set; }
+        public bool CanUseTransaction { get; private set; }
+        public bool CanUseTransfer { get; private set; }
+        public bool CanUseUsers { get; private set; }
+        public bool CanUseCashRegistry { get; private set; }
+        public bool CanUseReports { get; private set; }
+
+        #endregion
         public async Task Load()
         {
             var loaded = await _settingService.LoadSettings();
@@ -131,6 +143,12 @@ namespace KantorClient.Application.ViewModels
             await TransfersMainVM.Load(loaded);
             await CashRegistryMainVM.Load(loaded);
             await ReportsMainVM.Load(loaded);
+
+            CanUseRate = Session.HasUserPermission(PermissionKeys.Rate.ListRate);
+            CanUseTransaction = Session.HasUserPermission(PermissionKeys.Transaction.ListTransaction);
+            CanUseTransfer = Session.HasUserPermission(PermissionKeys.Transfer.ListTransfer);
+            CanUseUsers = Session.HasUserPermission(PermissionKeys.User.ListUser);
+            CanUseReports = Session.HasUserPermission(PermissionKeys.Report.ListReport);
         }
 
         public void SetPln(decimal quantity)
