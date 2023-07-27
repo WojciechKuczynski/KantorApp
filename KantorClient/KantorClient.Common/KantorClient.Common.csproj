@@ -14,4 +14,10 @@
     <ProjectReference Include="..\KantorClient.Model\KantorClient.Model.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="KantorServer.Model">
+      <HintPath>..\..\Bin\KantorServer.Model.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

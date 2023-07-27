@@ -30,7 +30,7 @@
             <Grid Grid.Column="1" Background="Transparent" Margin="5">
                 <StackPanel Orientation="Vertical" >
                     <ToggleButton Content="Pokaż anulowane" Margin="5" IsChecked="{Binding ShowDeleted}" />
-                    <Button Content="Dodaj Transakcję" Margin="5" Command="{Binding AddTransactionCommand}" />
+                    <Button Content="Dodaj Transakcję" Margin="5" Command="{Binding AddTransactionCommand}" IsEnabled="{Binding CanAdd}" />
                     <Button Content="Odśwież Transakcje" Margin="5" Command="{Binding RefreshCommand}" />
                 </StackPanel>
             </Grid>
@@ -50,7 +50,8 @@
                         <DataTemplate>
                             <Button Content="Edytuj" Margin="3,0"  Padding="0"
                                     Command="{Binding DataContext.EditTransactionCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
-                                    CommandParameter="{Binding .}" />
+                                    CommandParameter="{Binding .}"
+                                    IsEnabled="{Binding DataContext.CanEdit, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -59,7 +60,8 @@
                         <DataTemplate>
                             <Button Content="Anuluj" Margin="3,0" 
                                     Command="{Binding DataContext.DeleteTransactionCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
-                                    CommandParameter="{Binding .}" />
+                                    CommandParameter="{Binding .}" 
+                                    IsEnabled="{Binding DataContext.CanDelete, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -75,70 +77,5 @@
                 </Style>
             </DataGrid.RowStyle>
         </DataGrid>
-        
-        <!--<ListView Grid.Row="0" Grid.Column="0" Background="Transparent" ItemsSource="{Binding Transactions}" BorderThickness="0" VerticalAlignment="Stretch" 
-                          SelectedItem="{Binding SelectedRate,UpdateSourceTrigger=PropertyChanged}">
-            <ListView.Resources>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="Background" Value="{StaticResource Color1}" />
-                    <Setter Property="BorderBrush" Value="{StaticResource Color2}" />
-                    --><!--<Setter Property="Foreground" Value="{StaticResource TextColor}" />--><!--
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="ListViewItem">
-                                <Grid Margin="3" Background="Transparent">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Border x:Name="SectionBorder" Grid.Column="0" BorderThickness="2" BorderBrush="{TemplateBinding Background}" CornerRadius="10">
-                                        <Grid Grid.Column="0">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="*"/>
-                                                <RowDefinition Height="auto"/>
-                                            </Grid.RowDefinitions>
-                                            <StackPanel Orientation="Horizontal" Grid.Row="1">
-                                                <Label Content="{Binding Currency.Symbol}" FontSize="18"/>
-                                                <Rectangle VerticalAlignment="Stretch" Width="2" Fill="{StaticResource Color1}" />
-                                                <Label Content="Kurs wymiany:" FontSize="16"/>
-                                                <Label Content="{Binding Rate}" ContentStringFormat="0.00" FontSize="16"/>
-                                                <Label Content="Ilość:" FontSize="16"/>
-                                                <Label Content="{Binding Quantity}" FontSize="16"/>
-                                                <Label Content="Wartość wymiany:" FontSize="16"/>
-                                                <Label Content="{Binding FinalValue}" FontSize="16"/>
-                                            </StackPanel>
-                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1">
-                                                <Label Content="Data transakcji:" FontSize="16"/>
-                                                <Label Content="{Binding Date}" FontSize="16"/>
-                                                <Label Content="Koniec:" FontSize="16"/>
-                                                <Label Content="{Binding EndDate}" FontSize="16"/>
-                                            </StackPanel>
-                                        </Grid>
-                                        <Border.Style>
-                                            <Style TargetType="Border">
-                                                <Style.Setters>
-                                                    <Setter Property="Background" Value="#8888" />
-                                                </Style.Setters>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Valid}" Value="false">
-                                                        <Setter Property="Background" Value="FireBrick" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Border.Style>
-                                    </Border>
-                                </Grid>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsSelected" Value="True">
-                                        <Setter TargetName="SectionBorder" Property="Background" Value="LightBlue"  />
-                                        <Setter TargetName="SectionBorder" Property="BorderBrush" Value="DarkMagenta"  />
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </ListView.Resources>
-        </ListView>-->
-
     </Grid>
 </UserControl>

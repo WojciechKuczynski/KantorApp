@@ -4,7 +4,7 @@
 
 
     <SolidColorBrush x:Key="Color1" Color="Pink" />
-    <SolidColorBrush x:Key="Color2" Color="Pink" />
+    <SolidColorBrush x:Key="Color2" Color="Magenta" />
     <!--<SolidColorBrush x:Key="BackgroundColor" Color="#FFFFFF" />-->
         <LinearGradientBrush x:Key="BackgroundColor" StartPoint="1,0">
             <LinearGradientBrush.GradientStops>
