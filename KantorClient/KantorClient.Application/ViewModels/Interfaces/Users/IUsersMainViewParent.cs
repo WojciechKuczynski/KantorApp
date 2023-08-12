@@ -9,8 +9,5 @@ namespace KantorClient.Application.ViewModels.Interfaces.Users
 {
     public interface IUsersMainViewParent
     {
-        Task AddUser(UserModel model);
-        void CancelAddEditWindow();
-        Task EditUser(UserModel model);
     }
 }

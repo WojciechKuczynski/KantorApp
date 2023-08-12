@@ -11,6 +11,15 @@
             public const string ListUser = $"{nameof(User)}_{nameof(ListUser)}";
         }
 
+        public static class Permission
+        {
+            public const string Module = "Uprawnienia";
+            public const string AddPermission = $"{nameof(Permission)}_{nameof(AddPermission)}";
+            public const string EditPermission = $"{nameof(Permission)}_{nameof(EditPermission)}";
+            public const string DeletePermission = $"{nameof(Permission)}_{nameof(DeletePermission)}";
+            public const string ListPermission = $"{nameof(Permission)}_{nameof(ListPermission)}";
+        }
+
         public static class Transfer
         {
             public const string Module = "Transfery";

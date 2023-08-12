@@ -4,120 +4,28 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:KantorClient.Application.Views.Users"
-             mc:Ignorable="d" 
+             mc:Ignorable="d" x:Name="UsersMainViewControl"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.8*" />
-            <ColumnDefinition Width="0.2*" />
-        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="80"/>
+        </Grid.RowDefinitions>
 
-        <Grid x:Name="GrayOut" Background="Gray" Opacity="0.8" Grid.ColumnSpan="2" Grid.Column="0" Panel.ZIndex="1"
-              Visibility="{Binding FormOpened,Converter={StaticResource BoolVisibilityConverter}}">
-        </Grid>
-        <Grid x:Name="Loading" Background="Gray" Opacity="0.8" Grid.ColumnSpan="2" Grid.Column="0" Panel.ZIndex="1"
-              Visibility="{Binding Loading,Converter={StaticResource BoolVisibilityConverter}}">
-            <Label Content="ODŚWIEŻANIE..." HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Black" />
-        </Grid>
-        <Grid x:Name="AddEditView" Background="Transparent" Margin="30" Panel.ZIndex="2"
-              Visibility="{Binding FormOpened,Converter={StaticResource BoolVisibilityConverter}}">
-            <local:UsersAddEditView DataContext="{Binding AddEditVM}" VerticalAlignment="Center" HorizontalAlignment="Center" />
-        </Grid>
-
-        <ListView Grid.Row="0" Grid.Column="0" Background="Transparent" ItemsSource="{Binding Users,UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" VerticalAlignment="Stretch" 
-                          SelectedItem="{Binding SelectedUser,UpdateSourceTrigger=PropertyChanged}">
-            <ListView.Resources>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="Background" Value="{StaticResource Color1}" />
-                    <Setter Property="BorderBrush" Value="{StaticResource Color2}" />
-                    <!--<Setter Property="Foreground" Value="{StaticResource TextColor}" />-->
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="ListViewItem">
-                                <Grid Margin="10" Background="Transparent">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Border x:Name="SectionBorder" Grid.Column="0" BorderThickness="2" BorderBrush="{TemplateBinding Background}" CornerRadius="10">
-                                        <Border.InputBindings>
-                                            <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding DataContext.EditUserCommand,RelativeSource={RelativeSource AncestorType=UserControl}}"/>
-                                        </Border.InputBindings>
-                                        <Grid Grid.Column="0">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="*"/>
-                                            </Grid.RowDefinitions>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="auto" />
-                                            </Grid.ColumnDefinitions>
-                                            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
-                                                <Label Content="{Binding Id}" FontSize="18"/>
-                                                <Rectangle VerticalAlignment="Stretch" Width="2" Fill="{StaticResource Color1}" />
-                                                <Label Content="{Binding Name}" />
-                                            </StackPanel>
-                                            <Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="3" >
-                                                <Button.Style>
-                                                    <Style TargetType="Button">
-                                                        <Style.Setters>
-                                                            <Setter Property="Background" Value="Transparent" />
-                                                            <Setter Property="Template">
-                                                                <Setter.Value>
-                                                                    <ControlTemplate TargetType="Button">
-                                                                        <Border CornerRadius="0,8,8,0" Width="40" Background="{TemplateBinding Background}" BorderThickness="2,0,0,0" BorderBrush="{TemplateBinding BorderBrush}">
-                                                                            <Label Content="D" Margin="0" />
-                                                                        </Border>
-                                                                        <ControlTemplate.Triggers>
-                                                                            <Trigger Property="IsMouseOver" Value="True">
-                                                                                <Setter Property="Background" Value="IndianRed" />
-                                                                            </Trigger>
-                                                                        </ControlTemplate.Triggers>
-                                                                    </ControlTemplate>
-                                                                </Setter.Value>
-                                                            </Setter>
-                                                            <Setter Property="Command" Value="{Binding DataContext.RemoveUserCommand,RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                                            <Setter Property="CommandParameter" Value="{Binding .}" />
-                                                        </Style.Setters>
-                                                    </Style>
-                                                </Button.Style>
-                                            </Button>
-
-                                        </Grid>
-                                        <Border.Style>
-                                            <Style TargetType="Border">
-                                                <Style.Setters>
-                                                    <Setter Property="Background" Value="#8888" />
-                                                </Style.Setters>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Valid}" Value="false">
-                                                        <Setter Property="Background" Value="Firebrick" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Border.Style>
-                                    </Border>
-                                </Grid>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsSelected" Value="True">
-                                        <Setter TargetName="SectionBorder" Property="Background" Value="LightBlue"  />
-                                        <Setter TargetName="SectionBorder" Property="BorderBrush" Value="DarkMagenta"  />
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </ListView.Resources>
-        </ListView>
-
-        <Border Grid.Column="1" CornerRadius="15,0,0,15"  Background="#11FFFFFF">
-            <Grid>
-                <StackPanel Orientation="Vertical" >
-                    <ToggleButton Content="Pokaż anulowane" Margin="5" IsChecked="{Binding ShowDeleted}" />
-                    <Button Content="Dodaj pracownika" Margin="5" Command="{Binding AddUserCommand}" IsEnabled="{Binding AddEnabled}" />
-                    <Button Content="Edytuj pracownika" Margin="5" Command="{Binding EditUserCommand}" IsEnabled="{Binding EditEnabled}"/>
-                    <Button Content="Odśwież dane" Margin="5" Command="{Binding RefreshCommand}" />
-                </StackPanel>
+        <StackPanel Grid.Row="0" Name="UsersMainViewsStackPanel">
+            <Grid Visibility="{Binding UsersEditVisible, Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource BoolVisibilityConverter}}" >
+                <local:UsersEditMainView DataContext="{Binding EditMainVM}"
+                                               VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
             </Grid>
-        </Border>
+            <Grid Visibility="{Binding UsersPermissionVisible, Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource BoolVisibilityConverter}}" >
+                <local:UsersPermissionMainView DataContext="{Binding UsersPermissionMainVM}" 
+                                   Height="{Binding ElementName=UsersMainViewsStackPanel, Path=ActualHeight}"  HorizontalAlignment="Stretch"/>
+            </Grid>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="1" VerticalAlignment="Bottom">
+            <Button Content="UE" Command="{Binding UsersEditCommand}" Margin="5,10" Width="50" />
+            <Button Content="UP" Command="{Binding UsersPermissionCommand}" Margin="5,10" Width="50" />
+        </StackPanel>
     </Grid>
 </UserControl>
