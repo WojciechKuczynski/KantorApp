@@ -9,6 +9,7 @@ using KantorServer.Application.Responses;
 using KantorServer.Application.Responses.Users;
 using KantorServer.Model.Dtos;
 using Microsoft.EntityFrameworkCore;
+using System.Net.WebSockets;
 
 namespace KantorClient.DAL.Repositories
 {
@@ -35,6 +36,20 @@ namespace KantorClient.DAL.Repositories
             return response.User;
         }
 
+        public async Task<UserPermissionDto> AddEditUserPermission(UserPermissionDto dto, string synchronizationKey)
+        {
+            var request = new AddEditPermissionRequest()
+            {
+                SynchronizationKey = synchronizationKey,
+                Permission = dto
+            };
+
+            var requestContext = new RequestContext($"{_configurationRepository.ServiceAddress}/users/userpermission/add", RestSharp.Method.Post);
+            var response = await ServerConnectionHandler.ExecuteFunction<AddEditPermissionRequest, AddEditPermissionResponse>(requestContext, request);
+
+            return response.Permission;
+        }
+
         public async Task<UserDto> EditUser(UserDto user, string synchronizationKey)
         {
             var request = new AddEditUserRequest()
@@ -49,6 +64,28 @@ namespace KantorClient.DAL.Repositories
             return response.User;
         }
 
+        public async Task<IEnumerable<PermissionDto>> GetPermissions(string synchronizationKey)
+        {
+            var request = new GetPermissionsRequest
+            {
+                SynchronizationKey = synchronizationKey
+            };
+            var requestContext = new RequestContext($"{_configurationRepository.ServiceAddress}/users/permission/list", RestSharp.Method.Post);
+            var response = await ServerConnectionHandler.ExecuteFunction<GetPermissionsRequest, GetPermissionsResponse>(requestContext, request);
+            return response.Permissions;
+        }
+
+        public async Task<IEnumerable<UserPermissionDto>> GetUserPermissions(string synchronizationKey)
+        {
+            var request = new GetUserPermissionsRequest
+            {
+                SynchronizationKey = synchronizationKey
+            };
+            var requestContext = new RequestContext($"{_configurationRepository.ServiceAddress}/users/userpermission/list", RestSharp.Method.Post);
+            var response = await ServerConnectionHandler.ExecuteFunction<GetUserPermissionsRequest, GetUserPermissionsResponse>(requestContext, request);
+            return response.UserPermissions;
+        }
+
         public async Task<List<UserDto>> GetUsers(string synchronizationKey)
         {
             var request = new GetAllUsersRequest()
@@ -59,6 +96,19 @@ namespace KantorClient.DAL.Repositories
             var response = await ServerConnectionHandler.ExecuteFunction<GetAllUsersRequest, GetAllUsersResponse>(requestContext, request);
 
             return response.Users;
+        }
+
+        public async Task<bool> SavePermissionsToUserPermission(UserPermissionDto userPerm, List<PermissionDto> perms, string synchronizationKey)
+        {
+            userPerm.Permissions = perms;
+            var request = new AddEditPermissionRequest()
+            {
+                SynchronizationKey = synchronizationKey,
+                Permission = userPerm
+            };
+            var requestContext = new RequestContext($"{_configurationRepository.ServiceAddress}/users/userpermission/edit", RestSharp.Method.Post);
+            var response = await ServerConnectionHandler.ExecuteFunction<AddEditPermissionRequest, AddEditPermissionResponse>(requestContext, request);
+            return response.ResponseType == KantorServer.Model.Consts.ServerResponseType.Success;
         }
 
         public async Task<UserSession> SetPln(UserSession session, decimal value)

@@ -33,11 +33,11 @@
             <Label Grid.Row="2" Grid.Column="2" Content="Uprawnienia" />
             <ComboBox Grid.Row="2" Grid.Column="3" Margin="10"  VerticalContentAlignment="Center" FontSize="18"
                       ItemsSource="{Binding Permissions}" SelectedItem="{Binding SelectedPermission}" >
-                <ComboBox.ItemTemplate>
+                <!--<ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Value}" />
                     </DataTemplate>
-                </ComboBox.ItemTemplate>
+                </ComboBox.ItemTemplate>-->
             </ComboBox>
 
             <Label Grid.Row="3" Grid.Column="0" Content="Hasło" />

@@ -11,5 +11,9 @@ namespace KantorClient.DAL.Repositories.Interfaces
         public Task<UserDto> EditUser(UserDto userDto, string synchronizationKey);
         public Task<UserDto> AddUser(UserDto userDto, string synchronizationKey);
         public Task<UserSession> SetPln(UserSession session, decimal value);
+        Task<IEnumerable<UserPermissionDto>> GetUserPermissions(string synchronizationKey);
+        Task<IEnumerable<PermissionDto>> GetPermissions(string synchronizationKey);
+        Task<bool> SavePermissionsToUserPermission(UserPermissionDto userPerm, List<PermissionDto> perms, string synchronizationKey);
+        Task<UserPermissionDto> AddEditUserPermission(UserPermissionDto dto, string synchronizationKey);
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace KantorClient.Application.ViewModels.Interfaces.Users
 {
-    public interface IUsersMainViewModel : IUsersMainViewParent, IMainWindowChild
+    public interface IUsersMainViewModel : IMainWindowChild
     {
     }
 }

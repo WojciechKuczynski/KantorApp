@@ -27,7 +27,7 @@
             {
                 up.Id = Id;
             }
-
+            up.LastUpdate = DateTime.Now;
             up.Name = Name;
             if (Permissions != null)
             {

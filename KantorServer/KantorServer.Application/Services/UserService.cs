@@ -30,6 +30,8 @@ namespace KantorServer.Application.Services
                 if (userInDb == null)
                 {
                     var userEntity = user.ConvertToEntity();
+                    var userPermission = await DataContext.UserPermissions.FirstOrDefaultAsync(x => x.Id == user.Permission.Id);
+                    userEntity.Permission = userPermission;
                     await DataContext.Users.AddAsync(userEntity);
                     await DataContext.SaveChangesAsync();
                     return new UserDto(userEntity);
@@ -40,6 +42,8 @@ namespace KantorServer.Application.Services
                     userInDb.Password = user.Password;
                     userInDb.Name = user.Name;
                     userInDb.Valid = user.Valid;
+                    var userPermission = await DataContext.UserPermissions.FirstOrDefaultAsync(x => x.Id == user.Permission.Id);
+                    userInDb.Permission = userPermission;
                 }
                 await DataContext.SaveChangesAsync();
                 return new UserDto(userInDb);
