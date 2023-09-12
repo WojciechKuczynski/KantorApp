@@ -1,6 +1,5 @@
 ﻿using KantorServer.Application.Services.Interfaces;
 using KantorServer.DAL;
-using KantorServer.Model;
 using KantorServer.Model.Dtos;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,7 +26,7 @@ namespace KantorServer.Application.Services
                     {
                         rateEntity.Currency = currencyInDb;
                     }
-
+                    await InvalidateRatesBySymbol(rateEntity.Currency.Symbol);
                     rateEntity.Valid = true;
                     await DataContext.Rates.AddAsync(rateEntity);
                     await DataContext.SaveChangesAsync();
@@ -40,6 +39,12 @@ namespace KantorServer.Application.Services
                         // cannot change if already started
                         return null;
                     }
+
+                    if (rate.Valid)
+                    {
+                        await InvalidateRatesBySymbol(rateInDb.Currency.Symbol);
+                    }
+
                     rateInDb.StartDate = rate.StartDate;
                     rateInDb.EndDate = rate.EndDate;
                     rateInDb.MaximumBuyRate = rate.MaximumBuyRate;
@@ -77,7 +82,7 @@ namespace KantorServer.Application.Services
             }
         }
 
-        public async Task<List<Rate>> GetAllRates()
+        public async Task<List<Model.Rate>> GetAllRates()
         {
             try
             {
@@ -88,9 +93,27 @@ namespace KantorServer.Application.Services
             catch (Exception ex) { return null; }
         }
 
-        public Task<List<RateDto>> AddEditRates(List<RateDto> rates)
+        private async Task<bool> InvalidateRatesBySymbol(string symbol)
         {
-            return null;
+            try
+            {
+                var ratesInDb = await DataContext.Rates.Where(x => x.Currency.Symbol == symbol).ToArrayAsync();
+                if (ratesInDb == null)
+                {
+                    return false;
+                }
+
+                foreach (var rate in ratesInDb)
+                {
+                    rate.Valid = false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
     }
 }

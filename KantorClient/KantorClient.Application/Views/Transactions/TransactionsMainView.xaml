@@ -30,8 +30,10 @@
             <Grid Grid.Column="1" Background="Transparent" Margin="5">
                 <StackPanel Orientation="Vertical" >
                     <ToggleButton Content="Pokaż anulowane" Margin="5" IsChecked="{Binding ShowDeleted}" />
-                    <Button Content="Dodaj Transakcję" Margin="5" Command="{Binding AddTransactionCommand}" IsEnabled="{Binding CanAdd}" />
+                    <Button Content="KUPNO" Background="Green" Margin="5" Command="{Binding AddBuyTransactionCommand}" IsEnabled="{Binding CanAdd}" />
+                    <Button Content="SPRZEDAŻ" Background="Firebrick" Margin="5" Command="{Binding AddSellTransactionCommand}" IsEnabled="{Binding CanAdd}" />
                     <Button Content="Odśwież Transakcje" Margin="5" Command="{Binding RefreshCommand}" />
+                    <Button Content="Anuluj ostatnią transakcję" Margin="5" Command="{Binding DeleteTransactionCommand}" />
                 </StackPanel>
             </Grid>
         </Border>
@@ -39,6 +41,7 @@
         <DataGrid Grid.Row="0" Grid.Column="0" ItemsSource="{Binding Transactions}" HorizontalAlignment="Stretch" CanUserDeleteRows="False" CanUserAddRows="False" CanUserResizeRows="False"
                   BorderBrush="Transparent" AutoGenerateColumns="False" IsReadOnly="True" FontSize="18" Margin="10,10,10,0">
             <DataGrid.Columns>
+                <DataGridTextColumn Header="Id Transakcji" Binding="{Binding Id}" />
                 <DataGridTextColumn Header="Typ Transakcji" Binding="{Binding TransactionType, Converter={StaticResource TransactionTypeFriendlyNameConverter}}" />
                 <DataGridTextColumn Header="Waluta" Binding="{Binding Currency.Symbol}" />
                 <DataGridTextColumn Header="Kurs wymiany" Binding="{Binding Rate, StringFormat=0.00}" />
@@ -55,7 +58,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn>
+                <!--<DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button Content="Anuluj" Margin="3,0" 
@@ -64,8 +67,9 @@
                                     IsEnabled="{Binding DataContext.CanDelete, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                </DataGridTemplateColumn>-->
                 <DataGridTextColumn Header="Synchronizacja" Binding="{Binding Synchronized, Converter={StaticResource BoolStringConverter}, ConverterParameter=OK}"  />
+                <DataGridTextColumn Header="Kasjer" Binding="{Binding UserName}"  />
             </DataGrid.Columns>
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow">

@@ -44,6 +44,8 @@ namespace KantorClient.DAL.Repositories
                                 MinimalSellRate = t.MinimalSellRate,
                                 StartDate = t.StartDate,
                                 EndDate = t.EndDate,
+                                UseNbpSpread = t.UseNbpSpread,
+                                Spread = t.Spread,
                                 Currency = new CurrencyDto { Name = t.Currency.Name, Symbol = t.Currency.Symbol },
                             }
                         };

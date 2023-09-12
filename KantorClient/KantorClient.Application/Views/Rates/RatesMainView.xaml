@@ -95,9 +95,9 @@
                                             </Grid>
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="0" Grid.RowSpan="2" Grid.Column="2">
                                                 <Label Content="Początek:" FontSize="16"/>
-                                                <Label Content="{Binding StartDate}" FontSize="16"/>
-                                                <Label Content="Koniec:" FontSize="16"/>
-                                                <Label Content="{Binding EndDate}" FontSize="16"/>
+                                                <Label Content="{Binding StartDate}" ContentStringFormat="dd/MM/yyyy" FontSize="16"/>
+                                                <!--<Label Content="Koniec:" FontSize="16"/>
+                                                <Label Content="{Binding EndDate}" ContentStringFormat="dd/MM/yyyy" FontSize="16"/>-->
                                             </StackPanel>
                                             <Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="3" IsEnabled="{Binding DataContext.CanDelete, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                     >
@@ -154,6 +154,99 @@
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding UseNbpSpread}" Value="True">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListViewItem">
+                                        <Grid Margin="10" Background="Transparent">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Border x:Name="SectionBorder" Grid.Column="0" BorderThickness="2" BorderBrush="{TemplateBinding Background}" CornerRadius="10">
+                                                <Border.InputBindings>
+                                                    <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding DataContext.EditRateCommand,RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                                </Border.InputBindings>
+                                                <Grid Grid.Column="0" >
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="*"/>
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="auto" />
+                                                        <ColumnDefinition Width="auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
+                                                        <Label Content="{Binding Currency.Symbol}" FontSize="18"/>
+                                                        <Rectangle VerticalAlignment="Stretch" Width="2" Fill="{StaticResource Color1}" />
+                                                    </StackPanel>
+                                                    <StackPanel Orientation="Horizontal" Grid.Column="1" >
+                                                        <Label Content="Spread" />
+                                                        <Label Content="{Binding Spread}" />
+                                                    </StackPanel>
+                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="0" Grid.RowSpan="2" Grid.Column="2">
+                                                        <Label Content="Początek:" FontSize="16"/>
+                                                        <Label Content="{Binding StartDate}" ContentStringFormat="dd/MM/yyyy" FontSize="16"/>
+                                                        <!--<Label Content="Koniec:" FontSize="16"/>
+                                                        <Label Content="{Binding EndDate}" ContentStringFormat="dd/MM/yyyy" FontSize="16"/>-->
+                                                    </StackPanel>
+                                                    <Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="3" IsEnabled="{Binding DataContext.CanDelete, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                                        <Button.Style>
+                                                            <Style TargetType="Button">
+                                                                <Style.Setters>
+                                                                    <Setter Property="Template">
+                                                                        <Setter.Value>
+                                                                            <ControlTemplate TargetType="Button">
+                                                                                <Border CornerRadius="0,8,8,0" Width="40" BorderThickness="2,0,0,0" BorderBrush="{TemplateBinding BorderBrush}">
+                                                                                    <Label Content="D" Margin="0" />
+                                                                                    <Border.Style>
+                                                                                        <Style>
+                                                                                            <Style.Triggers>
+                                                                                                <Trigger Property="Border.IsMouseOver" Value="True" >
+                                                                                                    <Setter Property="Border.Background" Value="FireBrick" />
+                                                                                                </Trigger>
+                                                                                            </Style.Triggers>
+                                                                                            <Setter Property="Border.Background" Value="Transparent" />
+                                                                                        </Style>
+                                                                                    </Border.Style>
+                                                                                </Border>
+                                                                            </ControlTemplate>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                    <Setter Property="Command" Value="{Binding DataContext.RemoveRateCommand,RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                                                    <Setter Property="CommandParameter" Value="{Binding .}" />
+                                                                </Style.Setters>
+                                                            </Style>
+                                                        </Button.Style>
+                                                    </Button>
+
+                                                </Grid>
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Style.Setters>
+                                                            <Setter Property="Background" Value="#8888" />
+                                                        </Style.Setters>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Valid}" Value="false">
+                                                                <Setter Property="Background" Value="Firebrick" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                            </Border>
+                                        </Grid>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="SectionBorder" Property="Background" Value="LightBlue"  />
+                                                <Setter TargetName="SectionBorder" Property="BorderBrush" Value="DarkMagenta"  />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
                 </Style>
             </ListView.Resources>
         </ListView>

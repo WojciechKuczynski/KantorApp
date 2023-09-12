@@ -7,77 +7,85 @@
              mc:Ignorable="d"  MinHeight="400" MinWidth="800"
              d:DesignHeight="400" d:DesignWidth="800">
     <Border CornerRadius="15" Background="White">
+        <Grid Background="Transparent">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="0.4*" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="0.4*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+                <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                        BorderBrush="Black" BorderThickness="0,0,0,1"
+                        Grid.Row="0" 
+                        Grid.Column="0" 
+                        Grid.ColumnSpan="4">
+                    <Grid>
+                        <Label Content="Dodaj/Edytuj" FontSize="24" HorizontalAlignment="Center" />
+                    </Grid>
+                </Border>
+
+                <Label Grid.Row="1" Grid.Column="0" Content="Waluta" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                <ComboBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" Margin="10" FontSize="20" VerticalContentAlignment="Center"
+                          ItemsSource="{Binding Currencies}" SelectedItem="{Binding SelectedCurrency,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
+                <!--<Label Grid.Row="1" Grid.Column="2" Content="Kurs NBP" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                <TextBox Grid.Row="1" Grid.Column="3" IsReadOnly="true" Margin="10" HorizontalAlignment="Stretch" FontSize="20" VerticalContentAlignment="Center" 
+                         />-->
+
+                    <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Background="LightGray" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Content="KUPNO" FontSize="16"
+                        FontWeight="Black"/>
+                <Label Grid.Row="3" Grid.Column="0" Content="Maximum" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                <TextBox Grid.Row="3" Grid.Column="1" Margin="10" HorizontalAlignment="Stretch" FontSize="20" VerticalContentAlignment="Center"
+                         Text="{Binding RateModel.MaximumBuyRate, StringFormat=0.00}"
+                         IsEnabled="{Binding RateModel.UseNbpSpread, Converter={StaticResource BoolInverseConverter}}"/>
+
+                <Label Grid.Row="3" Grid.Column="2" Content="Domyślna" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                <TextBox Grid.Row="3" Grid.Column="3" HorizontalAlignment="Stretch" Margin="10" FontSize="20" VerticalContentAlignment="Center"  
+                        Text="{Binding RateModel.DefaultBuyRate, StringFormat=0.00}"
+                         IsEnabled="{Binding RateModel.UseNbpSpread, Converter={StaticResource BoolInverseConverter}}"/>
+
+                <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" Background="LightGray" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Content="SPRZEDAŻ" FontSize="16"
+                    FontWeight="Black"/>
+
+                <Label Grid.Row="5" Grid.Column="0" Content="Minimum" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                <TextBox Grid.Row="5" Grid.Column="1" Margin="10" HorizontalAlignment="Stretch" FontSize="20" VerticalContentAlignment="Center"
+                        Text="{Binding RateModel.MinimalSellRate, StringFormat=0.00}"
+                         IsEnabled="{Binding RateModel.UseNbpSpread, Converter={StaticResource BoolInverseConverter}}"/>
+                <Label Grid.Row="5" Grid.Column="2" Content="Domyślna" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                <TextBox Grid.Row="5" Grid.Column="3" HorizontalAlignment="Stretch" Margin="10" FontSize="20" VerticalContentAlignment="Center"  
+                    Text="{Binding RateModel.DefaultSellRate, StringFormat=0.00}"
+                         IsEnabled="{Binding RateModel.UseNbpSpread, Converter={StaticResource BoolInverseConverter}}"/>
+
+
+                    <!--<Label Grid.Row="6" Grid.Column="0" Content="Start" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                <DatePicker Grid.Row="6" Grid.Column="1" Margin="10" FontSize="20" VerticalContentAlignment="Center" 
+                            SelectedDate="{Binding RateModel.StartDate}"/>
         
-    <Grid Background="Transparent">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="0.4*" />
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="0.4*" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+                <Label Grid.Row="6" Grid.Column="2" Content="Koniec" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                <DatePicker Grid.Row="6" Grid.Column="3" Margin="10" FontSize="20" VerticalContentAlignment="Center" 
+                            SelectedDate="{Binding RateModel.EndDate}"/>-->
 
-        <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                BorderBrush="Black" BorderThickness="0,0,0,1"
-                Grid.Row="0" 
-                Grid.Column="0" 
-                Grid.ColumnSpan="4">
-            <Grid>
-                <Label Content="ADD/EDIT" FontSize="24" HorizontalAlignment="Center" />
-            </Grid>
-        </Border>
+                <ToggleButton Grid.Row="1" Grid.Column="2" Content="Ustaw Spread" IsChecked="{Binding RateModel.UseNbpSpread}" Margin="5" Padding="3" />
+                <TextBox Grid.Row="1" Grid.Column="3" HorizontalAlignment="Stretch" Margin="10" FontSize="20" VerticalContentAlignment="Center"  
+                    Text="{Binding RateModel.Spread, StringFormat=0.00}" Visibility="{Binding RateModel.UseNbpSpread,Converter= {StaticResource BoolVisibilityConverter}}"/>
+            
 
-        <Label Grid.Row="1" Grid.Column="0" Content="Waluta" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />
-        <ComboBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" Margin="10" FontSize="20" VerticalContentAlignment="Center"
-                  ItemsSource="{Binding Currencies}" SelectedItem="{Binding SelectedCurrency,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
-        <Label Grid.Row="1" Grid.Column="2" Content="Kurs NBP" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />
-        <TextBox Grid.Row="1" Grid.Column="3" IsReadOnly="true" Margin="10" HorizontalAlignment="Stretch" FontSize="20" VerticalContentAlignment="Center" 
-                 />
+                <Button Grid.Row="7" Grid.Column="1" Content="Cancel" Margin="10" FontWeight="Black" Background="FireBrick" 
+                    Command="{Binding CancelCommand}"/>
+                <Button Grid.Row="7" Grid.Column="3" Content="Dodaj/Edytuj" Margin="10" FontWeight="Black" Background="LawnGreen"
+                    Command="{Binding AcceptCommand}"/>
 
-            <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Background="LightGray" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Content="KUPNO" FontSize="16"
-                FontWeight="Black"/>
-        <Label Grid.Row="3" Grid.Column="0" Content="Maximum" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />
-        <TextBox Grid.Row="3" Grid.Column="1" Margin="10" HorizontalAlignment="Stretch" FontSize="20" VerticalContentAlignment="Center"
-                 Text="{Binding RateModel.MaximumBuyRate, StringFormat=0.00}"/>
-
-        <Label Grid.Row="3" Grid.Column="2" Content="Domyślna" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />
-        <TextBox Grid.Row="3" Grid.Column="3" HorizontalAlignment="Stretch" Margin="10" FontSize="20" VerticalContentAlignment="Center"  
-                Text="{Binding RateModel.DefaultBuyRate, StringFormat=0.00}"/>
-
-        <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" Background="LightGray" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Content="SPRZEDAŻ" FontSize="16"
-            FontWeight="Black"/>
-
-        <Label Grid.Row="5" Grid.Column="0" Content="Minimum" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />
-        <TextBox Grid.Row="5" Grid.Column="1" Margin="10" HorizontalAlignment="Stretch" FontSize="20" VerticalContentAlignment="Center"
-                Text="{Binding RateModel.MinimalSellRate, StringFormat=0.00}"/>
-        <Label Grid.Row="5" Grid.Column="2" Content="Domyślna" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />
-        <TextBox Grid.Row="5" Grid.Column="3" HorizontalAlignment="Stretch" Margin="10" FontSize="20" VerticalContentAlignment="Center"  
-            Text="{Binding RateModel.DefaultSellRate, StringFormat=0.00}"/>
-
-
-            <Label Grid.Row="6" Grid.Column="0" Content="Start" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />
-        <DatePicker Grid.Row="6" Grid.Column="1" Margin="10" FontSize="20" VerticalContentAlignment="Center" 
-                    SelectedDate="{Binding RateModel.StartDate}"/>
-        
-        <Label Grid.Row="6" Grid.Column="2" Content="Koniec" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" />
-        <DatePicker Grid.Row="6" Grid.Column="3" Margin="10" FontSize="20" VerticalContentAlignment="Center" 
-                    SelectedDate="{Binding RateModel.EndDate}"/>
-
-        <Button Grid.Row="7" Grid.Column="1" Content="Cancel" Margin="10" FontWeight="Black" Background="FireBrick" 
-                Command="{Binding CancelCommand}"/>
-        <Button Grid.Row="7" Grid.Column="3" Content="Dodaj/Edytuj" Margin="10" FontWeight="Black" Background="LawnGreen"
-                Command="{Binding AcceptCommand}"/>
-
-    </Grid>
+        </Grid>
     </Border>
 
 </UserControl>

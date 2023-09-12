@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace KantorServer.Model
+﻿namespace KantorServer.Model
 {
     public class Rate : BaseModel
     {
@@ -17,10 +11,12 @@ namespace KantorServer.Model
         public DateTime EndDate { get; set; }
         public bool Valid { get; set; }
         public long ExternalId { get; set; }
+        public bool UseNbpSpread { get; set; }
+        public decimal Spread { get; set; }
 
         public Rate()
         {
-            
+
         }
         public Rate(Currency currency)
         {

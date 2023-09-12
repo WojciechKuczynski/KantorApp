@@ -60,12 +60,35 @@ namespace KantorClient.DAL.Repositories
                         rate.Currency = currency;
                     }
                 }
+                await InvalidateRates(context, rates);
                 await context.Rates.AddRangeAsync(ratesToDb);
                 await context.SaveChangesAsync();
                 var res = await context.Rates
                     .Include(x => x.Currency)
-                    .Where(x => x.Valid && x.EndDate >= DateTime.UtcNow).ToListAsync();
+                    .Where(x => x.Valid).ToListAsync();
                 return res;
+            }
+        }
+
+        private async Task InvalidateRates(DataContext context, IEnumerable<Rate> rates)
+        {
+            var idWithRate = rates.ToDictionary(x => x.ExternalId);
+            var ratesSynchronized = await context.Rates.Where(x => x.ExternalId != null).ToListAsync();
+            var ratesToInvalidate = ratesSynchronized.Where(x => idWithRate.ContainsKey(x.ExternalId));
+            foreach (var rate in ratesSynchronized) 
+            {
+                if (idWithRate.ContainsKey(rate.ExternalId))
+                {
+                    rate.Valid = idWithRate[rate.ExternalId.Value].Valid;
+                }
+                else if(rate.EndDate < DateTime.Now)
+                {
+                    rate.Valid = false;
+                }
+                else
+                {
+                    rate.Valid = true;
+                }
             }
         }
 
@@ -112,7 +135,12 @@ namespace KantorClient.DAL.Repositories
             }
             catch (Exception)
             {
-                return new List<Rate>();
+                return new List<Rate>
+                {
+                    new Rate() {Synchronized = true, Currency = new Currency{Symbol = "USD", Name="dolar amerykański"}, DefaultBuyRate = 4.3077M},
+                    new Rate() {Synchronized = true, Currency = new Currency{Symbol = "EUR", Name="Euro"}, DefaultBuyRate = 4.6209M},
+                    new Rate() {Synchronized = true, Currency = new Currency{Symbol = "GBP", Name="Funt szterling"}, DefaultBuyRate = 5.3926M},
+                };
             }
         }
 

@@ -17,7 +17,10 @@
         {
             Id = up.Id;
             Name = up.Name;
-            Permissions = PermissionDto.Map(up.Permissions.ToList());
+            if (up.Permissions != null)
+            {
+                Permissions = PermissionDto.Map(up.Permissions.ToList());
+            }
         }
 
         public UserPermission ConvertToEntity()

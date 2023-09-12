@@ -16,6 +16,7 @@
             Login = string.Empty;
             Password = string.Empty;
             Name = string.Empty;
+            Permission = new UserPermissionDto();
         }
 
         public UserDto(User user)
@@ -24,7 +25,10 @@
             Login = user.Login;
             Password = user.Password;
             Name = user.Name;
-            Permission = new UserPermissionDto(user.Permission);
+            if (user.Permission != null)
+            {
+                Permission = new UserPermissionDto(user.Permission);
+            }
             Valid = user.Valid;
         }
 
