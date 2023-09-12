@@ -12,18 +12,22 @@
         public bool Valid { get; set; }
         public long? ExternalId { get; set; }
         public bool Synchronized { get; set; }
+        public bool UseNbpSpread { get; set; }
+        public decimal Spread { get; set; }
 
         public Rate()
         {
 
         }
-        public Rate(Currency currency, decimal defaultBuyRate, decimal maximumBuyRate, decimal defaultSellRate, decimal minimalSellRate, DateTime startDate, DateTime endDate, long externalId)
+        public Rate(Currency currency, decimal defaultBuyRate, decimal maximumBuyRate, decimal defaultSellRate, decimal minimalSellRate, bool useNbpSpread, decimal spread, DateTime startDate, DateTime endDate, long externalId)
         {
             Currency = currency;
             DefaultBuyRate = defaultBuyRate;
             MaximumBuyRate = maximumBuyRate;
             DefaultSellRate = defaultSellRate;
             MinimalSellRate = minimalSellRate;
+            Spread = spread;
+            UseNbpSpread = useNbpSpread;
             StartDate = startDate;
             EndDate = endDate;
             Valid = true;
@@ -38,7 +42,9 @@
             MinimalSellRate = rate.MinimalSellRate;
             StartDate = rate.StartDate;
             EndDate = rate.EndDate;
-            Valid = true;
+            Valid = rate.Valid;
+            UseNbpSpread = rate.UseNbpSpread;
+            Spread = rate.Spread;
             ExternalId = rate.Id;
         }
     }

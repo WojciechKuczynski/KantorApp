@@ -1,8 +1,10 @@
-﻿using KantorClient.Application.ViewModels.Interfaces;
+﻿using KantorClient.Application.CustomControls;
+using KantorClient.Application.ViewModels.Interfaces;
 using KantorClient.Application.ViewModels.Interfaces.Transactions;
 using KantorClient.BLL.Models;
 using KantorClient.BLL.Services.Interfaces;
 using KantorClient.Common.Extentions;
+using KantorClient.Model.Consts;
 using KantorServer.Model.Consts;
 using Prism.Commands;
 using System;
@@ -66,9 +68,10 @@ namespace KantorClient.Application.ViewModels.Transactions
             AddEditVM = addEditVM;
             AddEditVM.Parent = this;
 
-            AddTransactionCommand = new DelegateCommand(AddTransaction);
+            AddBuyTransactionCommand = new DelegateCommand(() => AddTransaction(Model.Consts.TransactionType.Buy));
+            AddSellTransactionCommand = new DelegateCommand(() => AddTransaction(Model.Consts.TransactionType.Sell));
             EditTransactionCommand = new DelegateCommand<TransactionModel>(Edit);
-            DeleteTransactionCommand = new DelegateCommand<TransactionModel>(DeleteTransaction);
+            DeleteTransactionCommand = new DelegateCommand(DeleteTransaction);
             RefreshCommand = new DelegateCommand(Refresh);
         }
 
@@ -133,10 +136,11 @@ namespace KantorClient.Application.ViewModels.Transactions
             }
         }
 
-        public ICommand AddTransactionCommand { get; private set; }
-        private void AddTransaction()
+        public ICommand AddBuyTransactionCommand { get; private set; }
+        public ICommand AddSellTransactionCommand { get; private set; }
+        private void AddTransaction(Model.Consts.TransactionType type)
         {
-            AddEditVM.LoadForm();
+            AddEditVM.LoadForm(null, type);
             AddEditVisible = true;
         }
 
@@ -148,10 +152,12 @@ namespace KantorClient.Application.ViewModels.Transactions
         }
 
         public ICommand DeleteTransactionCommand { get; private set; }
-        private async void DeleteTransaction(TransactionModel model)
+        private async void DeleteTransaction()
         {
-            if (!model.Valid)
+            var model = TransactionsCollection.OrderByDescending(x => x.Id).FirstOrDefault();
+            if (model == null || !model.Valid)
             {
+                new UserMessageBox("Nie można usunąc transakcji", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning).ShowDialog();
                 return;
             }
 

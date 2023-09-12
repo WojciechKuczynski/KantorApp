@@ -26,7 +26,11 @@ namespace KantorClient.BLL.Models
             Name = user.Name;
             Login = user.Login;
             Password = user.Password;
-            Permission = string.Join(';', user.Permission.Permissions.Select(x => x.Key));
+            if (user.Permission.Permissions != null)
+            {
+                Permission = string.Join(';', user.Permission.Permissions.Select(x => x.Key));
+            }
+            UserPermissionId = user.Permission.Id;
             Valid = user.Valid;
         }
     }

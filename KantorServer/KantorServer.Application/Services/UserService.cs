@@ -97,7 +97,7 @@ namespace KantorServer.Application.Services
         {
             try
             {
-                var users = await DataContext.Users.ToListAsync();
+                var users = await DataContext.Users.Include(x => x.Permission).ThenInclude(x => x.Permissions).ToListAsync();
                 return UserDto.Map(users);
             }
             catch (Exception ex) { return null; }

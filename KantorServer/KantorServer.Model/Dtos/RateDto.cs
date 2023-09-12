@@ -19,6 +19,8 @@ namespace KantorServer.Model.Dtos
         public DateTime EndDate { get; set; }
         public bool Valid { get; set; }
         public long ExternalId { get; set; }
+        public bool UseNbpSpread { get; set; }
+        public decimal Spread { get; set; }
 
         public RateDto()
         {
@@ -36,6 +38,8 @@ namespace KantorServer.Model.Dtos
             EndDate = rate.EndDate;
             Valid = rate.Valid;
             ExternalId = rate.ExternalId;
+            UseNbpSpread = rate.UseNbpSpread;
+            Spread = rate.Spread;
         }
 
         public static List<RateDto> Map(IEnumerable<Rate> rates) => rates.Select(r => new RateDto(r)).ToList();
@@ -54,6 +58,8 @@ namespace KantorServer.Model.Dtos
             rate.EndDate = EndDate;
             rate.Valid = Valid;
             rate.ExternalId = ExternalId;
+            rate.UseNbpSpread = UseNbpSpread;
+            rate.Spread = Spread;
             return rate;
         }
     }

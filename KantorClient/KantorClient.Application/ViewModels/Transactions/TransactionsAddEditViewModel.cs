@@ -22,6 +22,7 @@ namespace KantorClient.Application.ViewModels.Transactions
         private decimal _finalValue;
         private decimal _amount;
         private decimal _changeRate;
+        private decimal _cashValue;
         private bool _locker;
 
         private CurrencyModel _selectedCurrency;
@@ -59,6 +60,16 @@ namespace KantorClient.Application.ViewModels.Transactions
         public bool NewTransaction { get; set; }
 
         public decimal CurrencyAmount { get; set; }
+        public decimal ChangeValue { get; set; }
+        public decimal CashValue
+        {
+            get { return _cashValue; }
+            set
+            {
+                _cashValue = value;
+                ChangeValue = value - FinalValue;
+            }
+        }
 
         public decimal Amount
         {
@@ -142,7 +153,7 @@ namespace KantorClient.Application.ViewModels.Transactions
                 _selectedRate = value;
                 if (value != null)
                 {
-                    ChangeRate = SelectedType == TransactionType.Sell ? value.DefaultSellRate : value.DefaultBuyRate;
+                    ChangeRate = SelectedType == TransactionType.Sell ? Math.Round(value.DefaultSellRate,2) : Math.Round(value.DefaultBuyRate,2);
                 }
             }
         }
@@ -155,7 +166,7 @@ namespace KantorClient.Application.ViewModels.Transactions
                 _selectedType = value;
                 if (SelectedRate != null)
                 {
-                    ChangeRate = value == TransactionType.Sell ? SelectedRate.DefaultSellRate : SelectedRate.DefaultBuyRate;
+                    ChangeRate = value == TransactionType.Sell ? Math.Round(SelectedRate.DefaultSellRate,2) : Math.Round(SelectedRate.DefaultBuyRate,2);
                 }
             }
         }
@@ -168,12 +179,12 @@ namespace KantorClient.Application.ViewModels.Transactions
             return Task.CompletedTask;
         }
 
-        public void LoadForm(TransactionModel model = null)
+        public void LoadForm(TransactionModel model = null, TransactionType transactionType = TransactionType.Sell)
         {
-            LoadModel(model);
+            LoadModel(model,transactionType);
         }
 
-        private void LoadModel(TransactionModel model)
+        private void LoadModel(TransactionModel model, TransactionType transactionType)
         {
             if (model != null)
             {
@@ -181,7 +192,7 @@ namespace KantorClient.Application.ViewModels.Transactions
                 SelectedCurrency = Currencies.FirstOrDefault(x => x.Symbol == model.Currency.Symbol);
                 Transaction = model;
                 _locker = true;
-                ChangeRate = model.Rate;
+                ChangeRate = Math.Round(model.Rate,2);
                 FinalValue = model.FinalValue;
                 Amount = model.Quantity;
                 SelectedType = model.TransactionType;
@@ -191,13 +202,15 @@ namespace KantorClient.Application.ViewModels.Transactions
             {
                 NewTransaction = true;
                 SelectedCurrency = null;
-                SelectedType = TransactionType.Sell;
+                SelectedType = transactionType;
                 SelectedRate = null;
                 NbpRate = 0;
                 CurrencyAmount = 0;
                 Amount = 0;
                 ChangeRate = 0;
                 FinalValue = 0;
+                CashValue = 0;
+                ChangeValue = 0;
             }
         }
 
@@ -205,16 +218,25 @@ namespace KantorClient.Application.ViewModels.Transactions
         {
             var rate = _settingsService.Rates.FirstOrDefault(x => x.Currency.Id == currency.Id);
             var nbpRate = _settingsService.NbpRates?.FirstOrDefault(x => x.Currency.Id == currency.Id);
-            if (nbpRate != null)
-            {
-                NbpRate = nbpRate.DefaultBuyRate;
-            }
 
             if (rate == null)
             {
                 new UserMessageBox("Nie ma kursów dla tej waluty", MessageBoxButton.OK, MessageBoxImage.Warning).ShowDialog();
                 return;
             }
+           
+            if (nbpRate != null)
+            {
+                NbpRate = nbpRate.DefaultBuyRate;
+                if (rate.UseNbpSpread)
+                {
+                    rate.DefaultBuyRate = NbpRate - rate.Spread;
+                    rate.DefaultSellRate = NbpRate + rate.Spread;
+                    rate.MaximumBuyRate = NbpRate;
+                    rate.MinimalSellRate = NbpRate;
+                }
+            }
+
             CurrencyAmount = await _cashRegistryService.GetAmountForCurrency(currency);
             SelectedRate = new RateModel(rate);
         }
@@ -249,15 +271,31 @@ namespace KantorClient.Application.ViewModels.Transactions
                 }
                 if (SelectedRate != null)
                 {
-                    if (SelectedType == TransactionType.Sell && ChangeRate < SelectedRate.MinimalSellRate)
+                    if (SelectedRate.UseNbpSpread)
                     {
-                        new UserMessageBox("Kurs nie może być mniejszy od minimalnego ustalonego kursu sprzedaży!", MessageBoxButton.OK, MessageBoxImage.Warning).ShowMessage();
-                        return;
+                        if (SelectedType == TransactionType.Sell && ChangeRate < NbpRate)
+                        {
+                            new UserMessageBox("Kurs nie może być mniejszy od kursu NBP!", MessageBoxButton.OK, MessageBoxImage.Warning).ShowMessage();
+                            return;
+                        }
+                        if (SelectedType == TransactionType.Buy && ChangeRate > NbpRate)
+                        {
+                            new UserMessageBox("Kurs nie może być większy od kursu NBP!", MessageBoxButton.OK, MessageBoxImage.Warning).ShowMessage();
+                            return;
+                        }
                     }
-                    if (SelectedType == TransactionType.Buy && ChangeRate > SelectedRate.MaximumBuyRate)
+                    else
                     {
-                        new UserMessageBox("Kurs nie może być większy od maksymalnego ustalonego kursu kupna!", MessageBoxButton.OK, MessageBoxImage.Warning).ShowMessage();
-                        return;
+                        if (SelectedType == TransactionType.Sell && ChangeRate < SelectedRate.MinimalSellRate)
+                        {
+                            new UserMessageBox("Kurs nie może być mniejszy od minimalnego ustalonego kursu sprzedaży!", MessageBoxButton.OK, MessageBoxImage.Warning).ShowMessage();
+                            return;
+                        }
+                        if (SelectedType == TransactionType.Buy && ChangeRate > SelectedRate.MaximumBuyRate)
+                        {
+                            new UserMessageBox("Kurs nie może być większy od maksymalnego ustalonego kursu kupna!", MessageBoxButton.OK, MessageBoxImage.Warning).ShowMessage();
+                            return;
+                        }
                     }
                 }
                 else

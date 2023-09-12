@@ -51,6 +51,8 @@ namespace KantorServer.Application.Services
                 var userSession = await DataContext.UserSessions
                                     .Include(x => x.Kantor)
                                     .Include(x => x.User)
+                                    .ThenInclude(x => x.Permission)
+                                    .ThenInclude(x => x.Permissions)
                                     .FirstOrDefaultAsync(x => x.SynchronizationKey == notificationKey);
                 if (userSession == null)
                 {
@@ -90,6 +92,8 @@ namespace KantorServer.Application.Services
                 var userSession = await DataContext.UserSessions
                                 .Include(x => x.Kantor)
                                 .Include(x => x.User)
+                                .ThenInclude(x => x.Permission)
+                                .ThenInclude(x => x.Permissions)
                                 .FirstOrDefaultAsync(x => x.SynchronizationKey == notificationKey);
 
                 if (userSession == null)

@@ -83,7 +83,7 @@ namespace KantorClient.Application.ViewModels.Rates
             }
             else
             {
-                RateModel = new RateModel() { Valid = true };
+                RateModel = new RateModel() { Valid = true, StartDate = DateTime.Now };
             }
         }
     }

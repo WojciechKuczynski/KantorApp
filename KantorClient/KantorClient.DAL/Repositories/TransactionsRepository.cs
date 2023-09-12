@@ -78,8 +78,7 @@ namespace KantorClient.DAL.Repositories
         {
             using var dataContext = new DataContext();
             var localTransactions = await dataContext.Transactions.Include(x => x.Currency).Include(x => x.User)
-                                .Where(x => x.User.UserId == userSession.UserId 
-                                && (x.DeletionDate == null || (x.DeletionDate != null && x.Parent == null))
+                                .Where(x => (x.DeletionDate == null || (x.DeletionDate != null && x.Parent == null))
                                 && x.User.KantorId == userSession.KantorId)
                                 .OrderByDescending(x => x.TransactionDate).Take(100).ToListAsync();
 

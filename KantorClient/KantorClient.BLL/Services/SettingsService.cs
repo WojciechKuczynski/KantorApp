@@ -10,6 +10,8 @@ namespace KantorClient.BLL.Services
     {
         private readonly IAuthenticationService _authenticationService;
         private readonly ISettingsRepository _settingsRepository;
+        private object _rateSynchroLock = new object();
+        private SemaphoreSlim _rateSymaphore = new SemaphoreSlim(1);
 
         public event DataUpdated DataUpdated;
 
@@ -98,6 +100,7 @@ namespace KantorClient.BLL.Services
 
         public async Task LoadRates()
         {
+            await _rateSymaphore.WaitAsync();
             try
             {
                 if (!OnlineMode)
@@ -112,6 +115,10 @@ namespace KantorClient.BLL.Services
             catch (ServerNotReachedException)
             {
                 _authenticationService.SetOnlineMode(false);
+            }
+            finally
+            {
+                _rateSymaphore.Release();
             }
         }
     }

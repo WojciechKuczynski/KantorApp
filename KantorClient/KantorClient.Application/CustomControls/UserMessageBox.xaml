@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="UserMessageBox" MinHeight="150" MinWidth="400" WindowStartupLocation="CenterScreen"
+        Height="150" Width="400"
         MaxHeight="800" MaxWidth="1200">
     <Grid>
         <Grid.Background>

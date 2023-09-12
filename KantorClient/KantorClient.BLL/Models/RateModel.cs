@@ -16,6 +16,8 @@ namespace KantorClient.BLL.Models
         public DateTime EndDate { get; set; }
         public bool Valid { get; set; }
         public long ExternalId { get; set; }
+        public bool UseNbpSpread { get; set; }
+        public decimal Spread { get; set; }
 
         public RateModel()
         {
@@ -31,6 +33,8 @@ namespace KantorClient.BLL.Models
             MaximumBuyRate = rate.MaximumBuyRate;
             DefaultSellRate = rate.DefaultSellRate;
             MinimalSellRate = rate.MinimalSellRate;
+            UseNbpSpread = rate.UseNbpSpread;
+            Spread = rate.Spread;
             StartDate = rate.StartDate;
             EndDate = rate.EndDate;
             Valid = rate.Valid;
@@ -45,6 +49,8 @@ namespace KantorClient.BLL.Models
             MaximumBuyRate = model.MaximumBuyRate,
             DefaultSellRate = model.DefaultSellRate,
             MinimalSellRate = model.MinimalSellRate,
+            UseNbpSpread = model.UseNbpSpread,
+            Spread = model.Spread,
             StartDate = model.StartDate,
             EndDate = model.EndDate,
             Valid = model.Valid,

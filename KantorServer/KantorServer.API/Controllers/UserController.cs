@@ -26,7 +26,7 @@ namespace KantorServer.API.Controllers
             if (checkRes != null) { return checkRes; }
 
             var res = await _userService.AddEditUser(request.User);
-            return new AddEditUserResponse(res, "Pomyślnie dodano nowy Kurs", "Nie udało się dodać Kursu")
+            return new AddEditUserResponse(res, "Pomyślnie dodano/edytowano użytkownika", "Nie udało się dodać/edytować użytkownika")
             {
                 User = res
             };
@@ -39,7 +39,7 @@ namespace KantorServer.API.Controllers
             if (checkRes != null) { return checkRes; }
 
             var res = await _userService.GetUsers();
-            return new GetAllUsersResponse(true, "Pomyślnie zwrócono kursy", "Nie udało się pobrać kursów") { Users = res };
+            return new GetAllUsersResponse(true, "Pomyślnie zwrócono użytkowników", "Nie udało się pobrać użytkowników") { Users = res };
         }
 
         [HttpPost("userpermission/list")]
