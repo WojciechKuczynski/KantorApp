@@ -9,7 +9,7 @@ namespace KantorClient.BLL.Models
         public TransferType Type { get; set; }
         public decimal TransferValue { get; set; }
         public CurrencyModel TransferCurrency { get; set; }
-
+        public string Notes { get; set; }
         public long UserId { get; set; }
         public bool Edited { get; set; }
         public bool Valid { get; set; }
@@ -27,6 +27,7 @@ namespace KantorClient.BLL.Models
             Type = transfer.Type;
             TransferValue = transfer.TransferValue;
             TransferCurrency = new CurrencyModel(transfer.TransferCurrency);
+            Notes = transfer.Notes;
             UserId = transfer.User.UserId;
             Edited = transfer.Edited;
             Valid = transfer.Valid;
@@ -41,6 +42,7 @@ namespace KantorClient.BLL.Models
                 Type = this.Type,
                 TransferValue = this.TransferValue,
                 TransferCurrency = this.TransferCurrency.Map(),
+                Notes = this.Notes,
                 Edited = this.Edited,
                 Valid = this.Valid,
                 TransferDate = this.TransferDate,

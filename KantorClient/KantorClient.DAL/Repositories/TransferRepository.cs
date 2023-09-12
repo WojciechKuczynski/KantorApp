@@ -61,6 +61,7 @@ namespace KantorClient.DAL.Repositories
                 TransferValue = transfer.TransferValue,
                 Parent = transferInDb.Id,
                 Valid = true,
+                Notes = transfer.Notes,
                 Synchronized = false,
                 TransferDate = DateTime.UtcNow,
             };

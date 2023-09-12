@@ -8,6 +8,7 @@ namespace KantorClient.Model
         public decimal TransferValue { get; set; }
         public virtual Currency TransferCurrency { get; set; }
         public virtual UserSession User { get; set; }
+        public string Notes { get; set; }
         public long? Parent { get; set; }
         public long? ExternalId { get; set; }
         public bool Synchronized { get; set; }

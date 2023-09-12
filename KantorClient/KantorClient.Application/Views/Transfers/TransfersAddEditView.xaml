@@ -52,6 +52,7 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
@@ -72,9 +73,12 @@
             <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Model.TransferValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <TextBox Grid.Row="3" Grid.Column="2" IsReadOnly="True" Text="{Binding CurrencyAmount}" />
 
-            <Button Grid.Row="4" Grid.Column="2" Content="{Binding AcceptTitle}" Margin="10" FontSize="24" FontWeight="Black"
+            <Label Grid.Row="4" Grid.Column="0" Content="Notka" />
+            <TextBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Model.Notes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Button Grid.Row="5" Grid.Column="2" Content="{Binding AcceptTitle}" Margin="10" FontSize="24" FontWeight="Black"
                     Command="{Binding AddCommand}" IsEnabled="{Binding Loading, Converter={StaticResource BoolInverseConverter}}" />
-            <Button Grid.Row="4" Grid.Column="1" Content="ANULUJ" Margin="10" FontSize="24" FontWeight="Black"
+            <Button Grid.Row="5" Grid.Column="1" Content="ANULUJ" Margin="10" FontSize="24" FontWeight="Black"
                     Command="{Binding CancelCommand}" />
 
         </Grid>

@@ -164,6 +164,7 @@ namespace KantorClient.DAL.Repositories
                                 TransferCurrency = new CurrencyDto { Name = t.TransferCurrency.Name, Symbol = t.TransferCurrency.Symbol },
                                 TransferDate = t.TransferDate,
                                 DeletionDate = t.DeletionDate,
+                                Notes = t.Notes,
                                 Valid = t.Valid,
                                 Edited = t.Edited,
 
