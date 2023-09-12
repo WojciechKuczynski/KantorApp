@@ -1,9 +1,4 @@
 ﻿using KantorServer.Model.Consts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KantorServer.Model.Dtos
 {
@@ -16,6 +11,7 @@ namespace KantorServer.Model.Dtos
         public virtual UserDto User { get; set; }
         public decimal TransferValue { get; set; }
         public CurrencyDto TransferCurrency { get; set; }
+        public string Notes { get; set; }
         public long ExternalId { get; set; }
         public bool Valid { get; set; }
         public long? Parent { get; set; }
@@ -25,7 +21,7 @@ namespace KantorServer.Model.Dtos
 
         public TransferDto()
         {
-            
+
         }
 
         public TransferDto(Transfer transfer)
@@ -36,6 +32,7 @@ namespace KantorServer.Model.Dtos
             User = new UserDto(transfer.User);
             TransferValue = transfer.TransferValue;
             TransferCurrency = new CurrencyDto(transfer.TransferCurrency);
+            Notes = transfer.Notes;
             ExternalId = transfer.ExternalId;
             Valid = transfer.Valid;
             Parent = transfer.Parent;
@@ -45,7 +42,7 @@ namespace KantorServer.Model.Dtos
         }
 
         public static List<TransferDto> Map(IEnumerable<Transfer> transfers) => transfers.Select(x => new TransferDto(x)).ToList();
-    
+
         public Transfer ConvertToEntity()
         {
             var entity = new Transfer();
@@ -55,6 +52,7 @@ namespace KantorServer.Model.Dtos
             entity.Kantor = Kantor.ConvertToEntity();
             entity.TransferValue = TransferValue;
             entity.TransferCurrency = TransferCurrency.ConvertToEntity();
+            entity.Notes = Notes;
             entity.User = User.ConvertToEntity();
             entity.ExternalId = ExternalId;
             entity.Valid = Valid;

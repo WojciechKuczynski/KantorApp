@@ -1,10 +1,4 @@
 ﻿using KantorServer.Model.Consts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Transactions;
 
 namespace KantorServer.Model
 {
@@ -15,6 +9,7 @@ namespace KantorServer.Model
         public virtual User User { get; set; }
         public decimal TransferValue { get; set; }
         public virtual Currency TransferCurrency { get; set; }
+        public string Notes { get; set; }
         public long ExternalId { get; set; }
         public bool Valid { get; set; }
         public long? Parent { get; set; }
@@ -24,7 +19,7 @@ namespace KantorServer.Model
 
         public Transfer()
         {
-            
+
         }
         public Transfer(Kantor kantor)
         {
